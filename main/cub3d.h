@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/08/26 17:43:11 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/08/27 11:53:11 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@
 # include <fcntl.h>
 # include "../MLX/include/MLX42/MLX42.h"
 // # include "MLX/include/MLX42/MLX42_Int.h"
-# include "../get_next_line/get_next_line.h"
+// # include "../get_next_line/get_next_line.h"
 # include "../Libft/libft.h"
 
 // Made by Aghla
 # define MNMAP_TILE_S 32
 # define MNMAP_W (MNMAP_TILE_S * 8)
 # define MNMAP_H (MNMAP_TILE_S * 6)
-# define MOVE_SPD 4
-# define ROT_SPD 8 * (M_PI / 180)
+# define MOVE_SPD 2
+# define ROT_SPD 4 * (M_PI / 180)
 
 
 typedef struct s_addr
@@ -65,8 +65,9 @@ typedef struct s_map
 
 typedef struct s_player
 {
-	int	y;
-	int	x;
+	double	y;
+	double	x;
+	char	orn;
 	double	rot_angl;
 }	t_player;
 
@@ -89,6 +90,11 @@ t_maplst	*ab_maplst_new(char *line);
 void 		ab_maplstaddb(t_maplst **lst, t_maplst *new);
 int			ab_maplst_size(t_maplst *lst);
 void		ab_valid_map(t_data *data, t_maplst *maplst);
+void		ab_minimap(void *param);
+// void		ab_keyhook(mlx_key_data_t keydata, void *param);
 void		clean_exit(char *err, int stat);
+void		ab_drawline(t_data *data, int x1, int y1, int x2, int y2);
+void		draw_circle(t_data *data, int h, int k, int r);
+int			get_rgba(int r, int g, int b, int a);
 
 #endif

@@ -6,20 +6,20 @@
 #    By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/16 06:34:23 by srachidi          #+#    #+#              #
-#    Updated: 2024/08/23 05:12:23 by aaghla           ###   ########.fr        #
+#    Updated: 2024/08/27 09:40:59 by aaghla           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME   = cub3D
 CC     = cc
-CFLAGS = -DDEBUG=1 #-Wall -Wextra -Werror
+CFLAGS = -DDEBUG=1 -Wall -Wextra -Werror
 RM     = rm -rf
 O_DR   = objs/
 LIBFT	= Libft/libft.a
 SRC    := main/grbgcllctr.c \
-			get_next_line/get_next_line.c \
-			get_next_line/get_next_line_utils.c \
 			main/main.c\
+			main/minimap.c\
+			main/drawing.c\
 			parsing/parse_file.c\
 			parsing/fst_part.c\
 			parsing/sec_part.c\

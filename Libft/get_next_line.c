@@ -6,11 +6,39 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 17:59:22 by aaghla            #+#    #+#             */
-/*   Updated: 2024/08/19 08:03:03 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/08/27 09:44:05 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "libft.h"
+
+static char	*gl_strjoin(char *s1, char *s2, int rd)
+{
+	char	*str;
+	int		i;
+
+	if (!s1)
+		s1 = "\0";
+	i = gl_strlen(s1, 0);
+	str = (char *)malloc((i + rd +1) * sizeof(char));
+	if (!str)
+	{
+		if (s1[0])
+			free(s1);
+		return (NULL);
+	}
+	i = 0;
+	rd = 0;
+	while (s1[i])
+		str[rd++] = s1[i++];
+	i = 0;
+	while (s2[i])
+		str[rd++] = s2[i++];
+	str[rd] = '\0';
+	if (s1[0])
+		free(s1);
+	return (str);
+}
 
 static char	*gl_read_line(int fd, char *reached)
 {
@@ -21,14 +49,14 @@ static char	*gl_read_line(int fd, char *reached)
 	buff = malloc(((size_t)BUFFER_SIZE +1) * sizeof(char));
 	if (!buff)
 		return (NULL);
-	while (!gl_strchr(reached, '\n') && rd > 0)
+	while (!ft_strchr(reached, '\n') && rd > 0)
 	{
 		rd = read(fd, buff, BUFFER_SIZE);
 		if (rd == -1)
 		{
 			if (reached)
 				free(reached);
-			return (gl_free_it(buff));
+			return (free(buff), NULL);
 		}
 		if (rd == 0)
 			break ;
@@ -76,13 +104,13 @@ static char	*gl_next_line(char *reached)
 	j = 0;
 	if (!reached)
 		return (NULL);
-	else if (!gl_strchr(reached, '\n'))
-		return (gl_free_it(reached));
+	else if (!ft_strchr(reached, '\n'))
+		return (free(reached), NULL);
 	i = gl_strlen(reached, '\n');
 	j = gl_strlen(reached, '\0');
 	new = malloc((j - i) * sizeof(char));
 	if (!new)
-		return (gl_free_it(reached));
+		return (free(reached), NULL);
 	j = 0;
 	i++;
 	while (reached[i])
@@ -90,7 +118,7 @@ static char	*gl_next_line(char *reached)
 	new[j] = '\0';
 	free(reached);
 	if (!new[0])
-		return (gl_free_it(new));
+		return (free(new), NULL);
 	return (new);
 }
 
