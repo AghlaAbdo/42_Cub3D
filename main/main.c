@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:54:05 by srachidi          #+#    #+#             */
-/*   Updated: 2024/08/27 12:12:55 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/08/27 18:33:31 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	main(int ac, char **av)
 	if (parse_file(&data, av[1]))
 		return (2);
 	ab_set_orn(&data);
-	data.mlx = mlx_init(1200, 675, "Cub3D", false);
+	data.mlx = mlx_init(WIN_W, WIN_H, "Cub3D", false);
 	if (!data.mlx)
 		clean_exit("Unable to create window", 3);
 	data.map->mnmap_img = mlx_new_image(data.mlx, MNMAP_W, MNMAP_H);

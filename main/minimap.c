@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:50:44 by aaghla            #+#    #+#             */
-/*   Updated: 2024/08/27 12:00:08 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/08/27 19:11:02 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	check_wall(t_data *data, int p_x, int p_y)
 		temp2 += MNMAP_W / 2;
 		// printf("x: %d | y: %d\n", x/ MNMAP_TILE_S, y/ MNMAP_TILE_S);
 		mlx_put_pixel(data->map->mnmap_img, temp2, temp1, get_rgba(255, 255, 0, 255));
-		if (data->map->map[(int)y / MNMAP_TILE_S][(int)x / MNMAP_TILE_S] == '1')
+		if (data->map->map[(int)(y / MNMAP_TILE_S)][(int)(x / MNMAP_TILE_S)] == '1')
 			return (1);
 		deg++;
 	}
@@ -91,8 +91,8 @@ static int	check_pixel(t_data *data, int y, int x)
 	int	i;
 	int	j;
 
-	i = (int)(data->plr->y + y) / MNMAP_TILE_S -3;
-	j = (int)(data->plr->x + x) / MNMAP_TILE_S -4;
+	i = (int)round((data->plr->y + y)) / MNMAP_TILE_S - (MNMAP_H / MNMAP_TILE_S / 2);
+	j = (int)round((data->plr->x + x)) / MNMAP_TILE_S - (MNMAP_W / MNMAP_TILE_S / 2);
 	if (i < 0 || j < 0 || i >= data->map->col || j >= data->map->row)
 		return (-1);
 	if (data->map->map[i][j] == '1')
@@ -127,6 +127,7 @@ void	plr_move(t_data *data)
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_D))
 	{
+		// puts("here");
 		if (!check_wall(data, data->plr->x - y, data->plr->y))
 		data->plr->x -= y;
 		if (!check_wall(data, data->plr->x, data->plr->y + x))
@@ -140,9 +141,41 @@ void	plr_move(t_data *data)
 		data->plr->y -= x;
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
-		data->plr->rot_angl -= ROT_SPD;
+	{
+		if (data->plr->rot_angl - ROT_SPD < 0)
+			data->plr->rot_angl = M_PI * 2;
+		else
+			data->plr->rot_angl -= ROT_SPD;
+		// printf("plr rot: %f\n", data->plr->rot_angl);
+	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
-		data->plr->rot_angl += ROT_SPD;
+	{
+		if (data->plr->rot_angl + ROT_SPD >= M_PI * 2)
+			data->plr->rot_angl = 0;
+		else
+			data->plr->rot_angl += ROT_SPD;
+		// printf("plr rot: %f\n", data->plr->rot_angl);
+	}
+}
+
+void	ab_set_rayangl(t_data *data, int p_x, int p_y)
+{
+	int	i;
+	double	ray_angl;
+
+	i = -1;
+	ray_angl = data->plr->rot_angl - (FOV / 2);
+	while (++i < N_RAYS)
+	{
+		data->rays[i].angl = ray_angl;
+		ray_angl += FOV / N_RAYS;
+	}
+	i = -1;
+	while (++i < N_RAYS)
+	{
+		ab_drawline(data, p_x, p_y, p_x + (cos(data->rays[i].angl) * 90),
+			p_y + (sin(data->rays[i].angl) * 90), get_rgba(110, 172, 218, 200));
+	}
 }
 
 void	ab_minimap(void *param)
@@ -170,7 +203,8 @@ void	ab_minimap(void *param)
 	p_x = (MNMAP_W / 2) ;
 	draw_circle(data, p_x, p_y, 3);
 	check_wall(data, data->plr->x, data->plr->y);
-	ab_drawline(data, p_x, p_y, p_x + (cos(data->plr->rot_angl) * 40),
-		p_y + (sin(data->plr->rot_angl) * 40));
+	ab_drawline(data, p_x, p_y, p_x + (cos(data->plr->rot_angl) * 70),
+		p_y + (sin(data->plr->rot_angl) * 70), get_rgba(255, 0, 0, 255));
 	plr_move(data);
+	ab_set_rayangl(data, p_x, p_y);
 }

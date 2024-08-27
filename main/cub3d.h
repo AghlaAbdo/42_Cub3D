@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/08/27 11:53:11 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/08/27 18:46:12 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,15 @@
 # include "../Libft/libft.h"
 
 // Made by Aghla
-# define MNMAP_TILE_S 32
+# define WIN_W 1200
+# define WIN_H 675
+# define MNMAP_TILE_S 48
 # define MNMAP_W (MNMAP_TILE_S * 8)
 # define MNMAP_H (MNMAP_TILE_S * 6)
 # define MOVE_SPD 2
-# define ROT_SPD 4 * (M_PI / 180)
-
+# define ROT_SPD 3 * (M_PI / 180)
+# define FOV 60 * (M_PI / 180)
+# define N_RAYS (WIN_W / 4)
 
 typedef struct s_addr
 {
@@ -71,11 +74,20 @@ typedef struct s_player
 	double	rot_angl;
 }	t_player;
 
+typedef struct s_rays
+{
+	double	angl;
+	int		x;
+	int		y;
+	void	*next;
+}	t_rays;
+
 typedef struct s_data
 {
 	mlx_t		*mlx;
 	t_map		*map;
 	t_player	*plr;
+	t_rays		rays[N_RAYS];
 	
 }				t_data;
 
@@ -93,7 +105,7 @@ void		ab_valid_map(t_data *data, t_maplst *maplst);
 void		ab_minimap(void *param);
 // void		ab_keyhook(mlx_key_data_t keydata, void *param);
 void		clean_exit(char *err, int stat);
-void		ab_drawline(t_data *data, int x1, int y1, int x2, int y2);
+void		ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color);
 void		draw_circle(t_data *data, int h, int k, int r);
 int			get_rgba(int r, int g, int b, int a);
 

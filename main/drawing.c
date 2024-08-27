@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:56:36 by aaghla            #+#    #+#             */
-/*   Updated: 2024/08/27 12:04:51 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/08/27 17:40:43 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ void	draw_circle(t_data *data, int h, int k, int r)
 	}
 }
 
-static void	plot(t_data *data, int x, int y) {
-   mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(255, 0, 0, 255));
+static void	plot(t_data *data, int x, int y, int color) {
+   mlx_put_pixel(data->map->mnmap_img, x, y, color);
 }
 
-void	ab_drawline(t_data *data, int x1, int y1, int x2, int y2)
+void	ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color)
 {
 	int dx = abs(x2 - x1);
 	int dy = abs(y2 - y1);
@@ -52,9 +52,8 @@ void	ab_drawline(t_data *data, int x1, int y1, int x2, int y2)
 	int sy = y1 < y2 ? 1 : -1;
 	int err = (dx > dy ? dx : -dy) / 2;
 	int e2;
-
 	while (1) {
-		plot(data, x1, y1);
+		plot(data, x1, y1, color);
 		if (x1 == x2 && y1 == y2) break;
 		e2 = err;
 		if (e2 > -dx) { err -= dy; x1 += sx; }
