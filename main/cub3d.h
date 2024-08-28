@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/08/27 18:46:12 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/08/28 16:41:39 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <math.h>
 # include <sys/time.h>
 # include <fcntl.h>
+# include <stdbool.h>
 # include "../MLX/include/MLX42/MLX42.h"
 // # include "MLX/include/MLX42/MLX42_Int.h"
 // # include "../get_next_line/get_next_line.h"
@@ -28,7 +29,7 @@
 // Made by Aghla
 # define WIN_W 1200
 # define WIN_H 675
-# define MNMAP_TILE_S 48
+# define MNMAP_TILE_S 32
 # define MNMAP_W (MNMAP_TILE_S * 8)
 # define MNMAP_H (MNMAP_TILE_S * 6)
 # define MOVE_SPD 2
@@ -74,12 +75,20 @@ typedef struct s_player
 	double	rot_angl;
 }	t_player;
 
+// angl: ray angle
+// yinter: y intercept
+// xinter: x intercept
+// dstn: ray distance;
+// is_left: is ray facing left
+// is_up: is ray facing up0
 typedef struct s_rays
 {
 	double	angl;
 	int		x;
 	int		y;
-	void	*next;
+	bool	is_left;
+	bool	is_up;
+	int		dstn;
 }	t_rays;
 
 typedef struct s_data
@@ -88,6 +97,7 @@ typedef struct s_data
 	t_map		*map;
 	t_player	*plr;
 	t_rays		rays[N_RAYS];
+	bool		is_moving;
 	
 }				t_data;
 
@@ -108,5 +118,6 @@ void		clean_exit(char *err, int stat);
 void		ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color);
 void		draw_circle(t_data *data, int h, int k, int r);
 int			get_rgba(int r, int g, int b, int a);
+void		raycasting(t_data *data);
 
 #endif

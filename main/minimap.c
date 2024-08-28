@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:50:44 by aaghla            #+#    #+#             */
-/*   Updated: 2024/08/27 19:11:02 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/08/28 18:24:34 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,40 +142,33 @@ void	plr_move(t_data *data)
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
 	{
-		if (data->plr->rot_angl - ROT_SPD < 0)
-			data->plr->rot_angl = M_PI * 2;
-		else
-			data->plr->rot_angl -= ROT_SPD;
+		data->plr->rot_angl = fmod(data->plr->rot_angl - ROT_SPD, (2 * M_PI));
+		// if (data->plr->rot_angl - ROT_SPD < 0)
+		// 	data->plr->rot_angl = M_PI * 2;
+		if (data->plr->rot_angl < 0)
+			data->plr->rot_angl = 2 * M_PI;
+		// else
+		// 	data->plr->rot_angl -= ROT_SPD;
 		// printf("plr rot: %f\n", data->plr->rot_angl);
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
 	{
-		if (data->plr->rot_angl + ROT_SPD >= M_PI * 2)
-			data->plr->rot_angl = 0;
-		else
-			data->plr->rot_angl += ROT_SPD;
+		// if (data->plr->rot_angl + ROT_SPD >= M_PI * 2)
+		// 	data->plr->rot_angl = 0;
+		// else
+		// 	data->plr->rot_angl += ROT_SPD;
+		data->plr->rot_angl = fmod(data->plr->rot_angl + ROT_SPD, (2 * M_PI));
 		// printf("plr rot: %f\n", data->plr->rot_angl);
 	}
 }
 
-void	ab_set_rayangl(t_data *data, int p_x, int p_y)
+bool	ab_is_moving(t_data *data)
 {
-	int	i;
-	double	ray_angl;
-
-	i = -1;
-	ray_angl = data->plr->rot_angl - (FOV / 2);
-	while (++i < N_RAYS)
-	{
-		data->rays[i].angl = ray_angl;
-		ray_angl += FOV / N_RAYS;
-	}
-	i = -1;
-	while (++i < N_RAYS)
-	{
-		ab_drawline(data, p_x, p_y, p_x + (cos(data->rays[i].angl) * 90),
-			p_y + (sin(data->rays[i].angl) * 90), get_rgba(110, 172, 218, 200));
-	}
+	if (mlx_is_key_down(data->mlx, MLX_KEY_A) || mlx_is_key_down(data->mlx, MLX_KEY_W)
+		|| mlx_is_key_down(data->mlx, MLX_KEY_S) || mlx_is_key_down(data->mlx, MLX_KEY_D)
+		|| mlx_is_key_down(data->mlx, MLX_KEY_LEFT) || mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
+		data->is_moving = true;
+	return (data->is_moving);
 }
 
 void	ab_minimap(void *param)
@@ -186,6 +179,8 @@ void	ab_minimap(void *param)
 
 	data = (t_data *)param;
 	p_y = -1;
+	if (!ab_is_moving(data))
+		return ;
 	while (++p_y < MNMAP_H)
 	{
 		p_x = -1;
@@ -206,5 +201,9 @@ void	ab_minimap(void *param)
 	ab_drawline(data, p_x, p_y, p_x + (cos(data->plr->rot_angl) * 70),
 		p_y + (sin(data->plr->rot_angl) * 70), get_rgba(255, 0, 0, 255));
 	plr_move(data);
-	ab_set_rayangl(data, p_x, p_y);
+	raycasting(data);
+	printf("rot angle: %f\n", data->plr->rot_angl);
+	// printf("is_left? %d\n", data->rays[0].is_left);
+	// printf("is_up? %d\n", data->rays[0].is_up);
+	data->is_moving = false;
 }

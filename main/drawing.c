@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:56:36 by aaghla            #+#    #+#             */
-/*   Updated: 2024/08/27 17:40:43 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/08/28 16:25:26 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ static void	plot(t_data *data, int x, int y, int color) {
 
 void	ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color)
 {
+	if (x2 >= MNMAP_W)
+		x2 = MNMAP_W -1;
+	if (y2 >= MNMAP_H)
+		y2 = MNMAP_H -1;
 	int dx = abs(x2 - x1);
 	int dy = abs(y2 - y1);
 	int sx = x1 < x2 ? 1 : -1;

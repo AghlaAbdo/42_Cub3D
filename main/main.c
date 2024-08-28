@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:54:05 by srachidi          #+#    #+#             */
-/*   Updated: 2024/08/27 18:33:31 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/08/28 08:08:33 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	init_data(t_data *data)
 	data->map->no_txt = NULL;
 	data->map->plr_nb = 0;
 	data->map->row = 0;
+	data->is_moving = 1;
 }
 void	ab_set_orn(t_data *data)
 {
@@ -64,7 +65,6 @@ int	main(int ac, char **av)
 	// for (int i = 0; data.map->map[i]; i++)
 	// 	printf("%s\n", data.map->map[i]);
 	// printf("\n\n");
-	// mlx_key_hook(data.mlx, &ab_keyhook, &data);
 	mlx_loop_hook(data.mlx, &ab_minimap, &data);
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);

@@ -6,7 +6,7 @@
 #    By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/16 06:34:23 by srachidi          #+#    #+#              #
-#    Updated: 2024/08/27 09:40:59 by aaghla           ###   ########.fr        #
+#    Updated: 2024/08/28 07:05:32 by aaghla           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC    := main/grbgcllctr.c \
 			parsing/fst_part.c\
 			parsing/sec_part.c\
 			parsing/ab_map_lst.c\
+			raycasting/raycasting.c
 
 CLR_RMV := \033[0m
 RED     := \033[1;31m
