@@ -6,24 +6,24 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 07:01:17 by aaghla            #+#    #+#             */
-/*   Updated: 2024/08/28 18:45:15 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/01 11:32:51 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/cub3d.h"
 
-void	ab_set_rayangl(t_data *data, int p_x, int p_y)
+// set the ray angle and where the ray is facing for each ray
+static void	ab_set_rayangl(t_data *data)
 {
 	int	i;
 	double	ray_angl;
 
 	i = -1;
 	ray_angl = data->plr->rot_angl - (FOV / 2);
-	// printf("plr angle: %f  | (FOV / 2): %f\n", data->plr->rot_angl, FOV / 2);
 	while (++i < N_RAYS)
 	{
 		data->rays[i].angl = ray_angl;
-		data->rays[i].angl = fmod(ray_angl, 2 * M_PI);
+		data->rays[i].angl = remainder(ray_angl, 2 * M_PI);
 		if (data->rays[i].angl < 0)
 			data->rays[i].angl += 2 * M_PI;
 		if (data->rays[i].angl > 0 && data->rays[i].angl < M_PI)
@@ -35,73 +35,42 @@ void	ab_set_rayangl(t_data *data, int p_x, int p_y)
 		else
 			data->rays[i].is_left = false;
 		ray_angl += FOV / N_RAYS;
-		// ray_angl = fmod(ray_angl + (FOV / N_RAYS), (2 * M_PI));
-		// if (ray_angl < 0)
-		// 	ray_angl = 2 * M_PI;
 	}
 	i = -1;
-	// (void)p_y;
-	// (void)p_x;
-		// printf("ray[%d].angle: %f\n", 0, data->rays[0].angl);
-	while (++i < N_RAYS)
-	{
-		ab_drawline(data, p_x, p_y, p_x + (cos(data->rays[i].angl) * 90),
-			p_y + (sin(data->rays[i].angl) * 90), get_rgba(110, 172, 218, 200));
-	}
 }
-int	is_wall(t_data *data, double x, double y)
+
+// check if the ray casted hit a wall
+static int	is_wall(t_data *data, double x, double y, bool *found_wall)
 {
 	int	i;
 	int	j;
-	// int	deg;
-	// int	r;
-	// int	temp1;
-	// int	temp2;
 
-	// printf("p_y: %d | p_x: %d\n", p_y, p_x);
-	// deg = 0;
-	// r = 7;
-	// while (deg < 360)
-	// {
-	// 	temp1 = r * sin(deg);
-	// 	temp2 = r * cos(deg);
-	// 	y = temp1 + p_y;
-	// 	x = temp2 + p_x;
-	// 	temp1 += MNMAP_H / 2;
-	// 	temp2 += MNMAP_W / 2;
-	i = y / MNMAP_TILE_S;
-	j = x / MNMAP_TILE_S;
-	if (i < 0 || i > data->map->col || j < 0 || j > data->map->row)
+	i = (int)floor(y / MNMAP_TILE_S);
+	j = (int)floor(x / MNMAP_TILE_S);
+	if (i < 0 || i >= data->map->col || j < 0 || j >= data->map->row)
+		return (-1);
+	if (data->map->map[i][j] == '1')
 	{
-	printf("i: %d | j: %d\n", i, j);
+		*found_wall = true;
 		return (1);
 	}
-		// printf("x: %d | y: %d\n", x/ MNMAP_TILE_S, y/ MNMAP_TILE_S);
-		// mlx_put_pixel(data->map->mnmap_img, temp2, temp1, get_rgba(255, 255, 0, 255));
-		if (data->map->map[i][j] == '1')
-			return (1);
-		// deg++;
-	// }
 	return (0);
 }
 
-void	calc_hori(t_data *data, t_rays *ray)
+// find horizontal wall touch
+static void	calc_horz(t_data *data, t_rays *ray)
 {
-	// int	i;
 	double	yinter;
 	double	xinter;
 	double	ystep;
 	double	xstep;
-	int	up;
+	int		up;
 	
 	up = 0;
 	yinter = floor(data->plr->y / MNMAP_TILE_S) * MNMAP_TILE_S;
 	if (!ray->is_up)
 		yinter += MNMAP_TILE_S;
-	printf("yinter: %f | plr y: %f  | plr x: %f\n", yinter, data->plr->y, data->plr->x);
-	// printf("tan(6.283185): %f\n", tan(6.283185));
-	// xinter = data->plr->x + ((yinter - data->plr->y) / tan(ray->angl));
-	xinter = yinter;
+	xinter = data->plr->x + (yinter - data->plr->y) / tan(ray->angl);
 	ystep = MNMAP_TILE_S;
 	if (ray->is_up)
 	{
@@ -113,27 +82,116 @@ void	calc_hori(t_data *data, t_rays *ray)
 		xstep *= -1;
 	if (!ray->is_left && xstep < 0)
 		xstep *= -1;
-		printf("bef while xinter: %f  | yinter: %f  | ray angle: %f\n", xinter, yinter, ray->angl);
+	ray->found_h = false;
 	while (1)
 	{
-		printf("in while xinter: %f  | yinter: %f  | ray angle: %f\n", xinter, yinter, ray->angl);
-		if (is_wall(data, xinter, yinter - up))
+		if (is_wall(data, xinter, yinter - up, &ray->found_h))
 		{
-		printf("here?\n");
-			ray->x = xinter;
-			ray->y = yinter;
+			ray->h_x = xinter;
+			ray->h_y = yinter ;
 			break ;
 		}
 		xinter += xstep;
 		yinter += ystep;
-	ab_drawline(data, data->plr->x, data->plr->y, ray->x,
-			ray->y, get_rgba(255, 0, 0, 255));
+	}
+}
+
+// find vertical wall touch
+static void	calc_vert(t_data *data, t_rays *ray)
+{
+	double	yinter;
+	double	xinter;
+	double	ystep;
+	double	xstep;
+	int		left;
+
+	left = 0;
+	xinter = floor(data->plr->x / MNMAP_TILE_S) * MNMAP_TILE_S;
+	if (!ray->is_left)
+		xinter += MNMAP_TILE_S;
+	yinter = data->plr->y + (xinter - data->plr->x) * tan(ray->angl);
+	xstep = MNMAP_TILE_S;
+	if (ray->is_left)
+	{
+		xstep *= -1;
+		left = 1;
+	}
+	ystep = MNMAP_TILE_S * tan(ray->angl);
+	if (ray->is_up && ystep > 0)
+		ystep *= -1;
+	if (!ray->is_up && ystep < 0)
+		ystep *= -1;
+	ray->found_v = false;
+	while (1)
+	{
+		if (is_wall(data, xinter - left, yinter, &ray->found_v))
+		{
+			ray->v_x = xinter;
+			ray->v_y = yinter;
+			break ;
+		}
+		xinter += xstep;
+		yinter += ystep;
+	}
+}
+
+// calculate the distance to the wall ans see which one is close (vert of horz)
+void	calc_dstn(t_data *data, t_rays *ray)
+{
+	double	h_dstn;
+	double	v_dstn;
+	
+	if (ray->found_h)
+		h_dstn = sqrt((ray->h_x - data->plr->x) * (ray->h_x - data->plr->x)
+			+ (ray->h_y - data->plr->y) * (ray->h_y - data->plr->y));
+	else
+		h_dstn = INT_MAX;
+	if (ray->found_v)
+		v_dstn = sqrt((ray->v_x - data->plr->x) * (ray->v_x - data->plr->x)
+			+ (ray->v_y - data->plr->y) * (ray->v_y - data->plr->y));
+	else
+		v_dstn = INT_MAX;
+	if (h_dstn < v_dstn)
+	{
+		ray->dstn = h_dstn;
+		ray->x = ray->h_x;
+		ray->y = ray->h_y;
+	}
+	else
+	{
+		ray->dstn = v_dstn;
+		ray->x = ray->v_x;
+		ray->y = ray->v_y;
+	}
+}
+
+// calculate the wall height and render the 3D world
+static void	renderworld(t_data *data)
+{
+	double	wall_h;
+	double	pln_dstn;
+	int		i;
+
+	i = -1;
+	while (++i < N_RAYS)
+	{
+		pln_dstn = (WIN_W / 2) / tan(FOV / 2);
+		wall_h = ((MNMAP_TILE_S / data->rays[i].dstn) * pln_dstn);
+		draw_ray(data->win_img, i, round((WIN_H / 2) - (wall_h / 2)), 1, round(wall_h));
 	}
 }
 
 void	raycasting(t_data *data)
 {
-	ab_set_rayangl(data, MNMAP_W / 2, MNMAP_H / 2);
-	// for (int i = 0; i < N_RAYS; i++)
-		// calc_hori(data, &data->rays[0]);
+	int	i;
+
+	i = -1;
+	ab_set_rayangl(data);
+	while (++i < N_RAYS)
+	{
+		calc_horz(data, &data->rays[i]);
+		calc_vert(data, &data->rays[i]);
+		calc_dstn(data, &data->rays[i]);
+	}
+	renderworld(data);
 }

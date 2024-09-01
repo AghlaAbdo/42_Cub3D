@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:50:44 by aaghla            #+#    #+#             */
-/*   Updated: 2024/08/28 18:24:34 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/01 11:42:43 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int get_rgba(int r, int g, int b, int a)
     return (r << 24 | g << 16 | b << 8 | a);
 }
 
+// apply a rader around the player and check for wall collisions
 static int	check_wall(t_data *data, int p_x, int p_y)
 {
 	int	x;
@@ -26,7 +27,6 @@ static int	check_wall(t_data *data, int p_x, int p_y)
 	int	temp1;
 	int	temp2;
 
-	// printf("p_y: %d | p_x: %d\n", p_y, p_x);
 	deg = 0;
 	r = 7;
 	while (deg < 360)
@@ -37,7 +37,6 @@ static int	check_wall(t_data *data, int p_x, int p_y)
 		x = temp2 + p_x;
 		temp1 += MNMAP_H / 2;
 		temp2 += MNMAP_W / 2;
-		// printf("x: %d | y: %d\n", x/ MNMAP_TILE_S, y/ MNMAP_TILE_S);
 		mlx_put_pixel(data->map->mnmap_img, temp2, temp1, get_rgba(255, 255, 0, 255));
 		if (data->map->map[(int)(y / MNMAP_TILE_S)][(int)(x / MNMAP_TILE_S)] == '1')
 			return (1);
@@ -46,46 +45,7 @@ static int	check_wall(t_data *data, int p_x, int p_y)
 	return (0);
 }
 
-// void	ab_keyhook(mlx_key_data_t keydata, void *param)
-// {
-// 	t_data	*data;
-// 	int	x;
-// 	int	y;
-
-// 	data = (t_data *)param;
-// 	x = cos(data->plr->rot_angl) * MOVE_SPD;
-// 	y = sin(data->plr->rot_angl) * MOVE_SPD;
-// 	// printf("%d\n", keydata.os_key);
-// 	if (keydata.key == MLX_KEY_W && (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-// 	{
-// 		if (!check_wall(data, data->plr->x, data->plr->y + y))
-// 			data->plr->y += y;
-// 		if (!check_wall(data, data->plr->x + x, data->plr->y))
-// 			data->plr->x += x;
-// 	}
-// 	if (keydata.key == MLX_KEY_S && (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-// 	{
-// 		if (!check_wall(data, data->plr->x, data->plr->y - y))
-// 			data->plr->y -= y;
-// 		if (!check_wall(data, data->plr->x - x, data->plr->y))
-// 			data->plr->x -= x;
-// 	}
-// 	if (keydata.key == MLX_KEY_A && (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-// 	{
-// 		if (!check_wall(data, data->plr->x -MOVE_SPD, data->plr->y))
-// 		data->plr->x -= MOVE_SPD;
-// 	}
-// 	if (keydata.key == MLX_KEY_D && (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-// 	{
-// 		if (!check_wall(data, data->plr->x + MOVE_SPD, data->plr->y))
-// 			data->plr->x += MOVE_SPD;
-// 	}
-// 	if (keydata.key == MLX_KEY_LEFT && (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-// 		data->plr->rot_angl -= ROT_SPD;
-// 	if (keydata.key == MLX_KEY_RIGHT && (keydata.action == MLX_PRESS || keydata.action == MLX_REPEAT))
-// 		data->plr->rot_angl += ROT_SPD;
-// }
-
+// check the current pixel index content on the map
 static int	check_pixel(t_data *data, int y, int x)
 {
 	int	i;
@@ -104,6 +64,7 @@ static int	check_pixel(t_data *data, int y, int x)
 	return (-1);
 }
 
+// handle player movement
 void	plr_move(t_data *data)
 {
 	double	x;
@@ -127,41 +88,31 @@ void	plr_move(t_data *data)
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_D))
 	{
-		// puts("here");
 		if (!check_wall(data, data->plr->x - y, data->plr->y))
-		data->plr->x -= y;
+			data->plr->x -= y;
 		if (!check_wall(data, data->plr->x, data->plr->y + x))
-		data->plr->y += x;
+			data->plr->y += x;
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_A))
 	{
 		if (!check_wall(data, data->plr->x + y, data->plr->y))
-		data->plr->x += y;
+			data->plr->x += y;
 		if (!check_wall(data, data->plr->x, data->plr->y - x))
-		data->plr->y -= x;
+			data->plr->y -= x;
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
 	{
-		data->plr->rot_angl = fmod(data->plr->rot_angl - ROT_SPD, (2 * M_PI));
-		// if (data->plr->rot_angl - ROT_SPD < 0)
-		// 	data->plr->rot_angl = M_PI * 2;
+		data->plr->rot_angl = remainder(data->plr->rot_angl - ROT_SPD, (2 * M_PI));
 		if (data->plr->rot_angl < 0)
-			data->plr->rot_angl = 2 * M_PI;
-		// else
-		// 	data->plr->rot_angl -= ROT_SPD;
-		// printf("plr rot: %f\n", data->plr->rot_angl);
+			data->plr->rot_angl += 2 * M_PI;
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
 	{
-		// if (data->plr->rot_angl + ROT_SPD >= M_PI * 2)
-		// 	data->plr->rot_angl = 0;
-		// else
-		// 	data->plr->rot_angl += ROT_SPD;
-		data->plr->rot_angl = fmod(data->plr->rot_angl + ROT_SPD, (2 * M_PI));
-		// printf("plr rot: %f\n", data->plr->rot_angl);
+		data->plr->rot_angl = remainder(data->plr->rot_angl + ROT_SPD, (2 * M_PI));
 	}
 }
 
+// check if player is moving (if a key is pressed)
 bool	ab_is_moving(t_data *data)
 {
 	if (mlx_is_key_down(data->mlx, MLX_KEY_A) || mlx_is_key_down(data->mlx, MLX_KEY_W)
@@ -171,6 +122,20 @@ bool	ab_is_moving(t_data *data)
 	return (data->is_moving);
 }
 
+// draw rays casted on the minimap
+void	draw_rays(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < N_RAYS)
+	{
+		ab_drawline(data, MNMAP_W / 2, MNMAP_H / 2, MNMAP_W / 2 + (int)(round(data->rays[i].x - data->plr->x)),
+				MNMAP_H / 2 + (int)(round(data->rays[i].y - data->plr->y)), get_rgba(250, 188, 63, 255));
+	}
+}
+
+// loop hook
 void	ab_minimap(void *param)
 {
 	int	p_y;
@@ -181,6 +146,8 @@ void	ab_minimap(void *param)
 	p_y = -1;
 	if (!ab_is_moving(data))
 		return ;
+	plr_move(data);
+	raycasting(data);
 	while (++p_y < MNMAP_H)
 	{
 		p_x = -1;
@@ -196,14 +163,8 @@ void	ab_minimap(void *param)
 	}
 	p_y = (MNMAP_H / 2) ;
 	p_x = (MNMAP_W / 2) ;
+	draw_rays(data);
 	draw_circle(data, p_x, p_y, 3);
 	check_wall(data, data->plr->x, data->plr->y);
-	ab_drawline(data, p_x, p_y, p_x + (cos(data->plr->rot_angl) * 70),
-		p_y + (sin(data->plr->rot_angl) * 70), get_rgba(255, 0, 0, 255));
-	plr_move(data);
-	raycasting(data);
-	printf("rot angle: %f\n", data->plr->rot_angl);
-	// printf("is_left? %d\n", data->rays[0].is_left);
-	// printf("is_up? %d\n", data->rays[0].is_up);
 	data->is_moving = false;
 }

@@ -6,13 +6,13 @@
 #    By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/16 06:34:23 by srachidi          #+#    #+#              #
-#    Updated: 2024/08/28 07:05:32 by aaghla           ###   ########.fr        #
+#    Updated: 2024/08/31 15:57:11 by aaghla           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME   = cub3D
 CC     = cc
-CFLAGS = -DDEBUG=1 -Wall -Wextra -Werror
+CFLAGS = -DDEBUG=1 #-Wall -Wextra -Werror
 RM     = rm -rf
 O_DR   = objs/
 LIBFT	= Libft/libft.a

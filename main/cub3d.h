@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/08/28 16:41:39 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/01 11:30:27 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,20 @@
 # include <sys/time.h>
 # include <fcntl.h>
 # include <stdbool.h>
+# include <limits.h>
 # include "../MLX/include/MLX42/MLX42.h"
-// # include "MLX/include/MLX42/MLX42_Int.h"
-// # include "../get_next_line/get_next_line.h"
 # include "../Libft/libft.h"
 
 // Made by Aghla
 # define WIN_W 1200
 # define WIN_H 675
-# define MNMAP_TILE_S 32
-# define MNMAP_W (MNMAP_TILE_S * 8)
-# define MNMAP_H (MNMAP_TILE_S * 6)
-# define MOVE_SPD 2
-# define ROT_SPD 3 * (M_PI / 180)
+# define MNMAP_TILE_S 24
+# define MNMAP_W (MNMAP_TILE_S * 12)
+# define MNMAP_H (MNMAP_TILE_S * 10)
+# define MOVE_SPD 1
+# define ROT_SPD 1 * (M_PI / 180)
 # define FOV 60 * (M_PI / 180)
-# define N_RAYS (WIN_W / 4)
+# define N_RAYS (WIN_W)
 
 typedef struct s_addr
 {
@@ -84,11 +83,18 @@ typedef struct s_player
 typedef struct s_rays
 {
 	double	angl;
-	int		x;
-	int		y;
+	double	x;
+	double	y;
+	double	h_x;
+	double	h_y;
+	double	v_x;
+	double	v_y;
+	bool	found_h;
+	bool	found_v;
 	bool	is_left;
 	bool	is_up;
-	int		dstn;
+	double	dstn;
+	
 }	t_rays;
 
 typedef struct s_data
@@ -97,6 +103,8 @@ typedef struct s_data
 	t_map		*map;
 	t_player	*plr;
 	t_rays		rays[N_RAYS];
+	mlx_image_t	*win_img;
+	mlx_image_t	*bg_img;
 	bool		is_moving;
 	
 }				t_data;
@@ -113,10 +121,10 @@ void 		ab_maplstaddb(t_maplst **lst, t_maplst *new);
 int			ab_maplst_size(t_maplst *lst);
 void		ab_valid_map(t_data *data, t_maplst *maplst);
 void		ab_minimap(void *param);
-// void		ab_keyhook(mlx_key_data_t keydata, void *param);
 void		clean_exit(char *err, int stat);
 void		ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color);
 void		draw_circle(t_data *data, int h, int k, int r);
+void		draw_ray(mlx_image_t *img, int x, int y, int w, int h);
 int			get_rgba(int r, int g, int b, int a);
 void		raycasting(t_data *data);
 
