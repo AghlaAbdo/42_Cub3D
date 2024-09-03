@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/01 11:30:27 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/03 16:37:23 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 # define MNMAP_TILE_S 24
 # define MNMAP_W (MNMAP_TILE_S * 12)
 # define MNMAP_H (MNMAP_TILE_S * 10)
-# define MOVE_SPD 1
-# define ROT_SPD 1 * (M_PI / 180)
+# define MOVE_SPD 1.3
+# define ROT_SPD 2 * (M_PI / 180)
 # define FOV 60 * (M_PI / 180)
 # define N_RAYS (WIN_W)
 
@@ -89,11 +89,13 @@ typedef struct s_rays
 	double	h_y;
 	double	v_x;
 	double	v_y;
+	char	orn;
 	bool	found_h;
 	bool	found_v;
 	bool	is_left;
 	bool	is_up;
 	double	dstn;
+	double	real_dstn;
 	
 }	t_rays;
 
@@ -104,9 +106,9 @@ typedef struct s_data
 	t_player	*plr;
 	t_rays		rays[N_RAYS];
 	mlx_image_t	*win_img;
-	mlx_image_t	*bg_img;
+	mlx_image_t	*ray_img;
 	bool		is_moving;
-	
+	bool		light;
 }				t_data;
 
 
@@ -124,7 +126,7 @@ void		ab_minimap(void *param);
 void		clean_exit(char *err, int stat);
 void		ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color);
 void		draw_circle(t_data *data, int h, int k, int r);
-void		draw_ray(mlx_image_t *img, int x, int y, int w, int h);
+void		draw_ray(t_data *data, int x, int y, int w, int h);
 int			get_rgba(int r, int g, int b, int a);
 void		raycasting(t_data *data);
 

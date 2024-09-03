@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 07:01:17 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/01 11:32:51 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/03 16:15:36 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,12 @@ static void	calc_horz(t_data *data, t_rays *ray)
 		if (is_wall(data, xinter, yinter - up, &ray->found_h))
 		{
 			ray->h_x = xinter;
-			ray->h_y = yinter ;
+			ray->h_y = yinter;
+			// if (!up)
+			// {
+			// 	ray->h_x -= 1;
+			// 	ray->h_y -= 1;
+			// }
 			break ;
 		}
 		xinter += xstep;
@@ -128,6 +133,11 @@ static void	calc_vert(t_data *data, t_rays *ray)
 		{
 			ray->v_x = xinter;
 			ray->v_y = yinter;
+			// if (!left)
+			// {
+			// 	ray->v_y -= 1;
+			// 	ray->v_x -= 1;
+			// }
 			break ;
 		}
 		xinter += xstep;
@@ -156,13 +166,25 @@ void	calc_dstn(t_data *data, t_rays *ray)
 		ray->dstn = h_dstn;
 		ray->x = ray->h_x;
 		ray->y = ray->h_y;
+		ray->orn = 'h';
 	}
 	else
 	{
 		ray->dstn = v_dstn;
 		ray->x = ray->v_x;
 		ray->y = ray->v_y;
+		ray->orn = 'v';
 	}
+}
+
+double	adjust_angle(double angle)
+{
+	double	res_angle;
+
+	res_angle = remainder(angle, M_PI * 2);
+	if (res_angle < 0)
+		res_angle += M_PI * 2;
+	return (res_angle);
 }
 
 // calculate the wall height and render the 3D world
@@ -170,14 +192,22 @@ static void	renderworld(t_data *data)
 {
 	double	wall_h;
 	double	pln_dstn;
+	double	ray_dstn;
 	int		i;
+	int		color;
 
 	i = -1;
 	while (++i < N_RAYS)
 	{
+		data->rays[i].real_dstn = data->rays[i].dstn * cos(adjust_angle(data->rays[i].angl - data->plr->rot_angl));
 		pln_dstn = (WIN_W / 2) / tan(FOV / 2);
-		wall_h = ((MNMAP_TILE_S / data->rays[i].dstn) * pln_dstn);
-		draw_ray(data->win_img, i, round((WIN_H / 2) - (wall_h / 2)), 1, round(wall_h));
+		wall_h = ((MNMAP_TILE_S / data->rays[i].real_dstn) * pln_dstn);
+		// printf("color res: %f\n", 255 - data->rays[i].real_dstn * 255 / 500);
+		if (data->rays[i].orn == 'h')
+			color = get_rgba(13, 124, 102, 255 - data->rays[i].real_dstn * 255 / 500);
+		else
+			color = get_rgba(65, 179, 162,  255 - data->rays[i].real_dstn * 255 / 500);
+		draw_ray(data, i, round((WIN_H / 2 - (wall_h / 2))), 1, round(wall_h));
 	}
 }
 

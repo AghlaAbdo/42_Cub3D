@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:54:05 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/01 11:41:55 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/03 17:54:52 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	init_data(t_data *data)
 	data->map->no_txt = NULL;
 	data->map->plr_nb = 0;
 	data->map->row = 0;
-	data->is_moving = 1;
+	data->is_moving = true;
+	data->light = false;
 }
 
 // set Player orientaion
@@ -40,6 +41,21 @@ void	ab_set_orn(t_data *data)
 		data->plr->rot_angl = M_PI + (M_PI / 2);
 }
 
+void	turn_light(mlx_key_data_t keydata, void * param)
+{
+	t_data	*data;
+
+	data = (t_data *)param;
+	if (keydata.key == MLX_KEY_L && keydata.action == MLX_PRESS)
+		data->light = !data->light;
+}
+
+// void	mouse_handle(double x, double y, void *param)
+// {
+// 	t_data	*data;
+	
+// }
+
 int	main(int ac, char **av)
 {
 	t_data	data;
@@ -54,11 +70,14 @@ int	main(int ac, char **av)
 	if (!data.mlx)
 		clean_exit("Unable to create window", 3);
 	data.map->mnmap_img = mlx_new_image(data.mlx, MNMAP_W, MNMAP_H);
+	data.ray_img = mlx_new_image(data.mlx, MNMAP_W, MNMAP_H);
 	data.win_img = mlx_new_image(data.mlx, WIN_W, WIN_H);
-	data.bg_img = mlx_new_image(data.mlx, WIN_W, WIN_H);
 	mlx_image_to_window(data.mlx, data.win_img, 0, 0);
     mlx_image_to_window(data.mlx, data.map->mnmap_img, 0, 0);
+	mlx_image_to_window(data.mlx, data.ray_img, 0, 0);
 	mlx_loop_hook(data.mlx, &ab_minimap, &data);
+	mlx_key_hook(data.mlx, &turn_light, &data);
+	// mlx_mouse_hook(data.mlx, &mouse_handle, &data);
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);
 	return (0);

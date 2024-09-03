@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:50:44 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/01 11:42:43 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/03 16:46:42 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ int get_rgba(int r, int g, int b, int a)
 // apply a rader around the player and check for wall collisions
 static int	check_wall(t_data *data, int p_x, int p_y)
 {
-	int	x;
-	int	y;
-	int	deg;
-	int	r;
-	int	temp1;
-	int	temp2;
+	int		x;
+	int		y;
+	double	deg;
+	int		r;
+	int		temp1;
+	int		temp2;
 
 	deg = 0;
 	r = 7;
-	while (deg < 360)
+	while (deg < M_PI * 2)
 	{
 		temp1 = r * sin(deg);
 		temp2 = r * cos(deg);
@@ -38,9 +38,9 @@ static int	check_wall(t_data *data, int p_x, int p_y)
 		temp1 += MNMAP_H / 2;
 		temp2 += MNMAP_W / 2;
 		mlx_put_pixel(data->map->mnmap_img, temp2, temp1, get_rgba(255, 255, 0, 255));
-		if (data->map->map[(int)(y / MNMAP_TILE_S)][(int)(x / MNMAP_TILE_S)] == '1')
+		if (data->map->map[(y / MNMAP_TILE_S)][(x / MNMAP_TILE_S)] == '1')
 			return (1);
-		deg++;
+		deg += 0.5 * (M_PI / 180);
 	}
 	return (0);
 }
@@ -72,6 +72,8 @@ void	plr_move(t_data *data)
 
 	x = cos(data->plr->rot_angl) * MOVE_SPD;
 	y = sin(data->plr->rot_angl) * MOVE_SPD;
+	// if (mlx_is_key_down(data->mlx, MLX_KEY_L))
+	// 	data->light = !data->light;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
 	{
 		if (!check_wall(data, data->plr->x, data->plr->y + y))
@@ -117,7 +119,8 @@ bool	ab_is_moving(t_data *data)
 {
 	if (mlx_is_key_down(data->mlx, MLX_KEY_A) || mlx_is_key_down(data->mlx, MLX_KEY_W)
 		|| mlx_is_key_down(data->mlx, MLX_KEY_S) || mlx_is_key_down(data->mlx, MLX_KEY_D)
-		|| mlx_is_key_down(data->mlx, MLX_KEY_LEFT) || mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
+		|| mlx_is_key_down(data->mlx, MLX_KEY_LEFT) || mlx_is_key_down(data->mlx, MLX_KEY_RIGHT)
+		|| mlx_is_key_down(data->mlx, MLX_KEY_L))
 		data->is_moving = true;
 	return (data->is_moving);
 }
@@ -126,12 +129,31 @@ bool	ab_is_moving(t_data *data)
 void	draw_rays(t_data *data)
 {
 	int	i;
+	int	j;
+	int	color;
 
+	i = -1;
+	while (++i < MNMAP_H)
+	{
+		j = -1;
+		while (++j < MNMAP_W)
+		{
+			mlx_put_pixel(data->ray_img, j, i, get_rgba(0, 0, 0, 0));
+		}
+	}
 	i = -1;
 	while (++i < N_RAYS)
 	{
-		ab_drawline(data, MNMAP_W / 2, MNMAP_H / 2, MNMAP_W / 2 + (int)(round(data->rays[i].x - data->plr->x)),
-				MNMAP_H / 2 + (int)(round(data->rays[i].y - data->plr->y)), get_rgba(250, 188, 63, 255));
+		// printf("ray dstn: %f\n", data->rays[i].dstn);
+		color = get_rgba(250, 188, 63, 200);
+		if (data->rays[i].dstn > 65)
+		{
+			ab_drawline(data, MNMAP_W / 2, MNMAP_H / 2, round(MNMAP_W / 2 + cos(data->rays[i].angl) * 65.0),
+				round(MNMAP_H / 2 + sin(data->rays[i].angl) * 65.0), color);
+		}
+		else
+			ab_drawline(data, MNMAP_W / 2, MNMAP_H / 2, MNMAP_W / 2 + (int)(round(data->rays[i].x - data->plr->x)),
+				MNMAP_H / 2 + (int)(round(data->rays[i].y - data->plr->y)), color);
 	}
 }
 
