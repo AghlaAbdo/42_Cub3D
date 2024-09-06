@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 22:01:47 by aaghla            #+#    #+#             */
-/*   Updated: 2024/08/27 09:42:05 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/05 08:34:40 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include "../main/cub3d.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 500

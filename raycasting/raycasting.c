@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 07:01:17 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/03 16:15:36 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/06 09:53:41 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,6 @@ static void	calc_horz(t_data *data, t_rays *ray)
 		{
 			ray->h_x = xinter;
 			ray->h_y = yinter;
-			// if (!up)
-			// {
-			// 	ray->h_x -= 1;
-			// 	ray->h_y -= 1;
-			// }
 			break ;
 		}
 		xinter += xstep;
@@ -133,11 +128,6 @@ static void	calc_vert(t_data *data, t_rays *ray)
 		{
 			ray->v_x = xinter;
 			ray->v_y = yinter;
-			// if (!left)
-			// {
-			// 	ray->v_y -= 1;
-			// 	ray->v_x -= 1;
-			// }
 			break ;
 		}
 		xinter += xstep;

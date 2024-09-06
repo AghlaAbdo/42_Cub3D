@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 11:59:34 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/06 09:57:59 by aaghla           ###   ########.fr       */
+/*   Created: 2024/08/27 08:50:44 by aaghla            #+#    #+#             */
+/*   Updated: 2024/09/06 09:52:01 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3d.h"
 
-void	*ft_calloc(size_t count, size_t size)
+// loop hook
+void	ft_looper(void *param)
 {
-	void			*locate;
-	size_t			res;
+	t_data	*data;
 
-	res = count * size;
-	if (res < count && res)
-		return (NULL);
-	locate = malloc(res);
-	if (!locate)
-		return (NULL);
-	ft_bzero(locate, count * size);
-	return (locate);
+	data = (t_data *)param;
+	if (data->mouse)
+		handle_mouse(data);
+	if (!ab_is_moving(data))
+		return ;
+	plr_move(data);
+	raycasting(data);
+	draw_mnmap(data);
+	draw_mnmap_rays(data);
+	draw_circle(data, (MNMAP_W / 2), (MNMAP_H / 2), 3);
+	check_wall(data, data->plr->x, data->plr->y);
+	data->is_moving = false;
 }

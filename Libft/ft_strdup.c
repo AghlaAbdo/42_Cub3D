@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 12:47:53 by aaghla            #+#    #+#             */
-/*   Updated: 2023/11/16 20:37:45 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/06 09:58:59 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strdup(const char *s1)
 	i = 0;
 	while (s1[i])
 		i++;
-	dup = (char *)malloc((i + 1) * sizeof(char));
+	dup = (char *)ft_malloc((i + 1) * sizeof(char), 0);
 	if (!dup)
 		return (NULL);
 	i = 0;

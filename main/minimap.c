@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 08:50:44 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/03 16:46:42 by aaghla           ###   ########.fr       */
+/*   Created: 2024/09/06 09:44:15 by aaghla            #+#    #+#             */
+/*   Updated: 2024/09/06 09:53:04 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,33 +17,6 @@ int get_rgba(int r, int g, int b, int a)
     return (r << 24 | g << 16 | b << 8 | a);
 }
 
-// apply a rader around the player and check for wall collisions
-static int	check_wall(t_data *data, int p_x, int p_y)
-{
-	int		x;
-	int		y;
-	double	deg;
-	int		r;
-	int		temp1;
-	int		temp2;
-
-	deg = 0;
-	r = 7;
-	while (deg < M_PI * 2)
-	{
-		temp1 = r * sin(deg);
-		temp2 = r * cos(deg);
-		y = temp1 + p_y;
-		x = temp2 + p_x;
-		temp1 += MNMAP_H / 2;
-		temp2 += MNMAP_W / 2;
-		mlx_put_pixel(data->map->mnmap_img, temp2, temp1, get_rgba(255, 255, 0, 255));
-		if (data->map->map[(y / MNMAP_TILE_S)][(x / MNMAP_TILE_S)] == '1')
-			return (1);
-		deg += 0.5 * (M_PI / 180);
-	}
-	return (0);
-}
 
 // check the current pixel index content on the map
 static int	check_pixel(t_data *data, int y, int x)
@@ -64,69 +37,29 @@ static int	check_pixel(t_data *data, int y, int x)
 	return (-1);
 }
 
-// handle player movement
-void	plr_move(t_data *data)
+void	draw_mnmap(t_data *data)
 {
-	double	x;
-	double	y;
+	int	y;
+	int	x;
 
-	x = cos(data->plr->rot_angl) * MOVE_SPD;
-	y = sin(data->plr->rot_angl) * MOVE_SPD;
-	// if (mlx_is_key_down(data->mlx, MLX_KEY_L))
-	// 	data->light = !data->light;
-	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
+	y = -1;
+	while (++y < MNMAP_H)
 	{
-		if (!check_wall(data, data->plr->x, data->plr->y + y))
-			data->plr->y += y;
-		if (!check_wall(data, data->plr->x + x, data->plr->y))
-			data->plr->x += x;
+		x = -1;
+		while (++x < MNMAP_W)
+		{
+			if (check_pixel(data, y, x ) == 1)
+				mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(32, 30, 67, 255));
+			else if (check_pixel(data, y, x) == 0)
+				mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(19, 75, 112, 255));
+			else
+				mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(80, 140, 155, 255));
+		}
 	}
-	if (mlx_is_key_down(data->mlx, MLX_KEY_S))
-	{
-		if (!check_wall(data, data->plr->x, data->plr->y - y))
-			data->plr->y -= y;
-		if (!check_wall(data, data->plr->x - x, data->plr->y))
-			data->plr->x -= x;
-	}
-	if (mlx_is_key_down(data->mlx, MLX_KEY_D))
-	{
-		if (!check_wall(data, data->plr->x - y, data->plr->y))
-			data->plr->x -= y;
-		if (!check_wall(data, data->plr->x, data->plr->y + x))
-			data->plr->y += x;
-	}
-	if (mlx_is_key_down(data->mlx, MLX_KEY_A))
-	{
-		if (!check_wall(data, data->plr->x + y, data->plr->y))
-			data->plr->x += y;
-		if (!check_wall(data, data->plr->x, data->plr->y - x))
-			data->plr->y -= x;
-	}
-	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
-	{
-		data->plr->rot_angl = remainder(data->plr->rot_angl - ROT_SPD, (2 * M_PI));
-		if (data->plr->rot_angl < 0)
-			data->plr->rot_angl += 2 * M_PI;
-	}
-	if (mlx_is_key_down(data->mlx, MLX_KEY_RIGHT))
-	{
-		data->plr->rot_angl = remainder(data->plr->rot_angl + ROT_SPD, (2 * M_PI));
-	}
-}
-
-// check if player is moving (if a key is pressed)
-bool	ab_is_moving(t_data *data)
-{
-	if (mlx_is_key_down(data->mlx, MLX_KEY_A) || mlx_is_key_down(data->mlx, MLX_KEY_W)
-		|| mlx_is_key_down(data->mlx, MLX_KEY_S) || mlx_is_key_down(data->mlx, MLX_KEY_D)
-		|| mlx_is_key_down(data->mlx, MLX_KEY_LEFT) || mlx_is_key_down(data->mlx, MLX_KEY_RIGHT)
-		|| mlx_is_key_down(data->mlx, MLX_KEY_L))
-		data->is_moving = true;
-	return (data->is_moving);
 }
 
 // draw rays casted on the minimap
-void	draw_rays(t_data *data)
+void	draw_mnmap_rays(t_data *data)
 {
 	int	i;
 	int	j;
@@ -144,7 +77,6 @@ void	draw_rays(t_data *data)
 	i = -1;
 	while (++i < N_RAYS)
 	{
-		// printf("ray dstn: %f\n", data->rays[i].dstn);
 		color = get_rgba(250, 188, 63, 200);
 		if (data->rays[i].dstn > 65)
 		{
@@ -155,38 +87,4 @@ void	draw_rays(t_data *data)
 			ab_drawline(data, MNMAP_W / 2, MNMAP_H / 2, MNMAP_W / 2 + (int)(round(data->rays[i].x - data->plr->x)),
 				MNMAP_H / 2 + (int)(round(data->rays[i].y - data->plr->y)), color);
 	}
-}
-
-// loop hook
-void	ab_minimap(void *param)
-{
-	int	p_y;
-	int	p_x;
-	t_data	*data;
-
-	data = (t_data *)param;
-	p_y = -1;
-	if (!ab_is_moving(data))
-		return ;
-	plr_move(data);
-	raycasting(data);
-	while (++p_y < MNMAP_H)
-	{
-		p_x = -1;
-		while (++p_x < MNMAP_W)
-		{
-			if (check_pixel(data, p_y, p_x ) == 1)
-				mlx_put_pixel(data->map->mnmap_img, p_x, p_y, get_rgba(32, 30, 67, 255));
-			else if (check_pixel(data, p_y, p_x) == 0)
-				mlx_put_pixel(data->map->mnmap_img, p_x, p_y, get_rgba(19, 75, 112, 255));
-			else
-				mlx_put_pixel(data->map->mnmap_img, p_x, p_y, get_rgba(80, 140, 155, 255));
-		}
-	}
-	p_y = (MNMAP_H / 2) ;
-	p_x = (MNMAP_W / 2) ;
-	draw_rays(data);
-	draw_circle(data, p_x, p_y, 3);
-	check_wall(data, data->plr->x, data->plr->y);
-	data->is_moving = false;
 }

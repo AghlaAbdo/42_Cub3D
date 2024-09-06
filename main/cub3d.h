@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/03 16:37:23 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/06 09:51:48 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ typedef struct s_data
 	mlx_image_t	*ray_img;
 	bool		is_moving;
 	bool		light;
+	bool		mouse;
+	int			ms_x;
 }				t_data;
 
 
@@ -122,12 +124,18 @@ t_maplst	*ab_maplst_new(char *line);
 void 		ab_maplstaddb(t_maplst **lst, t_maplst *new);
 int			ab_maplst_size(t_maplst *lst);
 void		ab_valid_map(t_data *data, t_maplst *maplst);
-void		ab_minimap(void *param);
+void		ft_looper(void *param);
+void		plr_move(t_data *data);
+void		handle_mouse(t_data *data);
+bool		ab_is_moving(t_data *data);
+void		draw_mnmap(t_data *data);
+void		draw_mnmap_rays(t_data *data);
 void		clean_exit(char *err, int stat);
 void		ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color);
 void		draw_circle(t_data *data, int h, int k, int r);
 void		draw_ray(t_data *data, int x, int y, int w, int h);
 int			get_rgba(int r, int g, int b, int a);
 void		raycasting(t_data *data);
+int			check_wall(t_data *data, int p_x, int p_y);
 
 #endif

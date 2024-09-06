@@ -6,7 +6,7 @@
 #    By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/16 06:34:23 by srachidi          #+#    #+#              #
-#    Updated: 2024/08/31 15:57:11 by aaghla           ###   ########.fr        #
+#    Updated: 2024/09/06 09:44:35 by aaghla           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,10 @@ O_DR   = objs/
 LIBFT	= Libft/libft.a
 SRC    := main/grbgcllctr.c \
 			main/main.c\
+			main/loop.c\
 			main/minimap.c\
 			main/drawing.c\
+			main/movement.c\
 			parsing/parse_file.c\
 			parsing/fst_part.c\
 			parsing/sec_part.c\
