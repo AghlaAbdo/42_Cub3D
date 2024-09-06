@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:54:05 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/06 10:01:08 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/06 19:33:04 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	init_data(t_data *data)
 	data->is_moving = true;
 	data->light = false;
 	data->mouse = false;
+	data->big_mnmap = false;
 }
 
 // set Player orientaion
@@ -42,7 +43,23 @@ void	ab_set_orn(t_data *data)
 		data->plr->rot_angl = M_PI + (M_PI / 2);
 }
 
-void	turn_light(mlx_key_data_t keydata, void *param)
+void	clear_mnmap(t_data *data)
+{
+	int	y;
+	int	x;
+
+	y = -1;
+	while (++y < MNMAP_H)
+	{
+		x = -1;
+		while (++x < MNMAP_W)
+		{
+			mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(0, 0, 0, 0));
+		}
+	}
+}
+
+void	handle_events(mlx_key_data_t keydata, void *param)
 {
 	t_data	*data;
 
@@ -56,6 +73,25 @@ void	turn_light(mlx_key_data_t keydata, void *param)
 		data->mouse = !data->mouse;
 		if (!data->mouse)
 			mlx_set_cursor_mode(data->mlx, MLX_MOUSE_NORMAL);
+	}
+	if (keydata.key == MLX_KEY_Q && keydata.action == MLX_PRESS)
+	{
+		data->big_mnmap = !data->big_mnmap;
+		if (data->big_mnmap)
+		{
+			data->map->mnmap_img->enabled = false;
+			data->big_mnmp_img->enabled = true;
+			data->map->y = data->plr->y;
+			data->map->x = data->plr->x;
+			data->map->p_y = BIG_MNMAP_H / 2;
+			data->map->p_x = BIG_MNMAP_W / 2;
+		}
+		else
+		{
+			data->big_mnmp_img->enabled = false;
+			data->map->mnmap_img->enabled = true;
+			data->is_moving = true;
+		}
 	}
 }
 
@@ -94,13 +130,15 @@ int	main(int ac, char **av)
 	if (!data.mlx)
 		clean_exit("Unable to create window", 3);
 	data.map->mnmap_img = mlx_new_image(data.mlx, MNMAP_W, MNMAP_H);
-	data.ray_img = mlx_new_image(data.mlx, MNMAP_W, MNMAP_H);
 	data.win_img = mlx_new_image(data.mlx, WIN_W, WIN_H);
+	data.big_mnmp_img = mlx_new_image(data.mlx, BIG_MNMAP_W, BIG_MNMAP_H);
+	data.big_mnmp_img->enabled = false;
 	mlx_image_to_window(data.mlx, data.win_img, 0, 0);
-    mlx_image_to_window(data.mlx, data.map->mnmap_img, 0, 0);
-	mlx_image_to_window(data.mlx, data.ray_img, 0, 0);
+    mlx_image_to_window(data.mlx, data.map->mnmap_img, MNMAP_GAP, MNMAP_GAP);
+	ft_memset(data.big_mnmp_img->pixels, 196, data.big_mnmp_img->width * data.big_mnmp_img->height * sizeof(int32_t));
+	mlx_image_to_window(data.mlx, data.big_mnmp_img, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
 	mlx_loop_hook(data.mlx, &ft_looper, &data);
-	mlx_key_hook(data.mlx, &turn_light, &data);
+	mlx_key_hook(data.mlx, &handle_events, &data);
 	mlx_close_hook(data.mlx, &close_hook, &data);
 	// mlx_mouse_hook(data.mlx, &mouse_handle, &data);
 	mlx_loop(data.mlx);

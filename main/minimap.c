@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 09:44:15 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/06 09:53:04 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/06 19:22:34 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 int get_rgba(int r, int g, int b, int a)
 {
-    return (r << 24 | g << 16 | b << 8 | a);
+	return (r << 24 | g << 16 | b << 8 | a);
 }
-
 
 // check the current pixel index content on the map
 static int	check_pixel(t_data *data, int y, int x)
@@ -26,34 +25,40 @@ static int	check_pixel(t_data *data, int y, int x)
 
 	i = (int)round((data->plr->y + y)) / MNMAP_TILE_S - (MNMAP_H / MNMAP_TILE_S / 2);
 	j = (int)round((data->plr->x + x)) / MNMAP_TILE_S - (MNMAP_W / MNMAP_TILE_S / 2);
-	if (i < 0 || j < 0 || i >= data->map->col || j >= data->map->row)
+	if (i < 0 || j < 0 || i >= data->map->col || j >= data->map->row || data->map->map[i][j] == ' ')
 		return (-1);
 	if (data->map->map[i][j] == '1')
 		return (1);
-	else if (data->map->map[i][j] == '0' || data->map->map[i][j] == 'N'
-		|| data->map->map[i][j] == 'S' || data->map->map[i][j] == 'E'
-		|| data->map->map[i][j] == 'W')
+	else
 		return (0);
-	return (-1);
 }
 
 void	draw_mnmap(t_data *data)
 {
 	int	y;
 	int	x;
+	int dy;
+	int dx;
+	int	pixel;
 
 	y = -1;
 	while (++y < MNMAP_H)
 	{
+		dy = y - (MNMAP_H / 2);
 		x = -1;
 		while (++x < MNMAP_W)
 		{
-			if (check_pixel(data, y, x ) == 1)
-				mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(32, 30, 67, 255));
-			else if (check_pixel(data, y, x) == 0)
-				mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(19, 75, 112, 255));
-			else
-				mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(80, 140, 155, 255));
+			dx = x - (MNMAP_W / 2);
+			pixel = check_pixel(data, y, x);
+			if (dy * dy + dx * dx <= (MNMAP_W / 2) * (MNMAP_W / 2))
+			{
+				if (pixel == 1)
+					mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(32, 30, 67, 255));
+				else if (pixel == 0)
+					mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(19, 75, 112, 255));
+				else
+					mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(80, 140, 155, 255));
+			}
 		}
 	}
 }
@@ -66,18 +71,18 @@ void	draw_mnmap_rays(t_data *data)
 	int	color;
 
 	i = -1;
-	while (++i < MNMAP_H)
-	{
-		j = -1;
-		while (++j < MNMAP_W)
-		{
-			mlx_put_pixel(data->ray_img, j, i, get_rgba(0, 0, 0, 0));
-		}
-	}
+	// while (++i < MNMAP_H)
+	// {
+	// 	j = -1;
+	// 	while (++j < MNMAP_W)
+	// 	{
+	// 		mlx_put_pixel(data->map->mnmap_img, j, i, get_rgba(0, 0, 0, 0));
+	// 	}
+	// }
 	i = -1;
 	while (++i < N_RAYS)
 	{
-		color = get_rgba(250, 188, 63, 200);
+		color = get_rgba(250, 188, 63, 255);
 		if (data->rays[i].dstn > 65)
 		{
 			ab_drawline(data, MNMAP_W / 2, MNMAP_H / 2, round(MNMAP_W / 2 + cos(data->rays[i].angl) * 65.0),

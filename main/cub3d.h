@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/06 09:51:48 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/06 19:33:10 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,11 @@
 # define WIN_W 1200
 # define WIN_H 675
 # define MNMAP_TILE_S 24
-# define MNMAP_W (MNMAP_TILE_S * 12)
+# define MNMAP_W (MNMAP_TILE_S * 10)
 # define MNMAP_H (MNMAP_TILE_S * 10)
+# define MNMAP_GAP 16
+# define BIG_MNMAP_W 960
+# define BIG_MNMAP_H 576
 # define MOVE_SPD 1.3
 # define ROT_SPD 2 * (M_PI / 180)
 # define FOV 60 * (M_PI / 180)
@@ -64,6 +67,10 @@ typedef struct s_map
 	int			plr_nb;
 	int			row;
 	int			col;
+	double		y;
+	double		x;
+	double		p_y;
+	double		p_x;
 }				t_map;
 
 typedef struct s_player
@@ -106,8 +113,9 @@ typedef struct s_data
 	t_player	*plr;
 	t_rays		rays[N_RAYS];
 	mlx_image_t	*win_img;
-	mlx_image_t	*ray_img;
+	mlx_image_t	*big_mnmp_img;
 	bool		is_moving;
+	bool		big_mnmap;
 	bool		light;
 	bool		mouse;
 	int			ms_x;
@@ -132,7 +140,7 @@ void		draw_mnmap(t_data *data);
 void		draw_mnmap_rays(t_data *data);
 void		clean_exit(char *err, int stat);
 void		ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color);
-void		draw_circle(t_data *data, int h, int k, int r);
+void		draw_circle(mlx_image_t *img, int h, int k, int r);
 void		draw_ray(t_data *data, int x, int y, int w, int h);
 int			get_rgba(int r, int g, int b, int a);
 void		raycasting(t_data *data);

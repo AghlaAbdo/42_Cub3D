@@ -6,29 +6,29 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:56:36 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/05 08:09:45 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/06 16:52:56 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	drawLine(t_data *data, int x1, int x2, int y) {
+static void	drawLine(mlx_image_t *img, int x1, int x2, int y) {
 	for (int i = x1; i <= x2; i++) {
-		mlx_put_pixel(data->map->mnmap_img, i, y, get_rgba(238, 238, 238, 255));
+		mlx_put_pixel(img , i, y, get_rgba(238, 238, 238, 255));
 	}
 }
 
-void	draw_circle(t_data *data, int h, int k, int r)
+void	draw_circle(mlx_image_t *img, int h, int k, int r)
 {
 	int x = 0;
 	int y = r;
 	int d = 1 - r;
 
 	while (x <= y) {
-		drawLine(data, h - x, h + x, k + y);
-		drawLine(data, h - x, h + x, k - y);
-		drawLine(data, h - y, h + y, k + x);
-		drawLine(data, h - y, h + y, k - x);
+		drawLine(img, h - x, h + x, k + y);
+		drawLine(img, h - x, h + x, k - y);
+		drawLine(img, h - y, h + y, k + x);
+		drawLine(img, h - y, h + y, k - x);
 
 		if (d < 0) {
 			d += 2 * x + 3;
@@ -41,7 +41,7 @@ void	draw_circle(t_data *data, int h, int k, int r)
 }
 
 static void	plot(t_data *data, int x, int y, int color) {
-   mlx_put_pixel(data->ray_img, x, y, color);
+   mlx_put_pixel(data->map->mnmap_img, x, y, color);
 }
 
 void	ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color)
