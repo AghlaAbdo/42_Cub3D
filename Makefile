@@ -6,7 +6,7 @@
 #    By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/16 06:34:23 by srachidi          #+#    #+#              #
-#    Updated: 2024/09/06 09:44:35 by aaghla           ###   ########.fr        #
+#    Updated: 2024/09/07 20:21:04 by aaghla           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,16 +16,18 @@ CFLAGS = -DDEBUG=1 #-Wall -Wextra -Werror
 RM     = rm -rf
 O_DR   = objs/
 LIBFT	= Libft/libft.a
-SRC    := main/grbgcllctr.c \
-			main/main.c\
-			main/loop.c\
-			main/minimap.c\
-			main/drawing.c\
-			main/movement.c\
-			parsing/parse_file.c\
-			parsing/fst_part.c\
-			parsing/sec_part.c\
-			parsing/ab_map_lst.c\
+SRC    := main/grbgcllctr.c			\
+			main/main.c				\
+			main/loop.c				\
+			main/minimap.c			\
+			main/big_minimap.c		\
+			main/drawing.c			\
+			main/movement.c			\
+			main/mouse_events.c		\
+			parsing/parse_file.c	\
+			parsing/fst_part.c		\
+			parsing/sec_part.c		\
+			parsing/ab_map_lst.c	\
 			raycasting/raycasting.c
 
 CLR_RMV := \033[0m

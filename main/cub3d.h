@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/06 19:33:10 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/07 20:31:42 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,17 @@ typedef struct s_data
 	t_rays		rays[N_RAYS];
 	mlx_image_t	*win_img;
 	mlx_image_t	*big_mnmp_img;
+	mlx_win_cursor_t	*hnd_cursr;
 	bool		is_moving;
 	bool		big_mnmap;
 	bool		light;
 	bool		mouse;
 	int			ms_x;
+	
+	mlx_texture_t	*cross_txtr;
+	mlx_image_t		*cross_icon;
+	mlx_image_t		*shade_bg;
+	
 }				t_data;
 
 
@@ -138,6 +144,7 @@ void		handle_mouse(t_data *data);
 bool		ab_is_moving(t_data *data);
 void		draw_mnmap(t_data *data);
 void		draw_mnmap_rays(t_data *data);
+void		draw_big_mnmap(t_data *data);
 void		clean_exit(char *err, int stat);
 void		ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color);
 void		draw_circle(mlx_image_t *img, int h, int k, int r);
@@ -145,5 +152,7 @@ void		draw_ray(t_data *data, int x, int y, int w, int h);
 int			get_rgba(int r, int g, int b, int a);
 void		raycasting(t_data *data);
 int			check_wall(t_data *data, int p_x, int p_y);
+void		mouse_event(mouse_key_t button, action_t action, modifier_key_t mods, void* param);
+void		check_mouse_pos(t_data *data);
 
 #endif

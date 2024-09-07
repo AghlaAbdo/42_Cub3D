@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 09:35:03 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/06 12:07:44 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/07 12:53:35 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	handle_mouse(t_data *data)
 	data->plr->rot_angl = remainder(data->plr->rot_angl + ((curr_ms_x - data->ms_x) * (M_PI / 180) * 0.08), (2 * M_PI));
 	if (data->plr->rot_angl < 0)
 		data->plr->rot_angl += 2 * M_PI;
-	if (curr_ms_x <= 10 || curr_ms_x >= WIN_W - 10)
+	if (curr_ms_x <= 10 || curr_ms_x >= WIN_W - 10 || curr_ms_y <= 10 || curr_ms_y >= WIN_H - 10)
 	{
 		curr_ms_x = WIN_W / 2;
 		mlx_set_mouse_pos(data->mlx, WIN_W / 2, WIN_H / 2);

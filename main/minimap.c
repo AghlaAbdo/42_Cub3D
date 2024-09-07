@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 09:44:15 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/06 19:22:34 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/07 20:23:16 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,6 @@ void	draw_mnmap_rays(t_data *data)
 	int	color;
 
 	i = -1;
-	// while (++i < MNMAP_H)
-	// {
-	// 	j = -1;
-	// 	while (++j < MNMAP_W)
-	// 	{
-	// 		mlx_put_pixel(data->map->mnmap_img, j, i, get_rgba(0, 0, 0, 0));
-	// 	}
-	// }
 	i = -1;
 	while (++i < N_RAYS)
 	{

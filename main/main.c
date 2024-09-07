@@ -6,11 +6,51 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:54:05 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/06 19:33:04 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/07 20:34:47 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	draw_shade_bg(t_data *data)
+{
+	int	y;
+	int	x;
+
+	y = -1;
+	while (++y < WIN_H)
+	{
+		x = -1;
+		while (++x < WIN_W)
+		{
+			mlx_put_pixel(data->shade_bg, x, y, get_rgba(0, 0, 0, 120));
+		}
+	}
+	data->shade_bg->enabled = false;
+}
+
+void	init_images(t_data *data)
+{
+	mlx_texture_t	*close;
+	data->map->mnmap_img = mlx_new_image(data->mlx, MNMAP_W, MNMAP_H);
+	data->win_img = mlx_new_image(data->mlx, WIN_W, WIN_H);
+	data->big_mnmp_img = mlx_new_image(data->mlx, BIG_MNMAP_W, BIG_MNMAP_H);
+	data->shade_bg = mlx_new_image(data->mlx, WIN_W, WIN_H);
+	draw_shade_bg(data);
+	data->big_mnmp_img->enabled = false;
+	mlx_image_to_window(data->mlx, data->win_img, 0, 0);
+    mlx_image_to_window(data->mlx, data->map->mnmap_img, MNMAP_GAP, MNMAP_GAP);
+	mlx_image_to_window(data->mlx, data->shade_bg, 0, 0);
+	mlx_image_to_window(data->mlx, data->big_mnmp_img, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
+	
+	data->cross_txtr = mlx_load_png("./images/close.png");
+	if (!data->cross_txtr)
+		clean_exit("Can't load png", 10);
+	data->cross_icon = mlx_texture_to_image(data->mlx, data->cross_txtr);
+	mlx_image_to_window(data->mlx, data->cross_icon, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
+	data->cross_icon->enabled = false;
+	data->hnd_cursr = mlx_create_std_cursor(MLX_CURSOR_HAND);
+}
 
 void	init_data(t_data *data)
 {
@@ -43,22 +83,6 @@ void	ab_set_orn(t_data *data)
 		data->plr->rot_angl = M_PI + (M_PI / 2);
 }
 
-void	clear_mnmap(t_data *data)
-{
-	int	y;
-	int	x;
-
-	y = -1;
-	while (++y < MNMAP_H)
-	{
-		x = -1;
-		while (++x < MNMAP_W)
-		{
-			mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(0, 0, 0, 0));
-		}
-	}
-}
-
 void	handle_events(mlx_key_data_t keydata, void *param)
 {
 	t_data	*data;
@@ -68,7 +92,8 @@ void	handle_events(mlx_key_data_t keydata, void *param)
 		data->light = !data->light;
 	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 	{
-		mlx_set_mouse_pos(data->mlx, WIN_W / 2, WIN_H / 2);
+		if (!data->big_mnmap)
+			mlx_set_mouse_pos(data->mlx, WIN_W / 2, WIN_H / 2);
 		data->ms_x = WIN_W / 2;
 		data->mouse = !data->mouse;
 		if (!data->mouse)
@@ -81,6 +106,8 @@ void	handle_events(mlx_key_data_t keydata, void *param)
 		{
 			data->map->mnmap_img->enabled = false;
 			data->big_mnmp_img->enabled = true;
+			data->cross_icon->enabled = true;
+			data->shade_bg->enabled = true;
 			data->map->y = data->plr->y;
 			data->map->x = data->plr->x;
 			data->map->p_y = BIG_MNMAP_H / 2;
@@ -90,16 +117,12 @@ void	handle_events(mlx_key_data_t keydata, void *param)
 		{
 			data->big_mnmp_img->enabled = false;
 			data->map->mnmap_img->enabled = true;
+			data->cross_icon->enabled = false;
+			data->shade_bg->enabled = false;
 			data->is_moving = true;
 		}
 	}
 }
-
-// void	mouse_handle(double x, double y, void *param)
-// {
-// 	t_data	*data;
-	
-// }
 
 void	close_hook(void	*param)
 {
@@ -129,18 +152,12 @@ int	main(int ac, char **av)
 	data.mlx = mlx_init(WIN_W, WIN_H, "Cub3D", false);
 	if (!data.mlx)
 		clean_exit("Unable to create window", 3);
-	data.map->mnmap_img = mlx_new_image(data.mlx, MNMAP_W, MNMAP_H);
-	data.win_img = mlx_new_image(data.mlx, WIN_W, WIN_H);
-	data.big_mnmp_img = mlx_new_image(data.mlx, BIG_MNMAP_W, BIG_MNMAP_H);
-	data.big_mnmp_img->enabled = false;
-	mlx_image_to_window(data.mlx, data.win_img, 0, 0);
-    mlx_image_to_window(data.mlx, data.map->mnmap_img, MNMAP_GAP, MNMAP_GAP);
-	ft_memset(data.big_mnmp_img->pixels, 196, data.big_mnmp_img->width * data.big_mnmp_img->height * sizeof(int32_t));
-	mlx_image_to_window(data.mlx, data.big_mnmp_img, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
+	init_images(&data);
+	
 	mlx_loop_hook(data.mlx, &ft_looper, &data);
 	mlx_key_hook(data.mlx, &handle_events, &data);
 	mlx_close_hook(data.mlx, &close_hook, &data);
-	// mlx_mouse_hook(data.mlx, &mouse_handle, &data);
+	mlx_mouse_hook(data.mlx, &mouse_event, &data);
 	mlx_loop(data.mlx);
 	mlx_terminate(data.mlx);
 	return (0);
