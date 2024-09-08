@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/07 20:31:42 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/08 08:59:14 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ typedef struct s_map
 
 	t_maplst	*maplst;
 	mlx_image_t	*mnmap_img;
+	mlx_texture_t	*border_txtr;
+	mlx_image_t	*border;
 	char		**map;
 	int			plr_nb;
 	int			row;

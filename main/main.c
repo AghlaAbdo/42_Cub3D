@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:54:05 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/07 20:34:47 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/08 09:13:06 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	draw_shade_bg(t_data *data)
 
 void	init_images(t_data *data)
 {
-	mlx_texture_t	*close;
+	mlx_texture_t	*border;
 	data->map->mnmap_img = mlx_new_image(data->mlx, MNMAP_W, MNMAP_H);
 	data->win_img = mlx_new_image(data->mlx, WIN_W, WIN_H);
 	data->big_mnmp_img = mlx_new_image(data->mlx, BIG_MNMAP_W, BIG_MNMAP_H);
@@ -43,9 +43,15 @@ void	init_images(t_data *data)
 	mlx_image_to_window(data->mlx, data->shade_bg, 0, 0);
 	mlx_image_to_window(data->mlx, data->big_mnmp_img, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
 	
+	
+	border = mlx_load_png("./images/mnmap_border.png");
 	data->cross_txtr = mlx_load_png("./images/close.png");
-	if (!data->cross_txtr)
+	if (!data->cross_txtr || !border)
 		clean_exit("Can't load png", 10);
+	data->map->border = mlx_texture_to_image(data->mlx, border);
+	mlx_image_to_window(data->mlx, data->map->border, MNMAP_GAP, MNMAP_GAP - 12);
+	// data->map->border->enabled = false;
+		
 	data->cross_icon = mlx_texture_to_image(data->mlx, data->cross_txtr);
 	mlx_image_to_window(data->mlx, data->cross_icon, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
 	data->cross_icon->enabled = false;
@@ -105,6 +111,7 @@ void	handle_events(mlx_key_data_t keydata, void *param)
 		if (data->big_mnmap)
 		{
 			data->map->mnmap_img->enabled = false;
+			data->map->border->enabled = false;
 			data->big_mnmp_img->enabled = true;
 			data->cross_icon->enabled = true;
 			data->shade_bg->enabled = true;
@@ -117,6 +124,7 @@ void	handle_events(mlx_key_data_t keydata, void *param)
 		{
 			data->big_mnmp_img->enabled = false;
 			data->map->mnmap_img->enabled = true;
+			data->map->border->enabled = true;
 			data->cross_icon->enabled = false;
 			data->shade_bg->enabled = false;
 			data->is_moving = true;

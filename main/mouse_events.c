@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 20:17:28 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/07 20:24:08 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/08 09:19:14 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ static int	mouse_pos(int ms_x, int ms_y, int x, int y)
 }
 static int	mouse_over_cross_icon(int x, int y)
 {
-	if (x >= WIN_W / 2 - BIG_MNMAP_W / 2 && x <= WIN_W / 2 - BIG_MNMAP_W / 2 + 30
-		&& y >= WIN_H / 2 - BIG_MNMAP_H / 2 && y <= WIN_H / 2 - BIG_MNMAP_H / 2 + 30)
+	if (x >= WIN_W / 2 - BIG_MNMAP_W / 2 && x <= WIN_W / 2 - BIG_MNMAP_W / 2 + 40
+		&& y >= WIN_H / 2 - BIG_MNMAP_H / 2 && y <= WIN_H / 2 - BIG_MNMAP_H / 2 + 40)
 		return (1);
 	return (0);
 }
@@ -67,6 +67,7 @@ void	mouse_event(mouse_key_t button, action_t action, modifier_key_t mods, void*
 	{
 		data->big_mnmap = true;
 		data->map->mnmap_img->enabled = false;
+		data->map->border->enabled = false;
 		data->big_mnmp_img->enabled = true;
 		data->cross_icon->enabled = true;
 		data->shade_bg->enabled = true;
@@ -80,6 +81,7 @@ void	mouse_event(mouse_key_t button, action_t action, modifier_key_t mods, void*
 	{
 		data->big_mnmap = false;
 		data->map->mnmap_img->enabled = true;
+		data->map->border->enabled = true;
 		data->big_mnmp_img->enabled = false;
 		data->cross_icon->enabled = false;
 		data->shade_bg->enabled = false;

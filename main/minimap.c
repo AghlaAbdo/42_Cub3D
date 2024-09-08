@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 09:44:15 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/07 20:23:16 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/08 09:10:42 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,16 @@ void	draw_mnmap(t_data *data)
 	int dx;
 	int	pixel;
 
-	y = -1;
-	while (++y < MNMAP_H)
+	y = 2;
+	while (++y < MNMAP_H - 5)
 	{
 		dy = y - (MNMAP_H / 2);
-		x = -1;
-		while (++x < MNMAP_W)
+		x = 2;
+		while (++x < MNMAP_W - 5)
 		{
 			dx = x - (MNMAP_W / 2);
 			pixel = check_pixel(data, y, x);
-			if (dy * dy + dx * dx <= (MNMAP_W / 2) * (MNMAP_W / 2))
+			if (dy * dy + dx * dx <= (MNMAP_W / 2 - 5) * (MNMAP_W / 2 - 5))
 			{
 				if (pixel == 1)
 					mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(32, 30, 67, 255));
