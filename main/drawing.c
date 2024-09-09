@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:56:36 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/06 16:52:56 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/09 19:24:32 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,20 @@ void	draw_ray(t_data *data, int x, int y, int w, int h)
 	floor_alpha = 255;
 	if (!data->light)
 	{
-		alpha = 255 - data->rays[x].real_dstn * 255 / 700;
+		alpha = (255 - data->rays[x].real_dstn * 255 / 400) - 20;
 		if (alpha < 0)
 			alpha = 0;
 		else if (alpha > 255)
 			alpha = 255;
+	}
+	else
+	{
+		alpha = (255 - data->rays[x].real_dstn * 255 / 1000);
+		if (alpha < 0)
+			alpha = 0;
+		else if (alpha > 255)
+			alpha = 255;
+		
 	}
 	if (data->rays[x].orn == 'h')
 		color = get_rgba(235, 235, 235, alpha);
@@ -122,10 +131,12 @@ void	draw_ray(t_data *data, int x, int y, int w, int h)
 	while (i < WIN_H)
 	{
 		if (!data->light)
-			floor_alpha = (i - WIN_H / 3) * 255 / (WIN_H - (WIN_H / 3));
+			floor_alpha = ((i - WIN_H / 2) * 255 / (WIN_H - (WIN_H / 2))) -20;
+		else
+			floor_alpha = ((i - WIN_H / 6) * 255 / (WIN_H - (WIN_H / 6)));
 		// printf("floor alpha: %d\n", floor_alpha);
-		// if (floor_alpha < 0)
-		// 	floor_alpha = 0;
+		if (floor_alpha < 0)
+			floor_alpha = 0;
 		// else if (floor_alpha > 255)
 		// 	floor_alpha = 255;
 		mlx_put_pixel(data->win_img, x, i++, get_rgba(34, 123, 148,  floor_alpha));

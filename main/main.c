@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:54:05 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/08 09:13:06 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/09 19:32:25 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,67 @@ void	draw_shade_bg(t_data *data)
 	data->shade_bg->enabled = false;
 }
 
+void	init_turning_on_imgs(t_data *data, t_animation *anm)
+{
+	mlx_texture_t	*txtr;
+	int				i;
+
+	anm->last_frm_time = mlx_get_time() * 1e3;
+	anm->curr_frm = 0;
+	anm->frames = (mlx_image_t **)ft_malloc(sizeof(mlx_image_t) * TRN_ON_FRMS, 0);
+	i = -1;
+	while (++i < TRN_ON_FRMS)
+	{
+		txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/turn_light_on/f_", ft_itoa(i + 1)), ".png"));
+		if (!txtr)
+			clean_exit("Can't load png", 14);
+		anm->frames[i] = mlx_texture_to_image(data->mlx, txtr);
+		anm->frames[i]->enabled = false;
+		mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
+	}
+	
+}
+
+void	init_idle_light_on_imgs(t_data *data, t_animation *anm)
+{
+	mlx_texture_t	*txtr;
+	int				i;
+
+	anm->last_frm_time = mlx_get_time() * 1e3;
+	anm->curr_frm = 0;
+	anm->frames = (mlx_image_t **)ft_malloc(sizeof(mlx_image_t) * IDLE_ON_FRMS, 0);
+	i = -1;
+	while (++i < IDLE_ON_FRMS)
+	{
+		txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/idle_light_on/f_", ft_itoa(i + 1)), ".png"));
+		if (!txtr)
+			clean_exit("Can't load png", 15);
+		anm->frames[i] = mlx_texture_to_image(data->mlx, txtr);
+		anm->frames[i]->enabled = false;
+		mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
+	}
+}
+
+void	init_turning_off_imgs(t_data *data, t_animation *anm)
+{
+	mlx_texture_t	*txtr;
+	int				i;
+
+	anm->last_frm_time = mlx_get_time() * 1e3;
+	anm->curr_frm = 0;
+	anm->frames = (mlx_image_t **)ft_malloc(sizeof(mlx_image_t) * TRN_OFF_FRMS, 0);
+	i = -1;
+	while (++i < TRN_OFF_FRMS)
+	{
+		txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/turn_light_off/f_", ft_itoa(i + 1)), ".png"));
+		if (!txtr)
+			clean_exit("Can't load png", 16);
+		anm->frames[i] = mlx_texture_to_image(data->mlx, txtr);
+		anm->frames[i]->enabled = false;
+		mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
+	}
+}
+
 void	init_images(t_data *data)
 {
 	mlx_texture_t	*border;
@@ -40,8 +101,6 @@ void	init_images(t_data *data)
 	data->big_mnmp_img->enabled = false;
 	mlx_image_to_window(data->mlx, data->win_img, 0, 0);
     mlx_image_to_window(data->mlx, data->map->mnmap_img, MNMAP_GAP, MNMAP_GAP);
-	mlx_image_to_window(data->mlx, data->shade_bg, 0, 0);
-	mlx_image_to_window(data->mlx, data->big_mnmp_img, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
 	
 	
 	border = mlx_load_png("./images/mnmap_border.png");
@@ -53,9 +112,16 @@ void	init_images(t_data *data)
 	// data->map->border->enabled = false;
 		
 	data->cross_icon = mlx_texture_to_image(data->mlx, data->cross_txtr);
-	mlx_image_to_window(data->mlx, data->cross_icon, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
 	data->cross_icon->enabled = false;
 	data->hnd_cursr = mlx_create_std_cursor(MLX_CURSOR_HAND);
+
+	init_turning_on_imgs(data, &data->trn_on_anm);
+	init_idle_light_on_imgs(data, &data->idle_light_on_anm);
+	init_turning_off_imgs(data, &data->trn_off_anm);
+	
+	mlx_image_to_window(data->mlx, data->shade_bg, 0, 0);
+	mlx_image_to_window(data->mlx, data->big_mnmp_img, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
+	mlx_image_to_window(data->mlx, data->cross_icon, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
 }
 
 void	init_data(t_data *data)
@@ -74,6 +140,8 @@ void	init_data(t_data *data)
 	data->light = false;
 	data->mouse = false;
 	data->big_mnmap = false;
+	data->turning_on = false;
+	data->turning_off = false;
 }
 
 // set Player orientaion
@@ -94,8 +162,18 @@ void	handle_events(mlx_key_data_t keydata, void *param)
 	t_data	*data;
 
 	data = (t_data *)param;
-	if (keydata.key == MLX_KEY_L && keydata.action == MLX_PRESS)
-		data->light = !data->light;
+	if (keydata.key == MLX_KEY_L && keydata.action == MLX_PRESS && !data->big_mnmap)
+	{
+		if (!data->turning_on && data->light)
+		{
+			data->idle_light_on_anm.frames[data->idle_light_on_anm.curr_frm]->enabled = false;
+			data->turning_off = true;
+		}
+		else if (!data->light)
+		{
+			data->turning_on = true;
+		}
+	}
 	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 	{
 		if (!data->big_mnmap)
@@ -161,7 +239,6 @@ int	main(int ac, char **av)
 	if (!data.mlx)
 		clean_exit("Unable to create window", 3);
 	init_images(&data);
-	
 	mlx_loop_hook(data.mlx, &ft_looper, &data);
 	mlx_key_hook(data.mlx, &handle_events, &data);
 	mlx_close_hook(data.mlx, &close_hook, &data);

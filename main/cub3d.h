@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/08 08:59:14 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/09 19:19:28 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@
 # define ROT_SPD 2 * (M_PI / 180)
 # define FOV 60 * (M_PI / 180)
 # define N_RAYS (WIN_W)
+# define FRM_DUR 60
+# define TRN_ON_FRMS 14
+# define TRN_OFF_FRMS 17
+# define IDLE_ON_FRMS 7
 
 typedef struct s_addr
 {
@@ -51,6 +55,14 @@ typedef struct s_maplst
 	void	*next;
 	void	*prev;
 }	t_maplst;
+
+typedef struct s_animation
+{
+	// mlx_texture_t	**txtrs;
+	mlx_image_t	**frames;
+	int			curr_frm;
+	double		last_frm_time;
+}	t_animation;
 
 typedef struct s_map
 {
@@ -126,6 +138,11 @@ typedef struct s_data
 	mlx_texture_t	*cross_txtr;
 	mlx_image_t		*cross_icon;
 	mlx_image_t		*shade_bg;
+	t_animation		trn_on_anm;
+	t_animation		trn_off_anm;
+	t_animation		idle_light_on_anm;
+	bool			turning_on;
+	bool			turning_off;
 	
 }				t_data;
 
