@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 20:17:28 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/08 09:19:14 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/10 16:42:54 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ void	check_mouse_pos(t_data *data)
 	int	x;
 
 	mlx_get_mouse_pos(data->mlx, &x, &y);
-	if (!data->big_mnmap && mouse_pos(x, y, MNMAP_W / 2 + MNMAP_GAP, MNMAP_H / 2 + MNMAP_GAP))
+	if (!data->big_mnmap && !data->mouse && (mouse_pos(x, y, MNMAP_W / 2 + MNMAP_GAP, MNMAP_H / 2 + MNMAP_GAP)
+		|| (x >= WIN_W - 90 && x <= WIN_W - 120 + 70 && y >= WIN_H - 150 && y <= WIN_H - 150 + 80)))
 	{
 		mlx_set_cursor(data->mlx, data->hnd_cursr);
 	}
-	else if (data->big_mnmap && mouse_over_cross_icon(x, y))
+	else if (!data->mouse && data->big_mnmap && mouse_over_cross_icon(x, y))
 	{
 		mlx_set_cursor(data->mlx, data->hnd_cursr);
 	}
@@ -85,5 +86,23 @@ void	mouse_event(mouse_key_t button, action_t action, modifier_key_t mods, void*
 		data->big_mnmp_img->enabled = false;
 		data->cross_icon->enabled = false;
 		data->shade_bg->enabled = false;
+	}
+	else if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS && !data->big_mnmap && !data->mouse
+		&& (x >= WIN_W - 90 && x <= WIN_W - 120 + 70 && y >= WIN_H - 150 && y <= WIN_H - 150 + 80))
+	{
+		if (!data->turning_on && data->light)
+		{
+			data->idle_light_on_anm.frames[data->idle_light_on_anm.curr_frm]->enabled = false;
+			data->turning_off = true;
+			data->lighter_on->enabled = false;
+			data->lighter_off->enabled = true;
+
+		}
+		else if (!data->light)
+		{
+			data->turning_on = true;
+			data->lighter_off->enabled = false;
+			data->lighter_on->enabled = true;
+		}
 	}
 }

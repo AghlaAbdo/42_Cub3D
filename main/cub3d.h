@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/09 19:19:28 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/10 15:18:18 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@
 # define TRN_ON_FRMS 14
 # define TRN_OFF_FRMS 17
 # define IDLE_ON_FRMS 7
+# define WALK_ON_FRMS 9
+# define WALK_OFF_FRMS 14
 
 typedef struct s_addr
 {
@@ -138,11 +140,18 @@ typedef struct s_data
 	mlx_texture_t	*cross_txtr;
 	mlx_image_t		*cross_icon;
 	mlx_image_t		*shade_bg;
+	mlx_image_t		*lighter_on;
+	mlx_image_t		*lighter_off;
 	t_animation		trn_on_anm;
 	t_animation		trn_off_anm;
 	t_animation		idle_light_on_anm;
+	t_animation		walk_light_on_anm;
+	t_animation		walk_light_off_anm;
 	bool			turning_on;
 	bool			turning_off;
+	bool			idle_on;
+	bool			walking_on;
+	bool			walking_off;
 	
 }				t_data;
 

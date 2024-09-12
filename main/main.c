@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:54:05 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/09 19:32:25 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/09/10 16:28:30 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,47 @@ void	init_turning_off_imgs(t_data *data, t_animation *anm)
 	}
 }
 
+void	init_walking_on_imgs(t_data *data, t_animation *anm)
+{
+	mlx_texture_t	*txtr;
+	int				i;
+
+	anm->last_frm_time = mlx_get_time() * 1e3;
+	anm->curr_frm = 0;
+	anm->frames = (mlx_image_t **)ft_malloc(sizeof(mlx_image_t) * WALK_ON_FRMS, 0);
+	i = -1;
+	while (++i < WALK_ON_FRMS)
+	{
+		txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/walk_light_on/f_", ft_itoa(i + 1)), ".png"));
+		if (!txtr)
+			clean_exit("Can't load png", 17);
+		anm->frames[i] = mlx_texture_to_image(data->mlx, txtr);
+		anm->frames[i]->enabled = false;
+		mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
+	}
+}
+
+void	init_walking_off_imgs(t_data *data, t_animation *anm)
+{
+	mlx_texture_t	*txtr;
+	int				i;
+
+	anm->last_frm_time = mlx_get_time() * 1e3;
+	anm->curr_frm = 0;
+	anm->frames = (mlx_image_t **)ft_malloc(sizeof(mlx_image_t) * WALK_OFF_FRMS, 0);
+	i = -1;
+	while (++i < WALK_OFF_FRMS)
+	{
+		txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/walk_light_off/f_", ft_itoa(i + 1)), ".png"));
+		if (!txtr)
+			clean_exit("Can't load png", 18);
+		anm->frames[i] = mlx_texture_to_image(data->mlx, txtr);
+		anm->frames[i]->enabled = false;
+		mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
+	}
+	anm->frames[0]->enabled = true;
+}
+
 void	init_images(t_data *data)
 {
 	mlx_texture_t	*border;
@@ -100,7 +141,7 @@ void	init_images(t_data *data)
 	draw_shade_bg(data);
 	data->big_mnmp_img->enabled = false;
 	mlx_image_to_window(data->mlx, data->win_img, 0, 0);
-    mlx_image_to_window(data->mlx, data->map->mnmap_img, MNMAP_GAP, MNMAP_GAP);
+	mlx_image_to_window(data->mlx, data->map->mnmap_img, MNMAP_GAP, MNMAP_GAP);
 	
 	
 	border = mlx_load_png("./images/mnmap_border.png");
@@ -110,15 +151,29 @@ void	init_images(t_data *data)
 	data->map->border = mlx_texture_to_image(data->mlx, border);
 	mlx_image_to_window(data->mlx, data->map->border, MNMAP_GAP, MNMAP_GAP - 12);
 	// data->map->border->enabled = false;
-		
+
 	data->cross_icon = mlx_texture_to_image(data->mlx, data->cross_txtr);
 	data->cross_icon->enabled = false;
 	data->hnd_cursr = mlx_create_std_cursor(MLX_CURSOR_HAND);
 
+
 	init_turning_on_imgs(data, &data->trn_on_anm);
-	init_idle_light_on_imgs(data, &data->idle_light_on_anm);
 	init_turning_off_imgs(data, &data->trn_off_anm);
-	
+	init_idle_light_on_imgs(data, &data->idle_light_on_anm);
+	init_walking_on_imgs(data, &data->walk_light_on_anm);
+	init_walking_off_imgs(data, &data->walk_light_off_anm);
+
+	border = mlx_load_png("./images/lighter_off.png");
+	if (!border)
+		clean_exit("Can't load png", 19);
+	data->lighter_off = mlx_texture_to_image(data->mlx, border);
+	mlx_image_to_window(data->mlx, data->lighter_off, WIN_W - 120, WIN_H - 150);
+	border = mlx_load_png("./images/lighter_on.png");
+	if (!border)
+		clean_exit("Cna't load png", 20);
+	data->lighter_on = mlx_texture_to_image(data->mlx, border);
+	data->lighter_on->enabled = false;
+	mlx_image_to_window(data->mlx, data->lighter_on, WIN_W - 120, WIN_H - 150);
 	mlx_image_to_window(data->mlx, data->shade_bg, 0, 0);
 	mlx_image_to_window(data->mlx, data->big_mnmp_img, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
 	mlx_image_to_window(data->mlx, data->cross_icon, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
@@ -142,6 +197,9 @@ void	init_data(t_data *data)
 	data->big_mnmap = false;
 	data->turning_on = false;
 	data->turning_off = false;
+	data->idle_on = false;
+	data->walking_on = false;
+	data->walking_off = false;
 }
 
 // set Player orientaion
