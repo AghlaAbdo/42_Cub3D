@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:50:44 by aaghla            #+#    #+#             */
-/*   Updated: 2024/11/19 09:57:11 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/19 15:21:37 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	anm_turn_light_on(t_data *data, t_animation *anm, double curr_time)
 			mlx_delete_image(data->mlx, data->walk_light_off_anm.frame);
 			data->walk_light_off_anm.frame = NULL;
 		}
+		if (data->walk_light_off_anm.frame)
+			mlx_delete_image(data->mlx, data->walk_light_off_anm.frame);
 		// anm->frames[anm->curr_frm]->enabled = false;
 		// anm->frames[anm->curr_frm]->enabled = true;
 		if (anm->frame)
@@ -42,7 +44,7 @@ void	anm_turn_light_on(t_data *data, t_animation *anm, double curr_time)
 	if (anm->curr_frm == 7)
 	{
 		data->light = true;
-		data->is_moving = true;
+		data->rendering = true;
 	}
 	if (anm->curr_frm == TRN_ON_FRMS - 1)
 	{
@@ -110,7 +112,7 @@ void	anm_turn_light_off(t_data *data, t_animation *anm, double curr_time)
 	if (anm->curr_frm == 7)
 	{
 		data->light = false;
-		data->is_moving = true;
+		data->rendering = true;
 	}
 	if (anm->curr_frm == TRN_OFF_FRMS - 1)
 	{
@@ -120,6 +122,7 @@ void	anm_turn_light_off(t_data *data, t_animation *anm, double curr_time)
 		anm->frame = NULL;
 		// anm->curr_frm = 0;
 		// printf("ever here?\n");
+		data->rendering = true;
 		data->is_moving = true;
 	}
 }
@@ -168,6 +171,8 @@ void	anm_walk_light_off(t_data *data, t_animation *anm, double curr_time)
 	{
 		if (!data->walking_off)
 			data->walking_off = true;
+		if (data->trn_off_anm.frame)
+			mlx_delete_image(data->mlx, data->trn_off_anm.frame);
 		// anm->frames[anm->curr_frm]->enabled = false;
 		// anm->curr_frm = (anm->curr_frm + 1) % WALK_OFF_FRMS;
 		// anm->frames[anm->curr_frm]->enabled = true;
@@ -208,13 +213,14 @@ void	ft_looper(void *param)
 	// if (!ab_is_moving(data) || data->big_mnmap)
 	// 	return ;
 	ab_is_moving(data);
-	if ((!data->is_moving || data->mouse) && data->light && !data->turning_on && !data->turning_off)
+	if ((!data->is_moving) && data->light && !data->turning_on && !data->turning_off)
 		anm_idle_light_on(data, &data->idle_light_on_anm, mlx_get_time() * 1e3);
-	else if (data->light && data->is_moving && !data->mouse && !data->turning_on && !data->turning_off)
+	else if (data->light && data->is_moving && !data->turning_on && !data->turning_off)
 		anm_walk_light_on(data, &data->walk_light_on_anm, mlx_get_time() * 1e3);
 	else if (!data->light && data->is_moving  && !data->turning_on && !data->turning_off)
 		anm_walk_light_off(data, &data->walk_light_off_anm, mlx_get_time() * 1e3);
-	if (!data->is_moving || data->big_mnmap)
+	data->is_moving = false;
+	if (!data->rendering || data->big_mnmap)
 		return ;
 	plr_move(data);
 	raycasting(data);
@@ -222,5 +228,5 @@ void	ft_looper(void *param)
 	draw_mnmap_rays(data);
 	draw_circle(data->map->mnmap_img, (MNMAP_W / 2), (MNMAP_H / 2), 3);
 	check_wall(data, data->plr->x, data->plr->y);
-	data->is_moving = false;
+	data->rendering = false;
 }

@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 20:17:28 by aaghla            #+#    #+#             */
-/*   Updated: 2024/10/22 11:43:39 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/19 13:24:22 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,23 @@ void	check_mouse_pos(t_data *data)
 	}
 }
 
+void	draw_shade_bg(t_data *data)
+{
+	int	y;
+	int	x;
+
+	y = -1;
+	while (++y < WIN_H)
+	{
+		x = -1;
+		while (++x < WIN_W)
+		{
+			mlx_put_pixel(data->shade_bg, x, y, get_rgba(0, 0, 0, 120));
+		}
+	}
+	// data->shade_bg->enabled = false;
+}
+
 void	mouse_event(mouse_key_t button, action_t action, modifier_key_t mods, void* param)
 {
 	t_data	*data;
@@ -68,9 +85,16 @@ void	mouse_event(mouse_key_t button, action_t action, modifier_key_t mods, void*
 	{
 		data->big_mnmap = true;
 		data->map->mnmap_img->enabled = false;
-		data->map->border->enabled = false;
-		data->big_mnmp_img->enabled = true;
-		data->cross_icon->enabled = true;
+		data->map_txtrs.mp_border_img->enabled = false;
+		data->shade_bg = mlx_new_image(data->mlx, WIN_W, WIN_H);
+		draw_shade_bg(data);
+		data->big_mnmp_img = mlx_new_image(data->mlx, BIG_MNMAP_W, BIG_MNMAP_H);
+		data->map_txtrs.cross_img = mlx_texture_to_image(data->mlx, data->map_txtrs.cross_tx);
+		mlx_image_to_window(data->mlx, data->shade_bg, 0, 0);
+		mlx_image_to_window(data->mlx, data->big_mnmp_img, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
+		mlx_image_to_window(data->mlx, data->map_txtrs.cross_img, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
+		// data->big_mnmp_img->enabled = true;
+		// data->map_txtrs.cross_img->enabled = true;
 		data->shade_bg->enabled = true;
 		data->map->y = data->plr->y;
 		data->map->x = data->plr->x;
@@ -81,10 +105,13 @@ void	mouse_event(mouse_key_t button, action_t action, modifier_key_t mods, void*
 		&& data->big_mnmap && !data->mouse && mouse_over_cross_icon(x, y))
 	{
 		data->big_mnmap = false;
+		mlx_delete_image(data->mlx, data->big_mnmp_img);
+		mlx_delete_image(data->mlx, data->shade_bg);
+		mlx_delete_image(data->mlx, data->map_txtrs.cross_img);
 		data->map->mnmap_img->enabled = true;
-		data->map->border->enabled = true;
+		data->map_txtrs.mp_border_img->enabled = true;
 		data->big_mnmp_img->enabled = false;
-		data->cross_icon->enabled = false;
+		// data->map_txtrs.cross_img->enabled = false;
 		data->shade_bg->enabled = false;
 	}
 	else if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS && !data->big_mnmap && !data->mouse

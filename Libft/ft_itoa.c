@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:27:35 by aaghla            #+#    #+#             */
-/*   Updated: 2023/11/19 21:48:53 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/19 10:41:04 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*minint(char *s, int n)
 
 	i = 0;
 	num = (unsigned int)n;
-	s = (char *)malloc(12 * sizeof(char));
+	s = (char *)ft_malloc(12 * sizeof(char), 0);
 	if (!s)
 		return (NULL);
 	swap(s, num, -1);
@@ -72,7 +72,7 @@ static int	sizeofn(int n)
 
 static char	*iszero(char *s)
 {
-	s = (char *)malloc(2 * sizeof(char));
+	s = (char *)ft_malloc(2 * sizeof(char), 0);
 	if (!s)
 		return (NULL);
 	s[0] = '0';
@@ -100,7 +100,7 @@ char	*ft_itoa(int n)
 		sign = -sign;
 		i++;
 	}
-	number = (char *)malloc((i + 1) * sizeof(char));
+	number = (char *)ft_malloc((i + 1) * sizeof(char), 0);
 	if (!number)
 		return (NULL);
 	swap(number, n, sign);

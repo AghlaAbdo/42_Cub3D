@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/11/19 09:42:08 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/19 14:36:01 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ typedef struct s_map
 
 	t_maplst	*maplst;
 	mlx_image_t	*mnmap_img;
-	mlx_texture_t	*border_txtr;
-	mlx_image_t	*border;
+	// mlx_texture_t	*border_txtr;
+	// mlx_image_t	*border;
 	char		**map;
 	int			plr_nb;
 	int			row;
@@ -123,6 +123,20 @@ typedef struct s_rays
 	
 }	t_rays;
 
+typedef	struct s_mp_txtrs
+{
+	mlx_texture_t	*cross_tx;
+	mlx_texture_t	*shade_bg_tx;
+	mlx_texture_t	*lighter_on_tx;
+	mlx_texture_t	*lighter_off_tx;
+	mlx_texture_t	*mp_border_tx;
+	mlx_image_t		*cross_img;
+	mlx_image_t		*shade_bg_img;
+	mlx_image_t		*lighter_on_img;
+	mlx_image_t		*lighter_off_img;
+	mlx_image_t		*mp_border_img;
+}	t_mp_txtrs;
+
 typedef struct s_data
 {
 	mlx_t		*mlx;
@@ -133,13 +147,14 @@ typedef struct s_data
 	mlx_image_t	*big_mnmp_img;
 	mlx_win_cursor_t	*hnd_cursr;
 	bool		is_moving;
+	bool		rendering;
 	bool		big_mnmap;
 	bool		light;
 	bool		mouse;
 	int			ms_x;
 	
-	mlx_texture_t	*cross_txtr;
-	mlx_image_t		*cross_icon;
+	// mlx_texture_t	*cross_txtr;
+	// mlx_image_t		*cross_icon;
 	mlx_image_t		*shade_bg;
 	mlx_image_t		*lighter_on;
 	mlx_image_t		*lighter_off;
@@ -148,6 +163,9 @@ typedef struct s_data
 	t_animation		idle_light_on_anm;
 	t_animation		walk_light_on_anm;
 	t_animation		walk_light_off_anm;
+
+	t_mp_txtrs		map_txtrs;
+	
 	bool			turning_on;
 	bool			turning_off;
 	bool			idle_on;
@@ -183,5 +201,6 @@ void		raycasting(t_data *data);
 int			check_wall(t_data *data, int p_x, int p_y);
 void		mouse_event(mouse_key_t button, action_t action, modifier_key_t mods, void* param);
 void		check_mouse_pos(t_data *data);
+void	draw_shade_bg(t_data *data);
 
 #endif

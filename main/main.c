@@ -6,28 +6,28 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:54:05 by srachidi          #+#    #+#             */
-/*   Updated: 2024/11/19 09:44:54 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/19 14:39:31 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_shade_bg(t_data *data)
-{
-	int	y;
-	int	x;
+// void	draw_shade_bg(t_data *data)
+// {
+// 	int	y;
+// 	int	x;
 
-	y = -1;
-	while (++y < WIN_H)
-	{
-		x = -1;
-		while (++x < WIN_W)
-		{
-			mlx_put_pixel(data->shade_bg, x, y, get_rgba(0, 0, 0, 120));
-		}
-	}
-	data->shade_bg->enabled = false;
-}
+// 	y = -1;
+// 	while (++y < WIN_H)
+// 	{
+// 		x = -1;
+// 		while (++x < WIN_W)
+// 		{
+// 			mlx_put_pixel(data->shade_bg, x, y, get_rgba(0, 0, 0, 120));
+// 		}
+// 	}
+// 	data->shade_bg->enabled = false;
+// }
 
 void	init_turning_on_imgs(t_data *data, t_animation *anm)
 {
@@ -163,28 +163,28 @@ void	init_walking_off_imgs(t_data *data, t_animation *anm)
 
 void	init_images(t_data *data)
 {
-	mlx_texture_t	*border;
+	mlx_texture_t	*txtr;
 	data->map->mnmap_img = mlx_new_image(data->mlx, MNMAP_W, MNMAP_H);
 	data->win_img = mlx_new_image(data->mlx, WIN_W, WIN_H);
-	data->big_mnmp_img = mlx_new_image(data->mlx, BIG_MNMAP_W, BIG_MNMAP_H);
-	data->shade_bg = mlx_new_image(data->mlx, WIN_W, WIN_H);
-	draw_shade_bg(data);
-	data->big_mnmp_img->enabled = false;
+	// data->big_mnmp_img = mlx_new_image(data->mlx, BIG_MNMAP_W, BIG_MNMAP_H);
+	// data->shade_bg = mlx_new_image(data->mlx, WIN_W, WIN_H);
+	// draw_shade_bg(data);
+	// data->big_mnmp_img->enabled = false;
 	mlx_image_to_window(data->mlx, data->win_img, 0, 0);
 	mlx_image_to_window(data->mlx, data->map->mnmap_img, MNMAP_GAP, MNMAP_GAP);
 	
 	
-	border = mlx_load_png("./images/mnmap_border.png");
-	data->cross_txtr = mlx_load_png("./images/close.png");
-	if (!data->cross_txtr || !border)
+	data->map_txtrs.mp_border_tx = mlx_load_png("./images/mnmap_border.png");
+	data->map_txtrs.cross_tx = mlx_load_png("./images/close.png");
+	if (!data->map_txtrs.cross_tx || !data->map_txtrs.mp_border_tx)
 		clean_exit("Can't load png", 10);
-	data->map->border = mlx_texture_to_image(data->mlx, border);
-	mlx_delete_texture(border);
-	mlx_image_to_window(data->mlx, data->map->border, MNMAP_GAP, MNMAP_GAP - 12);
+	data->map_txtrs.mp_border_img = mlx_texture_to_image(data->mlx, data->map_txtrs.mp_border_tx);
+	// mlx_delete_texture(border);
+	mlx_image_to_window(data->mlx, data->map_txtrs.mp_border_img, MNMAP_GAP, MNMAP_GAP - 12);
 	// data->map->border->enabled = false;
 
-	data->cross_icon = mlx_texture_to_image(data->mlx, data->cross_txtr);
-	data->cross_icon->enabled = false;
+	data->map_txtrs.cross_img = mlx_texture_to_image(data->mlx, data->map_txtrs.cross_tx);
+	data->map_txtrs.cross_img->enabled = false;
 	data->hnd_cursr = mlx_create_std_cursor(MLX_CURSOR_HAND);
 
 
@@ -194,22 +194,20 @@ void	init_images(t_data *data)
 	init_walking_on_imgs(data, &data->walk_light_on_anm);
 	init_walking_off_imgs(data, &data->walk_light_off_anm);
 
-	border = mlx_load_png("./images/lighter_off.png");
-	if (!border)
+	txtr = mlx_load_png("./images/lighter_off.png");
+	if (!txtr)
 		clean_exit("Can't load png", 19);
-	data->lighter_off = mlx_texture_to_image(data->mlx, border);
-	mlx_delete_texture(border);
+	data->lighter_off = mlx_texture_to_image(data->mlx, txtr);
+	mlx_delete_texture(txtr);
 	mlx_image_to_window(data->mlx, data->lighter_off, WIN_W - 120, WIN_H - 150);
-	border = mlx_load_png("./images/lighter_on.png");
-	if (!border)
+	txtr = mlx_load_png("./images/lighter_on.png");
+	if (!txtr)
 		clean_exit("Cna't load png", 20);
-	data->lighter_on = mlx_texture_to_image(data->mlx, border);
-	mlx_delete_texture(border);
+	data->lighter_on = mlx_texture_to_image(data->mlx, txtr);
+	mlx_delete_texture(txtr);
 	data->lighter_on->enabled = false;
 	mlx_image_to_window(data->mlx, data->lighter_on, WIN_W - 120, WIN_H - 150);
-	mlx_image_to_window(data->mlx, data->shade_bg, 0, 0);
-	mlx_image_to_window(data->mlx, data->big_mnmp_img, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
-	mlx_image_to_window(data->mlx, data->cross_icon, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
+	mlx_image_to_window(data->mlx, data->map_txtrs.cross_img, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
 }
 
 void	init_data(t_data *data)
@@ -225,6 +223,7 @@ void	init_data(t_data *data)
 	data->map->plr_nb = 0;
 	data->map->row = 0;
 	data->is_moving = true;
+	data->rendering = true;
 	data->light = false;
 	data->mouse = false;
 	data->big_mnmap = false;
@@ -248,11 +247,54 @@ void	ab_set_orn(t_data *data)
 		data->plr->rot_angl = M_PI + (M_PI / 2);
 }
 
+void	close_hook(void	*param)
+{
+	t_data	*data;
+	int		i;
+
+	data = (t_data *)param;
+	i = -1;
+	while (++i < TRN_ON_FRMS)
+	{
+		mlx_delete_texture(data->trn_on_anm.txtrs[i]);
+	}
+	i = -1;
+	while (++i < TRN_OFF_FRMS)
+	{
+		mlx_delete_texture(data->trn_off_anm.txtrs[i]);
+	}
+	i = -1;
+	while (++i < IDLE_ON_FRMS)
+	{
+		mlx_delete_texture(data->idle_light_on_anm.txtrs[i]);
+	}
+	i = -1;
+	while (++i < WALK_ON_FRMS)
+	{
+		mlx_delete_texture(data->walk_light_on_anm.txtrs[i]);
+	}
+	i = -1;
+	while (++i < WALK_OFF_FRMS)
+	{
+		mlx_delete_texture(data->walk_light_off_anm.txtrs[i]);
+	}
+	// free(data->trn_on_anm.txtrs);
+	// free(data->trn_off_anm.txtrs);
+	// free(data->idle_light_on_anm.txtrs);
+	// free(data->walk_light_on_anm.txtrs);
+	// free(data->walk_light_off_anm.txtrs);
+	ft_malloc(0, 1);
+	printf("exit from here?\n");
+	exit(0);
+}
+
 void	handle_events(mlx_key_data_t keydata, void *param)
 {
 	t_data	*data;
 
 	data = (t_data *)param;
+	if (keydata.key == MLX_KEY_ESCAPE)
+		close_hook(param);
 	if (keydata.key == MLX_KEY_L && keydata.action == MLX_PRESS && !data->big_mnmap)
 	{
 		if (!data->turning_on && data->light)
@@ -281,11 +323,19 @@ void	handle_events(mlx_key_data_t keydata, void *param)
 		data->big_mnmap = !data->big_mnmap;
 		if (data->big_mnmap)
 		{
+			data->big_mnmap = true;
 			data->map->mnmap_img->enabled = false;
-			data->map->border->enabled = false;
-			data->big_mnmp_img->enabled = true;
-			data->cross_icon->enabled = true;
-			data->shade_bg->enabled = true;
+			data->map_txtrs.mp_border_img->enabled = false;
+			data->shade_bg = mlx_new_image(data->mlx, WIN_W, WIN_H);
+			draw_shade_bg(data);
+			data->big_mnmp_img = mlx_new_image(data->mlx, BIG_MNMAP_W, BIG_MNMAP_H);
+			data->map_txtrs.cross_img = mlx_texture_to_image(data->mlx, data->map_txtrs.cross_tx);
+			mlx_image_to_window(data->mlx, data->shade_bg, 0, 0);
+			mlx_image_to_window(data->mlx, data->big_mnmp_img, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
+			mlx_image_to_window(data->mlx, data->map_txtrs.cross_img, WIN_W / 2 - BIG_MNMAP_W / 2, WIN_H / 2 - BIG_MNMAP_H / 2);
+			
+			// data->map_txtrs.cross_img->enabled = true;
+			// data->shade_bg->enabled = true;
 			data->map->y = data->plr->y;
 			data->map->x = data->plr->x;
 			data->map->p_y = BIG_MNMAP_H / 2;
@@ -293,24 +343,18 @@ void	handle_events(mlx_key_data_t keydata, void *param)
 		}
 		else
 		{
-			data->big_mnmp_img->enabled = false;
+			data->big_mnmap = false;
+			mlx_delete_image(data->mlx, data->big_mnmp_img);
 			data->map->mnmap_img->enabled = true;
-			data->map->border->enabled = true;
-			data->cross_icon->enabled = false;
-			data->shade_bg->enabled = false;
-			data->is_moving = true;
+			data->map_txtrs.mp_border_img->enabled = true;
+			// data->map_txtrs.cross_img->enabled = false;
+			mlx_delete_image(data->mlx, data->shade_bg);
+			mlx_delete_image(data->mlx, data->map_txtrs.cross_img);
+			data->rendering = true;
 		}
 	}
 }
 
-void	close_hook(void	*param)
-{
-	t_data	*data;
-
-	data = (t_data *)param;
-	(void)data;
-	exit(0);
-}
 
 void	leaks()
 {
