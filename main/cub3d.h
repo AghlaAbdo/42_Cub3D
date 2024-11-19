@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/10 15:18:18 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/19 09:42:08 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ typedef struct s_maplst
 
 typedef struct s_animation
 {
-	// mlx_texture_t	**txtrs;
+	mlx_texture_t	**txtrs;
 	mlx_image_t	**frames;
+	mlx_image_t	*frame;
 	int			curr_frm;
 	double		last_frm_time;
 }	t_animation;

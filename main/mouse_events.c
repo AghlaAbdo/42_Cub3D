@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 20:17:28 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/10 16:42:54 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/10/22 11:43:39 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,9 @@ void	mouse_event(mouse_key_t button, action_t action, modifier_key_t mods, void*
 	{
 		if (!data->turning_on && data->light)
 		{
-			data->idle_light_on_anm.frames[data->idle_light_on_anm.curr_frm]->enabled = false;
+			// data->idle_light_on_anm.frames[data->idle_light_on_anm.curr_frm]->enabled = false;
+			mlx_delete_image(data->mlx, data->idle_light_on_anm.frame);
+			data->idle_light_on_anm.frame = NULL;
 			data->turning_off = true;
 			data->lighter_on->enabled = false;
 			data->lighter_off->enabled = true;

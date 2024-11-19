@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:54:05 by srachidi          #+#    #+#             */
-/*   Updated: 2024/09/10 16:28:30 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/19 09:44:54 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,19 @@ void	init_turning_on_imgs(t_data *data, t_animation *anm)
 
 	anm->last_frm_time = mlx_get_time() * 1e3;
 	anm->curr_frm = 0;
-	anm->frames = (mlx_image_t **)ft_malloc(sizeof(mlx_image_t) * TRN_ON_FRMS, 0);
+	anm->frame = NULL;
+	// anm->frames = (mlx_image_t **)ft_malloc(sizeof(mlx_image_t) * TRN_ON_FRMS, 0);
+	anm->txtrs = (mlx_texture_t **)ft_malloc(sizeof(mlx_texture_t) * TRN_ON_FRMS, 0);
 	i = -1;
 	while (++i < TRN_ON_FRMS)
 	{
-		txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/turn_light_on/f_", ft_itoa(i + 1)), ".png"));
-		if (!txtr)
+		anm->txtrs[i] = mlx_load_png(ft_strjoin(ft_strjoin("./images/turn_light_on/f_", ft_itoa(i)), ".png"));
+		if (!anm->txtrs[i])
 			clean_exit("Can't load png", 14);
-		anm->frames[i] = mlx_texture_to_image(data->mlx, txtr);
-		anm->frames[i]->enabled = false;
-		mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
+		// anm->frames[i] = mlx_texture_to_image(data->mlx, txtr);
+		// anm->frames[i]->enabled = false;
+		// mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
+		// mlx_delete_texture(txtr);
 	}
 	
 }
@@ -56,17 +59,20 @@ void	init_idle_light_on_imgs(t_data *data, t_animation *anm)
 	int				i;
 
 	anm->last_frm_time = mlx_get_time() * 1e3;
-	anm->curr_frm = 0;
-	anm->frames = (mlx_image_t **)ft_malloc(sizeof(mlx_image_t) * IDLE_ON_FRMS, 0);
+	anm->curr_frm = -1;
+	// anm->txtrs = (mlx_image_t **)ft_malloc(sizeof(mlx_image_t) * IDLE_ON_FRMS, 0);
+	anm->txtrs = (mlx_texture_t **)ft_malloc(sizeof(mlx_texture_t) * IDLE_ON_FRMS, 0);
+	anm->frame = NULL;
 	i = -1;
 	while (++i < IDLE_ON_FRMS)
 	{
-		txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/idle_light_on/f_", ft_itoa(i + 1)), ".png"));
-		if (!txtr)
-			clean_exit("Can't load png", 15);
-		anm->frames[i] = mlx_texture_to_image(data->mlx, txtr);
-		anm->frames[i]->enabled = false;
-		mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
+		anm->txtrs[i] = mlx_load_png(ft_strjoin(ft_strjoin("./images/idle_light_on/f_", ft_itoa(i)), ".png"));
+		if (!anm->txtrs[i])
+			clean_exit("Can't load png", 45);
+		// anm->frames[i] = mlx_texture_to_image(data->mlx, anm->txtrs[i]);
+		// anm->frames[i]->enabled = false;
+		// mlx_delete_texture(anm->txtrs[i]);
+		// mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
 	}
 }
 
@@ -77,16 +83,21 @@ void	init_turning_off_imgs(t_data *data, t_animation *anm)
 
 	anm->last_frm_time = mlx_get_time() * 1e3;
 	anm->curr_frm = 0;
-	anm->frames = (mlx_image_t **)ft_malloc(sizeof(mlx_image_t) * TRN_OFF_FRMS, 0);
+	anm->txtrs = (mlx_texture_t **)ft_malloc(sizeof(mlx_image_t) * TRN_OFF_FRMS, 0);
+	anm->frame = NULL;
 	i = -1;
 	while (++i < TRN_OFF_FRMS)
 	{
-		txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/turn_light_off/f_", ft_itoa(i + 1)), ".png"));
-		if (!txtr)
-			clean_exit("Can't load png", 16);
-		anm->frames[i] = mlx_texture_to_image(data->mlx, txtr);
-		anm->frames[i]->enabled = false;
-		mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
+		anm->txtrs[i] = mlx_load_png(ft_strjoin(ft_strjoin("./images/turn_light_off/f_", ft_itoa(i)), ".png"));
+		if (!anm->txtrs[i])
+			clean_exit("Can't load png", 51);
+	// 	txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/turn_light_off/f_", ft_itoa(i)), ".png"));
+	// 	if (!txtr)
+	// 		clean_exit("Can't load png", 16);
+	// 	anm->frames[i] = mlx_texture_to_image(data->mlx, txtr);
+	// 	anm->frames[i]->enabled = false;
+	// 	mlx_delete_texture(txtr);
+	// 	mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
 	}
 }
 
@@ -97,16 +108,21 @@ void	init_walking_on_imgs(t_data *data, t_animation *anm)
 
 	anm->last_frm_time = mlx_get_time() * 1e3;
 	anm->curr_frm = 0;
-	anm->frames = (mlx_image_t **)ft_malloc(sizeof(mlx_image_t) * WALK_ON_FRMS, 0);
+	anm->txtrs = (mlx_texture_t **)ft_malloc(sizeof(mlx_image_t) * WALK_ON_FRMS, 0);
+	anm->frame = NULL;
 	i = -1;
 	while (++i < WALK_ON_FRMS)
 	{
-		txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/walk_light_on/f_", ft_itoa(i + 1)), ".png"));
-		if (!txtr)
-			clean_exit("Can't load png", 17);
-		anm->frames[i] = mlx_texture_to_image(data->mlx, txtr);
-		anm->frames[i]->enabled = false;
-		mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
+		anm->txtrs[i] = mlx_load_png(ft_strjoin(ft_strjoin("./images/walk_light_on/f_", ft_itoa(i)), ".png"));
+		if (!anm->txtrs[i])
+			clean_exit("Can't load png", 77);
+	// 	txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/walk_light_on/f_", ft_itoa(i)), ".png"));
+	// 	if (!txtr)
+	// 		clean_exit("Can't load png", 17);
+	// 	anm->frames[i] = mlx_texture_to_image(data->mlx, txtr);
+	// 	anm->frames[i]->enabled = false;
+	// 	mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
+	// 	mlx_delete_texture(txtr);
 	}
 }
 
@@ -117,18 +133,32 @@ void	init_walking_off_imgs(t_data *data, t_animation *anm)
 
 	anm->last_frm_time = mlx_get_time() * 1e3;
 	anm->curr_frm = 0;
-	anm->frames = (mlx_image_t **)ft_malloc(sizeof(mlx_image_t) * WALK_OFF_FRMS, 0);
+	anm->txtrs = (mlx_texture_t **)ft_malloc(sizeof(mlx_image_t) * WALK_OFF_FRMS, 0);
+	anm->frame = NULL;
+	
+	txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/walk_light_off/f_", ft_itoa(anm->curr_frm)), ".png"));
+	if (!txtr)
+		clean_exit("Can't load png", 88);
+	anm->frame = mlx_texture_to_image(data->mlx, txtr);
+	mlx_delete_texture(txtr);
+	mlx_image_to_window(data->mlx, anm->frame, 475, WIN_H - 370);
+
 	i = -1;
 	while (++i < WALK_OFF_FRMS)
 	{
-		txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/walk_light_off/f_", ft_itoa(i + 1)), ".png"));
-		if (!txtr)
-			clean_exit("Can't load png", 18);
-		anm->frames[i] = mlx_texture_to_image(data->mlx, txtr);
-		anm->frames[i]->enabled = false;
-		mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
+		anm->txtrs[i] = mlx_load_png(ft_strjoin(ft_strjoin("./images/walk_light_off/f_", ft_itoa(i)), ".png"));
+		if (!anm->txtrs[i])
+			clean_exit("Can't load png", 43);
+	// 	// printf("loog i = %d\n", i);
+	// 	txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/walk_light_off/f_", ft_itoa(i)), ".png"));
+	// 	if (!txtr)
+	// 		clean_exit("Can't load png", 88);
+	// 	anm->frames[i] = mlx_texture_to_image(data->mlx, txtr);
+	// 	anm->frames[i]->enabled = false;
+	// 	mlx_image_to_window(data->mlx, anm->frames[i], 475, WIN_H - 370);
+	// 	mlx_delete_texture(txtr);
 	}
-	anm->frames[0]->enabled = true;
+	// anm->frames[0]->enabled = true;
 }
 
 void	init_images(t_data *data)
@@ -149,6 +179,7 @@ void	init_images(t_data *data)
 	if (!data->cross_txtr || !border)
 		clean_exit("Can't load png", 10);
 	data->map->border = mlx_texture_to_image(data->mlx, border);
+	mlx_delete_texture(border);
 	mlx_image_to_window(data->mlx, data->map->border, MNMAP_GAP, MNMAP_GAP - 12);
 	// data->map->border->enabled = false;
 
@@ -167,11 +198,13 @@ void	init_images(t_data *data)
 	if (!border)
 		clean_exit("Can't load png", 19);
 	data->lighter_off = mlx_texture_to_image(data->mlx, border);
+	mlx_delete_texture(border);
 	mlx_image_to_window(data->mlx, data->lighter_off, WIN_W - 120, WIN_H - 150);
 	border = mlx_load_png("./images/lighter_on.png");
 	if (!border)
 		clean_exit("Cna't load png", 20);
 	data->lighter_on = mlx_texture_to_image(data->mlx, border);
+	mlx_delete_texture(border);
 	data->lighter_on->enabled = false;
 	mlx_image_to_window(data->mlx, data->lighter_on, WIN_W - 120, WIN_H - 150);
 	mlx_image_to_window(data->mlx, data->shade_bg, 0, 0);
@@ -224,7 +257,9 @@ void	handle_events(mlx_key_data_t keydata, void *param)
 	{
 		if (!data->turning_on && data->light)
 		{
-			data->idle_light_on_anm.frames[data->idle_light_on_anm.curr_frm]->enabled = false;
+			// data->idle_light_on_anm.frames[data->idle_light_on_anm.curr_frm]->enabled = false;
+			mlx_delete_image(data->mlx, data->idle_light_on_anm.frame);
+			data->idle_light_on_anm.frame = NULL;
 			data->turning_off = true;
 		}
 		else if (!data->light)

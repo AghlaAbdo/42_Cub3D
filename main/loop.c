@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:50:44 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/10 16:45:18 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/19 09:57:11 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,29 @@
 
 void	anm_turn_light_on(t_data *data, t_animation *anm, double curr_time)
 {
+	mlx_texture_t	*txtr;
+
 	if (curr_time - anm->last_frm_time > FRM_DUR)
 	{
 		if (data->walking_off)
 		{
-			data->walking_off = false;
-			data->walk_light_off_anm.frames[data->walk_light_off_anm.curr_frm]->enabled = false;
+			// data->walking_off = false;
+			// data->walk_light_off_anm.frames[data->walk_light_off_anm.curr_frm]->enabled = false;
+			mlx_delete_image(data->mlx, data->walk_light_off_anm.frame);
+			data->walk_light_off_anm.frame = NULL;
 		}
-		anm->frames[anm->curr_frm]->enabled = false;
+		// anm->frames[anm->curr_frm]->enabled = false;
+		// anm->frames[anm->curr_frm]->enabled = true;
+		if (anm->frame)
+			mlx_delete_image(data->mlx, anm->frame);
+		// txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/turn_light_on/f_", ft_itoa(anm->curr_frm)), ".png"));
+		// if (!txtr)
+		// 	clean_exit("Can't load png", 14);
 		anm->curr_frm = (anm->curr_frm + 1) % TRN_ON_FRMS;
-		anm->frames[anm->curr_frm]->enabled = true;
+		anm->frame = mlx_texture_to_image(data->mlx, anm->txtrs[anm->curr_frm]);
+		// mlx_delete_texture(txtr);
+		if (anm->curr_frm != TRN_ON_FRMS - 1)
+		mlx_image_to_window(data->mlx, anm->frame, 475, WIN_H - 370);
 		anm->last_frm_time = curr_time;
 	}
 	if (anm->curr_frm == 7)
@@ -34,37 +47,64 @@ void	anm_turn_light_on(t_data *data, t_animation *anm, double curr_time)
 	if (anm->curr_frm == TRN_ON_FRMS - 1)
 	{
 		data->turning_on = false;
-		anm->frames[TRN_ON_FRMS - 1]->enabled = false;
+		mlx_delete_image(data->mlx, anm->frame);
+		anm->frame = NULL;
 	}
 }
 
 void	anm_idle_light_on(t_data *data, t_animation *anm, double curr_time)
 {
+	mlx_texture_t	*txtr;
 	if (curr_time - anm->last_frm_time > FRM_DUR + 40)
 	{
 		if (!data->idle_on)
 			data->idle_on = true;
 		if (data->walking_on)
 		{
-			data->walk_light_on_anm.frames[data->walk_light_on_anm.curr_frm]->enabled = false;
+			// data->walk_light_on_anm.frames[data->walk_light_on_anm.curr_frm]->enabled = false;
+			mlx_delete_image(data->mlx, data->walk_light_on_anm.frame);
+			data->walk_light_on_anm.frame = NULL;
 			data->walking_on = false;
 		}
-		anm->frames[anm->curr_frm]->enabled = false;
+		// anm->frames[anm->curr_frm]->enabled = false;
+		// anm->frames[anm->curr_frm]->enabled = true;
+		
+		if (anm->frame)
+			mlx_delete_image(data->mlx, anm->frame);
+		// txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/idle_light_on/f_", ft_itoa(anm->curr_frm)), ".png"));
+		// if (!txtr)
+		// 	clean_exit("Can't load png", 15);
 		anm->curr_frm = (anm->curr_frm + 1) % IDLE_ON_FRMS;
-		anm->frames[anm->curr_frm]->enabled = true;
+		anm->frame = mlx_texture_to_image(data->mlx, anm->txtrs[anm->curr_frm]);
+		mlx_image_to_window(data->mlx, anm->frame, 475, WIN_H - 370);
 		anm->last_frm_time = curr_time;
 	}
 }
 
 void	anm_turn_light_off(t_data *data, t_animation *anm, double curr_time)
 {
+	mlx_texture_t	*txtr;
+
 	if (curr_time - anm->last_frm_time > FRM_DUR)
 	{
 		if (data->walking_on)
-			data->walk_light_on_anm.frames[data->walk_light_on_anm.curr_frm]->enabled = false;
-		anm->frames[anm->curr_frm]->enabled = false;
+		{
+			mlx_delete_image(data->mlx, data->walk_light_on_anm.frame);
+			data->walk_light_on_anm.frame = NULL;
+		}
+			// data->walk_light_on_anm.frames[data->walk_light_on_anm.curr_frm]->enabled = false;
+		// anm->frames[anm->curr_frm]->enabled = false;
+		// anm->frames[anm->curr_frm]->enabled = true;
+		
+		if (anm->frame)
+			mlx_delete_image(data->mlx, anm->frame);
+		// txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/turn_light_off/f_", ft_itoa(anm->curr_frm)), ".png"));
+		// if (!txtr)
+		// 	clean_exit("Can't load png", 16);
 		anm->curr_frm = (anm->curr_frm + 1) % TRN_OFF_FRMS;
-		anm->frames[anm->curr_frm]->enabled = true;
+		anm->frame = mlx_texture_to_image(data->mlx, anm->txtrs[anm->curr_frm]);
+		// mlx_delete_texture(txtr);
+		mlx_image_to_window(data->mlx, anm->frame, 475, WIN_H - 370);
 		anm->last_frm_time = curr_time;
 	}
 	if (anm->curr_frm == 7)
@@ -75,39 +115,73 @@ void	anm_turn_light_off(t_data *data, t_animation *anm, double curr_time)
 	if (anm->curr_frm == TRN_OFF_FRMS - 1)
 	{
 		data->turning_off = false;
-		anm->frames[TRN_OFF_FRMS - 1]->enabled = false;
+		// anm->frames[TRN_OFF_FRMS - 1]->enabled = false;
+		mlx_delete_image(data->mlx, anm->frame);
+		anm->frame = NULL;
+		// anm->curr_frm = 0;
+		// printf("ever here?\n");
 		data->is_moving = true;
 	}
 }
 
 void	anm_walk_light_on(t_data *data, t_animation *anm, double curr_time)
 {
+	mlx_texture_t	*txtr;
+
 	if (curr_time - anm->last_frm_time > FRM_DUR)
 	{
+		// if (data->trn_on_anm.frame)
+		// {
+		// 	mlx_delete_image(data->mlx, data->trn_on_anm.frame);
+		// 	data->trn_on_anm.frame = NULL;
+		// }
 		if (!data->walking_on)
 			data->walking_on = true;
 		if (data->idle_on)
 		{
-			data->idle_light_on_anm.frames[data->idle_light_on_anm.curr_frm]->enabled = false;
+			// data->idle_light_on_anm.frames[data->idle_light_on_anm.curr_frm]->enabled = false;
+			mlx_delete_image(data->mlx, data->idle_light_on_anm.frame);
+			data->idle_light_on_anm.frame = NULL;
 			data->idle_on = false;
 		}
-		anm->frames[anm->curr_frm]->enabled = false;
+		// anm->frames[anm->curr_frm]->enabled = false;
+		// anm->frames[anm->curr_frm]->enabled = true;
+
+		if (anm->frame)
+			mlx_delete_image(data->mlx, anm->frame);
+		// txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/walk_light_on/f_", ft_itoa(anm->curr_frm)), ".png"));
+		// if (!txtr)
+		// 	clean_exit("Can't load png", 88);
 		anm->curr_frm = (anm->curr_frm + 1) % WALK_ON_FRMS;
-		anm->frames[anm->curr_frm]->enabled = true;
+		anm->frame = mlx_texture_to_image(data->mlx, anm->txtrs[anm->curr_frm]);
+		// mlx_delete_texture(txtr);
+		mlx_image_to_window(data->mlx, anm->frame, 475, WIN_H - 370);
 		anm->last_frm_time = curr_time;
 	}
 }
 
 void	anm_walk_light_off(t_data *data, t_animation *anm, double curr_time)
 {
-	
+	mlx_texture_t	*txtr;
+
 	if (curr_time - anm->last_frm_time > FRM_DUR - 20)
 	{
 		if (!data->walking_off)
 			data->walking_off = true;
-		anm->frames[anm->curr_frm]->enabled = false;
+		// anm->frames[anm->curr_frm]->enabled = false;
+		// anm->curr_frm = (anm->curr_frm + 1) % WALK_OFF_FRMS;
+		// anm->frames[anm->curr_frm]->enabled = true;
+		// anm->last_frm_time = curr_time;
+		
+		if (anm->frame)
+			mlx_delete_image(data->mlx, anm->frame);
+		// txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/walk_light_off/f_", ft_itoa(anm->curr_frm)), ".png"));
+		// if (!txtr)
+		// 	clean_exit("Can't load png", 88);
 		anm->curr_frm = (anm->curr_frm + 1) % WALK_OFF_FRMS;
-		anm->frames[anm->curr_frm]->enabled = true;
+		anm->frame = mlx_texture_to_image(data->mlx, anm->txtrs[anm->curr_frm]);
+		// mlx_delete_texture(txtr);
+		mlx_image_to_window(data->mlx, anm->frame, 475, WIN_H - 370);
 		anm->last_frm_time = curr_time;
 	}
 }
