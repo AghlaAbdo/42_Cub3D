@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 18:39:22 by srachidi          #+#    #+#             */
-/*   Updated: 2024/08/27 09:08:35 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/21 10:41:01 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	ab_check_chars(char *line, t_data *data)
 		return (1);
 	while (line[i])
 	{
-		if (line[i] != '1' && line[i] != '0' && line[i] != 'N' && line[i] != 'S'
+		if (line[i] != '1' && line[i] != '0' && line[i] != 'N' && line[i] != 'S' && line[i] != 'D'
 			&& line[i] != 'E' && line[i] != 'W' && line[i] != ' ' && line[i] != '\n')
 			return (1);
 		if (line[i] == 'N' || line[i] == 'S' || line[i] == 'E' || line[i] == 'W')
@@ -140,7 +140,7 @@ void	ab_is_closed(t_data *data, char **map)
 		j = -1;
 		while (map[i][++j])
 		{
-			if (map[i][j] == '0')
+			if (map[i][j] == '0' || map[i][j] == 'D')
 			{
 				if (!j || map[i][j - 1] == ' ' || map[i - 1][j] == ' ' || map[i][j + 1] == ' '
 					|| map[i][j +1] == '\0' || map[i +1][j] == ' ')
@@ -157,6 +157,12 @@ void	ab_is_closed(t_data *data, char **map)
 					data->plr->x = j * MNMAP_TILE_S + (MNMAP_TILE_S / 2);
 					data->plr->orn = map[i][j];
 				}
+			}
+			if (map[i][j] == 'D')
+			{
+				if (!j || !((map[i][j - 1] == '1' && map[i][j + 1] == '1') || (map[i - 1][j] == '1'
+					&& map[i + 1][j] == '1')))
+					clean_exit("invalid door position", 82);
 			}
 		}
 		if (!map[i+2])

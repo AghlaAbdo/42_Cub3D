@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/11/19 14:36:01 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/21 18:21:53 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 # define MNMAP_W (MNMAP_TILE_S * 10)
 # define MNMAP_H (MNMAP_TILE_S * 10)
 # define MNMAP_GAP 16
-# define BIG_MNMAP_W 960
-# define BIG_MNMAP_H 576
+# define BIGMAP_W 960
+# define BIGMAP_H 576
 # define MOVE_SPD 1.3
 # define ROT_SPD 2 * (M_PI / 180)
 # define FOV 60 * (M_PI / 180)
@@ -76,10 +76,12 @@ typedef struct s_map
 	int			f[3];
 	int			c[3];
 
-	t_maplst	*maplst;
-	mlx_image_t	*mnmap_img;
-	// mlx_texture_t	*border_txtr;
-	// mlx_image_t	*border;
+	t_maplst		*maplst;
+	mlx_image_t		*mnmap_img;
+	mlx_texture_t	*border_txt;
+	mlx_image_t		*border_img;
+	mlx_texture_t	*cross_txt;
+	mlx_image_t		*cross_img;
 	char		**map;
 	int			plr_nb;
 	int			row;
@@ -118,24 +120,27 @@ typedef struct s_rays
 	bool	found_v;
 	bool	is_left;
 	bool	is_up;
+	bool	door_h;
+	bool	door_v;
+	bool	door;
 	double	dstn;
 	double	real_dstn;
 	
 }	t_rays;
 
-typedef	struct s_mp_txtrs
-{
-	mlx_texture_t	*cross_tx;
-	mlx_texture_t	*shade_bg_tx;
-	mlx_texture_t	*lighter_on_tx;
-	mlx_texture_t	*lighter_off_tx;
-	mlx_texture_t	*mp_border_tx;
-	mlx_image_t		*cross_img;
-	mlx_image_t		*shade_bg_img;
-	mlx_image_t		*lighter_on_img;
-	mlx_image_t		*lighter_off_img;
-	mlx_image_t		*mp_border_img;
-}	t_mp_txtrs;
+// typedef	struct s_mp_txtrs
+// {
+// 	// mlx_texture_t	*cross_tx;
+// 	mlx_texture_t	*shade_bg_tx;
+// 	mlx_texture_t	*lighter_on_tx;
+// 	mlx_texture_t	*lighter_off_tx;
+// 	// mlx_texture_t	*mp_border_tx;
+// 	// mlx_image_t		*cross_img;
+// 	mlx_image_t		*shade_bg_img;
+// 	mlx_image_t		*lighter_on_img;
+// 	mlx_image_t		*lighter_off_img;
+// 	// mlx_image_t		*mp_border_img;
+// }	t_mp_txtrs;
 
 typedef struct s_data
 {
@@ -144,11 +149,11 @@ typedef struct s_data
 	t_player	*plr;
 	t_rays		rays[N_RAYS];
 	mlx_image_t	*win_img;
-	mlx_image_t	*big_mnmp_img;
+	mlx_image_t	*bigmap_img;
 	mlx_win_cursor_t	*hnd_cursr;
 	bool		is_moving;
 	bool		rendering;
-	bool		big_mnmap;
+	bool		bigmap;
 	bool		light;
 	bool		mouse;
 	int			ms_x;
@@ -164,7 +169,7 @@ typedef struct s_data
 	t_animation		walk_light_on_anm;
 	t_animation		walk_light_off_anm;
 
-	t_mp_txtrs		map_txtrs;
+	// t_mp_txtrs		map_txtrs;
 	
 	bool			turning_on;
 	bool			turning_off;
@@ -191,7 +196,7 @@ void		handle_mouse(t_data *data);
 bool		ab_is_moving(t_data *data);
 void		draw_mnmap(t_data *data);
 void		draw_mnmap_rays(t_data *data);
-void		draw_big_mnmap(t_data *data);
+void		draw_bigmap(t_data *data);
 void		clean_exit(char *err, int stat);
 void		ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color);
 void		draw_circle(mlx_image_t *img, int h, int k, int r);
@@ -201,6 +206,6 @@ void		raycasting(t_data *data);
 int			check_wall(t_data *data, int p_x, int p_y);
 void		mouse_event(mouse_key_t button, action_t action, modifier_key_t mods, void* param);
 void		check_mouse_pos(t_data *data);
-void	draw_shade_bg(t_data *data);
+void		draw_shade_bg(t_data *data);
 
 #endif

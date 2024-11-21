@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 09:35:03 by aaghla            #+#    #+#             */
-/*   Updated: 2024/11/19 15:11:55 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/19 15:50:35 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ bool	ab_is_moving(t_data *data)
 {
 	if (data->mouse)
 		data->rendering = true;
-	// data->is_moving = false;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_A) || mlx_is_key_down(data->mlx, MLX_KEY_W)
 		|| mlx_is_key_down(data->mlx, MLX_KEY_S) || mlx_is_key_down(data->mlx, MLX_KEY_D)
 		|| mlx_is_key_down(data->mlx, MLX_KEY_LEFT) || mlx_is_key_down(data->mlx, MLX_KEY_RIGHT)

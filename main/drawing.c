@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:56:36 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/10 07:16:43 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/21 12:35:06 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,9 @@ void	draw_ray(t_data *data, int x, int y, int w, int h)
 			alpha = 255;
 		
 	}
-	if (data->rays[x].orn == 'h')
+	if (data->rays[x].door)
+		color = get_rgba(67, 46, 84, alpha);
+	else if (data->rays[x].orn == 'h')
 		color = get_rgba(235, 235, 235, alpha);
 	else
 		color = get_rgba(180, 180, 180,  alpha);

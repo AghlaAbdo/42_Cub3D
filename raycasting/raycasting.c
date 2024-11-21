@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 07:01:17 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/06 09:53:41 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/21 12:34:54 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	ab_set_rayangl(t_data *data)
 }
 
 // check if the ray casted hit a wall
-static int	is_wall(t_data *data, double x, double y, bool *found_wall)
+static int	is_wall(t_data *data, double x, double y, bool *found_wall, bool *door)
 {
 	int	i;
 	int	j;
@@ -49,9 +49,13 @@ static int	is_wall(t_data *data, double x, double y, bool *found_wall)
 	j = (int)floor(x / MNMAP_TILE_S);
 	if (i < 0 || i >= data->map->col || j < 0 || j >= data->map->row)
 		return (-1);
-	if (data->map->map[i][j] == '1')
+	if (data->map->map[i][j] == '1' || data->map->map[i][j] == 'D')
 	{
 		*found_wall = true;
+		if (data->map->map[i][j] == 'D')
+			*door = true;
+		else
+			*door = false;
 		return (1);
 	}
 	return (0);
@@ -85,7 +89,7 @@ static void	calc_horz(t_data *data, t_rays *ray)
 	ray->found_h = false;
 	while (1)
 	{
-		if (is_wall(data, xinter, yinter - up, &ray->found_h))
+		if (is_wall(data, xinter, yinter - up, &ray->found_h, &ray->door_h))
 		{
 			ray->h_x = xinter;
 			ray->h_y = yinter;
@@ -124,7 +128,7 @@ static void	calc_vert(t_data *data, t_rays *ray)
 	ray->found_v = false;
 	while (1)
 	{
-		if (is_wall(data, xinter - left, yinter, &ray->found_v))
+		if (is_wall(data, xinter - left, yinter, &ray->found_v, &ray->door_v))
 		{
 			ray->v_x = xinter;
 			ray->v_y = yinter;
@@ -151,12 +155,15 @@ void	calc_dstn(t_data *data, t_rays *ray)
 			+ (ray->v_y - data->plr->y) * (ray->v_y - data->plr->y));
 	else
 		v_dstn = INT_MAX;
+	ray->door = false;
 	if (h_dstn < v_dstn)
 	{
 		ray->dstn = h_dstn;
 		ray->x = ray->h_x;
 		ray->y = ray->h_y;
 		ray->orn = 'h';
+		if (ray->door_h)
+			ray->door = true;
 	}
 	else
 	{
@@ -164,7 +171,14 @@ void	calc_dstn(t_data *data, t_rays *ray)
 		ray->x = ray->v_x;
 		ray->y = ray->v_y;
 		ray->orn = 'v';
+		if (ray->door_v)
+			ray->door = true;
 	}
+	// if (data->map->map[(int)floor(ray->y / MNMAP_TILE_S)][(int)floor(ray->x / MNMAP_TILE_S)] == 'D')
+	// {
+	// 	// printf("is D\n");
+	// 	ray->orn = 'D';
+	// }
 }
 
 double	adjust_angle(double angle)

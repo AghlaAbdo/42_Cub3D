@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 09:44:15 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/08 09:10:42 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/21 17:45:53 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,16 @@ static int	check_pixel(t_data *data, int y, int x)
 	int	i;
 	int	j;
 
-	i = (int)round((data->plr->y + y)) / MNMAP_TILE_S - (MNMAP_H / MNMAP_TILE_S / 2);
-	j = (int)round((data->plr->x + x)) / MNMAP_TILE_S - (MNMAP_W / MNMAP_TILE_S / 2);
+	i = (int)floor((data->plr->y + y)) / MNMAP_TILE_S - (MNMAP_H / MNMAP_TILE_S / 2);
+	j = (int)floor((data->plr->x + x)) / MNMAP_TILE_S - (MNMAP_W / MNMAP_TILE_S / 2);
+	y = (int)floor(data->plr->y / MNMAP_TILE_S);
+	x = (int)floor(data->plr->x / MNMAP_TILE_S);
 	if (i < 0 || j < 0 || i >= data->map->col || j >= data->map->row || data->map->map[i][j] == ' ')
 		return (-1);
 	if (data->map->map[i][j] == '1')
 		return (1);
+	else if (data->map->map[i][j] == 'D' && (i != y || j != x ))
+		return (2);
 	else
 		return (0);
 }
@@ -41,11 +45,11 @@ void	draw_mnmap(t_data *data)
 	int dx;
 	int	pixel;
 
-	y = 2;
+	y = 0;
 	while (++y < MNMAP_H - 5)
 	{
 		dy = y - (MNMAP_H / 2);
-		x = 2;
+		x = 0;
 		while (++x < MNMAP_W - 5)
 		{
 			dx = x - (MNMAP_W / 2);
@@ -56,6 +60,8 @@ void	draw_mnmap(t_data *data)
 					mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(32, 30, 67, 255));
 				else if (pixel == 0)
 					mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(19, 75, 112, 255));
+				else if (pixel == 2)
+					mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(2, 131, 145, 255));
 				else
 					mlx_put_pixel(data->map->mnmap_img, x, y, get_rgba(80, 140, 155, 255));
 			}
