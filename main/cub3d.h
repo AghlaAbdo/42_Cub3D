@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/11/21 18:21:53 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/27 15:45:05 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,14 @@
 // Made by Aghla
 # define WIN_W 1200
 # define WIN_H 675
-# define MNMAP_TILE_S 24
-# define MNMAP_W (MNMAP_TILE_S * 10)
-# define MNMAP_H (MNMAP_TILE_S * 10)
+# define MNMAP_TILE_S 200
+# define TILE_SIZE 400
+# define MNMAP_W (24 * 10)
+# define MNMAP_H (24 * 10)
 # define MNMAP_GAP 16
 # define BIGMAP_W 960
 # define BIGMAP_H 576
-# define MOVE_SPD 1.3
+# define MOVE_SPD 10
 # define ROT_SPD 2 * (M_PI / 180)
 # define FOV 60 * (M_PI / 180)
 # define N_RAYS (WIN_W)
@@ -88,8 +89,10 @@ typedef struct s_map
 	int			col;
 	double		y;
 	double		x;
-	double		p_y;
-	double		p_x;
+	double		bigmap_y;
+	double		bigmap_x;
+	double		bigmap_py;
+	double		bigmap_px;
 }				t_map;
 
 typedef struct s_player

@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 18:39:22 by srachidi          #+#    #+#             */
-/*   Updated: 2024/11/21 10:41:01 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/27 13:40:05 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,8 @@ void	ab_is_closed(t_data *data, char **map)
 				{
 					data->plr->y = i * MNMAP_TILE_S + (MNMAP_TILE_S / 2);
 					data->plr->x = j * MNMAP_TILE_S + (MNMAP_TILE_S / 2);
+					data->map->y = i * 24 + (24 / 2);
+					data->map->x = j * 24 + (24 / 2);
 					data->plr->orn = map[i][j];
 				}
 			}

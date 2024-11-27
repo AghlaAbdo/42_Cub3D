@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:50:44 by aaghla            #+#    #+#             */
-/*   Updated: 2024/11/20 15:38:59 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/27 15:30:23 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,6 @@ void	ft_looper(void *param)
 	draw_mnmap(data);
 	draw_mnmap_rays(data);
 	draw_circle(data->map->mnmap_img, (MNMAP_W / 2), (MNMAP_H / 2), 3);
-	check_wall(data, data->plr->x, data->plr->y);
+	check_wall(data, data->map->x, data->map->y);
 	data->rendering = false;
 }

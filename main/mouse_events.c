@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 20:17:28 by aaghla            #+#    #+#             */
-/*   Updated: 2024/11/20 16:07:50 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/27 13:38:17 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,10 @@ void	mouse_event(mouse_key_t button, action_t action, modifier_key_t mods, void*
 		// data->bigmap_img->enabled = true;
 		// data->map->cross_img->enabled = true;
 		data->shade_bg->enabled = true;
-		data->map->y = data->plr->y;
-		data->map->x = data->plr->x;
-		data->map->p_y = BIGMAP_H / 2;
-		data->map->p_x = BIGMAP_W / 2;
+		data->map->bigmap_y = data->plr->y;
+		data->map->bigmap_x = data->plr->x;
+		data->map->bigmap_py = BIGMAP_H / 2;
+		data->map->bigmap_px = BIGMAP_W / 2;
 	}
 	else if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS
 		&& data->bigmap && !data->mouse && mouse_over_cross_icon(x, y))
@@ -120,8 +120,11 @@ void	mouse_event(mouse_key_t button, action_t action, modifier_key_t mods, void*
 		if (!data->turning_on && data->light)
 		{
 			// data->idle_light_on_anm.frames[data->idle_light_on_anm.curr_frm]->enabled = false;
-			mlx_delete_image(data->mlx, data->idle_light_on_anm.frame);
-			data->idle_light_on_anm.frame = NULL;
+			if (data->idle_on)
+			{
+				mlx_delete_image(data->mlx, data->idle_light_on_anm.frame);
+				data->idle_light_on_anm.frame = NULL;
+			}
 			data->turning_off = true;
 			data->lighter_on->enabled = false;
 			data->lighter_off->enabled = true;

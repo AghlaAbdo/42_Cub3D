@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 09:44:15 by aaghla            #+#    #+#             */
-/*   Updated: 2024/11/21 17:45:53 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/27 15:43:57 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ static int	check_pixel(t_data *data, int y, int x)
 	int	i;
 	int	j;
 
-	i = (int)floor((data->plr->y + y)) / MNMAP_TILE_S - (MNMAP_H / MNMAP_TILE_S / 2);
-	j = (int)floor((data->plr->x + x)) / MNMAP_TILE_S - (MNMAP_W / MNMAP_TILE_S / 2);
-	y = (int)floor(data->plr->y / MNMAP_TILE_S);
-	x = (int)floor(data->plr->x / MNMAP_TILE_S);
+	i = (int)floor((data->map->y + y)) / 24 - (MNMAP_H / 24 / 2);
+	j = (int)floor((data->map->x + x)) / 24 - (MNMAP_W / 24 / 2);
+	y = (int)floor(data->map->y / 24);
+	x = (int)floor(data->map->x / 24);
 	if (i < 0 || j < 0 || i >= data->map->col || j >= data->map->row || data->map->map[i][j] == ' ')
 		return (-1);
 	if (data->map->map[i][j] == '1')
@@ -81,13 +81,13 @@ void	draw_mnmap_rays(t_data *data)
 	while (++i < N_RAYS)
 	{
 		color = get_rgba(250, 188, 63, 255);
-		if (data->rays[i].dstn > 65)
+		if (data->rays[i].dstn * 0.12 > 65)
 		{
 			ab_drawline(data, MNMAP_W / 2, MNMAP_H / 2, round(MNMAP_W / 2 + cos(data->rays[i].angl) * 65.0),
 				round(MNMAP_H / 2 + sin(data->rays[i].angl) * 65.0), color);
 		}
 		else
-			ab_drawline(data, MNMAP_W / 2, MNMAP_H / 2, MNMAP_W / 2 + (int)(round(data->rays[i].x - data->plr->x)),
-				MNMAP_H / 2 + (int)(round(data->rays[i].y - data->plr->y)), color);
+			ab_drawline(data, MNMAP_W / 2, MNMAP_H / 2, MNMAP_W / 2 + (int)(round(data->rays[i].x * 0.12 - data->plr->x * 0.12)),
+				MNMAP_H / 2 + (int)(round(data->rays[i].y * 0.12 - data->plr->y * 0.12)), color);
 	}
 }

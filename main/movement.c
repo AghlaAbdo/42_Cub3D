@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 09:35:03 by aaghla            #+#    #+#             */
-/*   Updated: 2024/11/19 15:50:35 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/27 15:43:24 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	check_wall(t_data *data, int p_x, int p_y)
 		temp1 += MNMAP_H / 2;
 		temp2 += MNMAP_W / 2;
 		mlx_put_pixel(data->map->mnmap_img, temp2, temp1, get_rgba(255, 255, 0, 255));
-		if (data->map->map[(y / MNMAP_TILE_S)][(x / MNMAP_TILE_S)] == '1')
+		if (data->map->map[(y / 24)][(x / 24)] == '1')
 			return (1);
 		deg += 0.5 * (M_PI / 180);
 	}
@@ -49,31 +49,56 @@ void	plr_move(t_data *data)
 	y = sin(data->plr->rot_angl) * MOVE_SPD;
 	if (mlx_is_key_down(data->mlx, MLX_KEY_W))
 	{
-		if (!check_wall(data, data->plr->x, data->plr->y + y))
+		if (!check_wall(data, data->map->x, data->map->y + y * 0.12))
+		{
+			data->map->y += y * 0.12;
 			data->plr->y += y;
-		if (!check_wall(data, data->plr->x + x, data->plr->y))
+		}
+		if (!check_wall(data, data->map->x + x * 0.12, data->map->y))
+		{
+			data->map->x += x * 0.12;
 			data->plr->x += x;
+		}
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_S))
 	{
-		if (!check_wall(data, data->plr->x, data->plr->y - y))
+		if (!check_wall(data, data->map->x, data->map->y - y * 0.12))
+		{
+			data->map->y -= y * 0.12;
 			data->plr->y -= y;
-		if (!check_wall(data, data->plr->x - x, data->plr->y))
+		}
+		if (!check_wall(data, data->map->x - x * 0.12, data->map->y))
+		{
+			data->map->x -= x * 0.12;
 			data->plr->x -= x;
+		}
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_D))
 	{
-		if (!check_wall(data, data->plr->x - y, data->plr->y))
+		if (!check_wall(data, data->map->x - y * 0.12, data->map->y))
+		{
 			data->plr->x -= y;
-		if (!check_wall(data, data->plr->x, data->plr->y + x))
+			data->map->x -= y * 0.12;
+		}
+		if (!check_wall(data, data->map->x, data->map->y + x * 0.12))
+		{
 			data->plr->y += x;
+			data->map->y += x * 0.12;
+		}
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_A))
 	{
-		if (!check_wall(data, data->plr->x + y, data->plr->y))
+		if (!check_wall(data, data->map->x + y * 0.12, data->map->y))
+		{
+			data->map->x += y * 0.12;
 			data->plr->x += y;
-		if (!check_wall(data, data->plr->x, data->plr->y - x))
+		}
+		if (!check_wall(data, data->map->x, data->map->y - x * 0.12))
+		{
 			data->plr->y -= x;
+			data->map->y -= x * 0.12;
+			
+		}
 	}
 	if (!data->mouse && mlx_is_key_down(data->mlx, MLX_KEY_LEFT))
 	{

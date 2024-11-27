@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:54:05 by srachidi          #+#    #+#             */
-/*   Updated: 2024/11/21 10:06:23 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/27 15:49:15 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,9 +230,15 @@ void	switch_light(t_data *data)
 			data->idle_light_on_anm.frame = NULL;
 		}
 		data->turning_off = true;
+		data->lighter_on->enabled = false;
+		data->lighter_off->enabled = true;
 	}
 	else if (!data->light)
+	{
 		data->turning_on = true;
+		data->lighter_off->enabled = false;
+		data->lighter_on->enabled = true;
+	}
 }
 
 void	show_big_map(t_data *data)
@@ -251,10 +257,10 @@ void	show_big_map(t_data *data)
 		WIN_H / 2 - BIGMAP_H / 2) == -1 || mlx_image_to_window(data->mlx, data->map->cross_img,
 		WIN_W / 2 - BIGMAP_W / 2, WIN_H / 2 - BIGMAP_H / 2) == -1)
 		close_hook(data);
-	data->map->y = data->plr->y;
-	data->map->x = data->plr->x;
-	data->map->p_y = BIGMAP_H / 2;
-	data->map->p_x = BIGMAP_W / 2;
+	data->map->bigmap_y = data->map->y;
+	data->map->bigmap_x = data->map->x;
+	data->map->bigmap_py = BIGMAP_H / 2;
+	data->map->bigmap_px = BIGMAP_W / 2;
 }
 
 void	hide_big_map(t_data *data)
