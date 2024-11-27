@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 07:01:17 by aaghla            #+#    #+#             */
-/*   Updated: 2024/11/27 13:28:48 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/27 17:29:42 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,26 +192,71 @@ double	adjust_angle(double angle)
 }
 
 // calculate the wall height and render the 3D world
-static void	renderworld(t_data *data)
+static void renderworld(t_data *data)
 {
-	double	wall_h;
-	double	pln_dstn;
-	double	ray_dstn;
-	int		i;
-	int		color;
+	double		wall_h;
+	double		pln_dstn;
+	int			i;
+	int			texture_x;
+	int			texture_y;
+	u_int8_t	*pixel;
+	int			color;
+
+	// Clear the window image before drawing
+	ft_drw_fc(data);
 
 	i = -1;
-	while (++i < N_RAYS)
+	while (++i < N_RAYS)  // Use N_RAYS instead of WIN_W
 	{
-		data->rays[i].real_dstn = data->rays[i].dstn * cos(adjust_angle(data->rays[i].angl - data->plr->rot_angl));
+		if (!data->rays[i].dstn)  // Safety check
+			continue;
+
+		data->rays[i].real_dstn = data->rays[i].dstn * 
+			cos(adjust_angle(data->rays[i].angl - data->plr->rot_angl));
 		pln_dstn = (WIN_W / 2) / tan(FOV / 2);
 		wall_h = ((MNMAP_TILE_S / data->rays[i].real_dstn) * pln_dstn);
-		// printf("color res: %f\n", 255 - data->rays[i].real_dstn * 255 / 500);
+
+		// Safety check for texture selection
+		ft_drctn_bsd_txtr(data, i);
+		if (!data->applied_texture || !data->applied_texture->pixels)
+			continue;
+
+		// Bound checking for texture coordinates
 		if (data->rays[i].orn == 'h')
-			color = get_rgba(13, 124, 102, 255 - data->rays[i].real_dstn * 255 / 500);
+			texture_x = fmod(data->rays[i].x, data->applied_texture->width);
 		else
-			color = get_rgba(65, 179, 162,  255 - data->rays[i].real_dstn * 255 / 500);
-		draw_ray(data, i, round((WIN_H / 2 - (wall_h / 2))), 1, round(wall_h));
+			texture_x = fmod(data->rays[i].y, data->applied_texture->width);
+
+		// Ensure texture_x is within bounds
+		texture_x = texture_x < 0 ? 0 : texture_x;
+		texture_x = texture_x >= data->applied_texture->width ? 
+			data->applied_texture->width - 1 : texture_x;
+
+		int start_y = (WIN_H / 2) - (wall_h / 2);
+		int end_y = start_y + wall_h;
+
+		// Bound checking for y coordinates
+		start_y = start_y < 0 ? 0 : start_y;
+		end_y = end_y >= WIN_H ? WIN_H - 1 : end_y;
+
+		for (int y = start_y; y < end_y; y++)
+		{
+			// texture_y = ((y - start_y) * data->applied_texture->height) / wall_h;
+			
+			// // Ensure texture_y is within bounds
+			// texture_y = texture_y < 0 ? 0 : texture_y;
+			// texture_y = texture_y >= data->applied_texture->height ? 
+			// 	data->applied_texture->height - 1 : texture_y;
+			int distance_from_top = y - WIN_H / 2 + wall_h / 2;
+			texture_y = distance_from_top * ((float)MNMAP_TILE_S / wall_h);
+
+			pixel = &data->applied_texture->pixels[
+				(texture_y * data->applied_texture->width + texture_x) * 4];
+			color = get_rgba(pixel[0], pixel[1], pixel[2], pixel[3]);
+
+			if (i >= 0 && i < WIN_W && y >= 0 && y < WIN_H)  // Safety check
+				mlx_put_pixel(data->win_img, i, y, color);
+		}
 	}
 }
 
@@ -220,6 +265,7 @@ void	raycasting(t_data *data)
 	int	i;
 
 	i = -1;
+	// ft_load_texture(data);
 	ab_set_rayangl(data);
 	while (++i < N_RAYS)
 	{

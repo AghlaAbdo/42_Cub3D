@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/11/27 15:45:05 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/27 17:35:25 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@
 # define WIN_W 1200
 # define WIN_H 675
 # define MNMAP_TILE_S 200
-# define TILE_SIZE 400
+// # define TILE_SIZE 400
+# define TXTR_W 200
+# define TXTR_H 200
 # define MNMAP_W (24 * 10)
 # define MNMAP_H (24 * 10)
 # define MNMAP_GAP 16
@@ -180,13 +182,33 @@ typedef struct s_data
 	bool			walking_on;
 	bool			walking_off;
 	
+	//!sala7
+	mlx_image_t		*colorBufferTexture;
+	mlx_texture_t	*north_texture;
+	mlx_texture_t	*south_texture;
+	mlx_texture_t	*east_texture;
+	mlx_texture_t	*west_texture;
+	mlx_texture_t	*applied_texture;
+	//!aghla
+	mlx_texture_t	*door_texture;
 }				t_data;
 
+void	ft_load_texture(t_data *data);
+void	ft_drw_fc(t_data *data);
+void	ft_drctn_bsd_txtr(t_data *data, int i);
+void	ft_clearcolorbuffer(t_data *data, uint32_t color);
 
 void	*ft_malloc(size_t size, int mode);
 int		parse_file(t_data *data, char *file);
 int		first_part(t_data *data, char *line);
 int		sec_part(t_data *data, t_maplst **maplst, char *line);
+int		sr_len(char *s);
+char	*sr_dup(char *s);
+char	*sr_substr(char *s,int start, int len);
+int		sr_strcmp( char *s1, char *s2);
+void	sr_rmv_nline(char *str);
+void	ft_err(char *s);
+void	ft_megamind(t_data data);
 
 //	Made by Aghla
 t_maplst	*ab_maplst_new(char *line);

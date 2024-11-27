@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 18:28:47 by aaghla            #+#    #+#             */
-/*   Updated: 2024/08/19 15:04:47 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/27 17:26:35 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	parse_file(t_data *data, char *file)
 				return (1);
 		free(line);
 	}
+	close(fd);
 	data->map->col = ab_maplst_size(maplst);
 	ab_valid_map(data, maplst);
 	// printf("plr_nb: %d\nmaxline: %d\nlst size: %d\n", data->map->plr_nb,

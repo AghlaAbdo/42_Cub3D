@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:54:05 by srachidi          #+#    #+#             */
-/*   Updated: 2024/11/27 15:49:15 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/11/27 17:29:55 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,8 @@ void	init_images(t_data *data)
 	data->lighter_on->enabled = false;
 	mlx_image_to_window(data->mlx, data->lighter_on, WIN_W - 120, WIN_H - 150);
 	// mlx_image_to_window(data->mlx, data->map->cross_img, WIN_W / 2 - BIGMAP_W / 2, WIN_H / 2 - BIGMAP_H / 2);
+
+	ft_load_texture(data);
 }
 
 void	init_data(t_data *data)
