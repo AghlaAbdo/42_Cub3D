@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:56:36 by aaghla            #+#    #+#             */
-/*   Updated: 2024/11/21 12:35:06 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/03 12:12:39 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,62 +85,62 @@ void	ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color)
 }
 
 // draw a single ray on the window
-void	draw_ray(t_data *data, int x, int y, int w, int h)
-{
-	int	i;
-	int	j;
-	int	x_start;
-	int	color;
-	int	alpha;
-	int	floor_alpha;
+// void	draw_ray(t_data *data, int x, int y, int w, int h)
+// {
+// 	int	i;
+// 	int	j;
+// 	int	x_start;
+// 	int	color;
+// 	int	alpha;
+// 	int	floor_alpha;
 
-	alpha = 255;
-	floor_alpha = 255;
-	if (!data->light)
-	{
-		alpha = (255 - data->rays[x].real_dstn * 255 / 700) - 150;
-		if (alpha < 0)
-			alpha = 0;
-		else if (alpha > 255)
-			alpha = 255;
-	}
-	else
-	{
-		alpha = (255 - data->rays[x].real_dstn * 255 / 1000);
-		if (alpha < 0)
-			alpha = 0;
-		else if (alpha > 255)
-			alpha = 255;
+// 	alpha = 255;
+// 	floor_alpha = 255;
+// 	if (!data->light)
+// 	{
+// 		alpha = (255 - data->rays[x].real_dstn * 255 / 700) - 150;
+// 		if (alpha < 0)
+// 			alpha = 0;
+// 		else if (alpha > 255)
+// 			alpha = 255;
+// 	}
+// 	else
+// 	{
+// 		alpha = (255 - data->rays[x].real_dstn * 255 / 1000);
+// 		if (alpha < 0)
+// 			alpha = 0;
+// 		else if (alpha > 255)
+// 			alpha = 255;
 		
-	}
-	if (data->rays[x].door)
-		color = get_rgba(67, 46, 84, alpha);
-	else if (data->rays[x].orn == 'h')
-		color = get_rgba(235, 235, 235, alpha);
-	else
-		color = get_rgba(180, 180, 180,  alpha);
-	i = 0;
-	if (y < 0)
-	{
-		while (i < WIN_H)
-			mlx_put_pixel(data->win_img, x, i++, color);
-		return ;
-	}
-	while (i < WIN_H && i < y)
-		mlx_put_pixel(data->win_img, x, i++, get_rgba(23, 155, 174, 255));
-	while (i < WIN_H && i < h + y)
-		mlx_put_pixel(data->win_img, x, i++, color);
-	while (i < WIN_H)
-	{
-		if (!data->light)
-			floor_alpha = ((i - WIN_H / 3) * 255 / (WIN_H - (WIN_H / 3))) -150;
-		else
-			floor_alpha = ((i - WIN_H / 6) * 255 / (WIN_H - (WIN_H / 6)));
-		// printf("floor alpha: %d\n", floor_alpha);
-		if (floor_alpha < 0)
-			floor_alpha = 0;
-		// else if (floor_alpha > 255)
-		// 	floor_alpha = 255;
-		mlx_put_pixel(data->win_img, x, i++, get_rgba(34, 123, 148,  floor_alpha));
-	}
-}
+// 	}
+// 	if (data->rays[x].door)
+// 		color = get_rgba(67, 46, 84, alpha);
+// 	else if (data->rays[x].orn == 'h')
+// 		color = get_rgba(235, 235, 235, alpha);
+// 	else
+// 		color = get_rgba(180, 180, 180,  alpha);
+// 	i = 0;
+// 	if (y < 0)
+// 	{
+// 		while (i < WIN_H)
+// 			mlx_put_pixel(data->win_img, x, i++, color);
+// 		return ;
+// 	}
+// 	while (i < WIN_H && i < y)
+// 		mlx_put_pixel(data->win_img, x, i++, get_rgba(23, 155, 174, 255));
+// 	while (i < WIN_H && i < h + y)
+// 		mlx_put_pixel(data->win_img, x, i++, color);
+// 	while (i < WIN_H)
+// 	{
+// 		if (!data->light)
+// 			floor_alpha = ((i - WIN_H / 3) * 255 / (WIN_H - (WIN_H / 3))) -150;
+// 		else
+// 			floor_alpha = ((i - WIN_H / 6) * 255 / (WIN_H - (WIN_H / 6)));
+// 		// printf("floor alpha: %d\n", floor_alpha);
+// 		if (floor_alpha < 0)
+// 			floor_alpha = 0;
+// 		// else if (floor_alpha > 255)
+// 		// 	floor_alpha = 255;
+// 		mlx_put_pixel(data->win_img, x, i++, get_rgba(34, 123, 148,  floor_alpha));
+// 	}
+// }

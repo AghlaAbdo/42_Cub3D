@@ -6,7 +6,7 @@
 #    By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/16 06:34:23 by srachidi          #+#    #+#              #
-#    Updated: 2024/11/27 16:26:24 by aaghla           ###   ########.fr        #
+#    Updated: 2024/12/03 14:32:28 by aaghla           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,14 +24,21 @@ SRC    := main/grbgcllctr.c			\
 			main/drawing.c			\
 			main/movement.c			\
 			main/mouse_events.c		\
+			main/animation.c		\
+			main/events.c			\
+			main/init_images.c		\
+			main/calc_dstn.c		\
+			main/move_player.c		\
 			parsing/parse_file.c	\
 			parsing/fst_part.c		\
+			parsing/fst_part1.c		\
 			parsing/sec_part.c		\
 			parsing/ab_map_lst.c	\
 			raycasting/raycasting.c	\
 			parsing/sr_tools/sr_tools1.c\
 			parsing/sr_tools/sr_tools2.c\
-			raycasting/textures.c
+			raycasting/textures.c \
+			raycasting/textures1.c \
 
 CLR_RMV := \033[0m
 RED     := \033[1;31m

@@ -1,59 +1,79 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   textures.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/01 15:36:32 by Apple             #+#    #+#             */
+/*   Updated: 2024/12/03 21:20:41 by aaghla           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../main/cub3d.h"
 
+void	ft_nrm_txt(char *msg)
+{
+	printf("%s", msg);
+	exit(1);
+}
+
+void	delete_wall_txtrs(t_data *data)
+{
+	if (data->north_texture)
+		mlx_delete_texture(data->north_texture);
+	if (data->south_texture)
+		mlx_delete_texture(data->south_texture);
+	if (data->east_texture)
+		mlx_delete_texture(data->east_texture);
+	if (data->west_texture)
+		mlx_delete_texture(data->west_texture);
+	if (data->door_texture)
+		mlx_delete_texture(data->door_texture);
+}
 
 void	ft_load_texture(t_data *data)
 {
 	data->north_texture = mlx_load_png("images/textures/north200.png");
 	if (!data->north_texture)
-	{
-		printf("Failed to load north texture\n");
-		exit(1);
-	}
+		clean_exit_init(data, "Failed to load north texture", 42);
 	data->south_texture = mlx_load_png("images/textures/south200.png");
 	if (!data->south_texture)
-	{
-		printf("Failed to load south texture\n");
-		exit(1);
-	}
-	data->east_texture  = mlx_load_png("images/textures/east200.png");
+		clean_exit_init(data, "Failed to load south texture", 43);
+	data->east_texture = mlx_load_png("images/textures/east200.png");
 	if (!data->east_texture)
-	{
-		printf("Failed to load east texture\n");
-		exit(1);
-	}
-	data->west_texture  = mlx_load_png("images/textures/west200.png");
+		clean_exit_init(data, "Failed to load east texture", 44);
+	data->west_texture = mlx_load_png("images/textures/west200.png");
 	if (!data->west_texture)
-	{
-		printf("Failed to load west texture\n");
-		exit(1);
-	}
+		clean_exit_init(data, "Failed to load west texture", 45);
 	data->door_texture = mlx_load_png("images/textures/door.png");
 	if (!data->door_texture)
-	{
-		printf("Failed to load west texture\n");
-		exit(1);
-	}
+		clean_exit_init(data, "Failed to load door texture", 45);
 }
 
-void ft_drw_fc(t_data *data)
+void	ft_drw_fc(t_data *data)
 {
 	int	y;
-	int	color_floor = get_rgba(169, 169, 169, 255);
-	int	color_ceiling = get_rgba(135, 206, 235, 255);
+	int	x;
+	int	color_floor;
+	int	color_ceiling;
 
-
-	// Draw the ceiling (upper half of the screen)
-	for (y = 0; y < WIN_H / 2; y++) {
-		for (int x = 0; x < WIN_W; x++) {
+	y = -1;
+	x = -1;
+	color_floor = get_rgba(169, 169, 169, 255);
+	color_ceiling = get_rgba(135, 206, 235, 255);
+	while (++y < WIN_H / 2)
+	{
+		x = -1;
+		while (++x < WIN_W)
 			mlx_put_pixel(data->win_img, x, y, color_ceiling);
-		}
 	}
-
-	// Draw the floor (lower half of the screen)
-	for (y = WIN_H / 2; y < WIN_H; y++) {
-		for (int x = 0; x < WIN_W; x++) {
+	y = WIN_H / 2 - 1;
+	while (++y < WIN_H)
+	{
+		x = -1;
+		while (++x < WIN_W)
 			mlx_put_pixel(data->win_img, x, y, color_floor);
-		}
 	}
 }
 
@@ -74,28 +94,5 @@ void	ft_drctn_bsd_txtr(t_data *data, int i)
 			data->applied_texture = data->west_texture;
 		else
 			data->applied_texture = data->east_texture;
-	}
-}
-
-
-void	ft_clearcolorbuffer(t_data *data, uint32_t color)
-{
-	int	x;
-	int	y;
-
-	(void)color;
-	x = 0;
-	while (x < TXTR_W)
-	{
-		y = 0;
-		while (y < TXTR_H)
-		{
-			if (x % 8 && y % 8)
-				mlx_put_pixel(data->colorBufferTexture, x, y, get_rgba(0, 0, 0, 255));
-			else
-				mlx_put_pixel(data->colorBufferTexture, x, y, get_rgba(0, 0, 180, 255));
-			y++;
-		}
-		x++;
 	}
 }

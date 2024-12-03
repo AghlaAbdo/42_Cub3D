@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/11/27 17:35:25 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/03 21:24:02 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,9 @@ void	ft_load_texture(t_data *data);
 void	ft_drw_fc(t_data *data);
 void	ft_drctn_bsd_txtr(t_data *data, int i);
 void	ft_clearcolorbuffer(t_data *data, uint32_t color);
+int		get_texture_x(t_data *data, t_rays *ray, int texture_width);
+void	sr_id_check(t_data *data, char *line, int strt, char *id);
+void	sr_remover(t_data *data, char *id);
 
 void	*ft_malloc(size_t size, int mode);
 int		parse_file(t_data *data, char *file);
@@ -216,21 +219,50 @@ void 		ab_maplstaddb(t_maplst **lst, t_maplst *new);
 int			ab_maplst_size(t_maplst *lst);
 void		ab_valid_map(t_data *data, t_maplst *maplst);
 void		ft_looper(void *param);
-void		plr_move(t_data *data);
+void		move_plr(t_data *data);
 void		handle_mouse(t_data *data);
-bool		ab_is_moving(t_data *data);
-void		draw_mnmap(t_data *data);
+bool		is_plr_moving(t_data *data);
+void		draw_mnmap(t_data *data, int x, int y);
 void		draw_mnmap_rays(t_data *data);
 void		draw_bigmap(t_data *data);
-void		clean_exit(char *err, int stat);
+void		clean_exit_pars(char *err, int stat);
 void		ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color);
 void		draw_circle(mlx_image_t *img, int h, int k, int r);
-void		draw_ray(t_data *data, int x, int y, int w, int h);
+// void		draw_ray(t_data *data, int x, int y, int w, int h);
 int			get_rgba(int r, int g, int b, int a);
 void		raycasting(t_data *data);
 int			check_wall(t_data *data, int p_x, int p_y);
 void		mouse_event(mouse_key_t button, action_t action, modifier_key_t mods, void* param);
 void		check_mouse_pos(t_data *data);
-void		draw_shade_bg(t_data *data);
+// void		draw_shade_bg(t_data *data);
+void	clean_exit_init(t_data *data, char *err, int stat);
+void	delete_wall_txtrs(t_data *data);
+
+//	Raycasting
+void	calc_horz(t_data *data, t_rays *ray, double xstep, int up);
+void	calc_vert(t_data *data, t_rays *ray, double xstep, int left);
+
+//	Animation
+void	anm_turn_light_on(t_data *data, t_animation *anm, double curr_time);
+void	anm_idle_light_on(t_data *data, t_animation *anm, double curr_time);
+void	anm_turn_light_off(t_data *data, t_animation *anm, double curr_time);
+void	anm_walk_light_on(t_data *data, t_animation *anm, double curr_time);
+void	anm_walk_light_off(t_data *data, t_animation *anm, double curr_time);
+void	safe_delete_img(t_data *data, mlx_image_t **img);
+
+//	Events
+void	handle_events(mlx_key_data_t keydata, void *param);
+void	show_big_map(t_data *data);
+void	hide_big_map(t_data *data);
+void	switch_light(t_data *data);
+void	close_hook(void	*param);
+
+//	Init images
+void	init_turning_on_imgs(t_data *data, t_animation *anm);
+void	init_idle_light_on_imgs(t_data *data, t_animation *anm);
+void	init_turning_off_imgs(t_data *data, t_animation *anm);
+void	init_walking_on_imgs(t_data *data, t_animation *anm);
+void	init_walking_off_imgs(t_data *data, t_animation *anm);
+
 
 #endif

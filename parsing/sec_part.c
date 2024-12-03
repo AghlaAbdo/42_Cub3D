@@ -6,13 +6,13 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 18:39:22 by srachidi          #+#    #+#             */
-/*   Updated: 2024/11/27 13:40:05 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/03 19:51:39 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/cub3d.h"
 
-void	clean_exit(char *err, int stat)
+void	clean_exit_pars(char *err, int stat)
 {
 	ft_malloc(0, 1);
 	printf("Error\n%s\n", err);
@@ -36,7 +36,7 @@ static int	ab_check_chars(char *line, t_data *data)
 		i++;
 	}
 	if (data->map->plr_nb > 1)
-		clean_exit("More than one player postion", 10);
+		clean_exit_pars("More than one player postion", 10);
 	return (0);
 }
 
@@ -48,7 +48,7 @@ int	sec_part(t_data *data, t_maplst **maplst, char *line)
 	if (!line)
 		return (0);
 	if (line[0] == '\n')
-		clean_exit("empty line in map", 7);
+		clean_exit_pars("empty line in map", 7);
 	i = -1;
 	while (line[++i] && line[i] != '\n')
 		;
@@ -56,12 +56,12 @@ int	sec_part(t_data *data, t_maplst **maplst, char *line)
 		;
 	line[i +1] = '\0';
 	if (!(i + 1))
-		clean_exit("empty line in map", 8);
+		clean_exit_pars("empty line in map", 8);
 	len = i + 1;
 	if (len > data->map->row)
 		data->map->row = len;
 	if (ab_check_chars(line, data))
-		clean_exit("known characters in map", 9);
+		clean_exit_pars("known characters in map", 9);
 	ab_maplstaddb(maplst, ab_maplst_new(ft_strdup(line)));
 	return (0);
 }
@@ -87,7 +87,7 @@ static void	ab_fill_line(char *dst, char *src, int len)
 // 	i = 0;
 // 	j = 0;
 // 	if (ft_strchr(map[0], '0'))
-// 		clean_exit("map not closed", 11);
+// 		clean_exit_pars("map not closed", 11);
 	// while (map[0][j] == ' ')
 	// 	j++;
 	// while (map[0][j])
@@ -106,14 +106,14 @@ static void	ab_fill_line(char *dst, char *src, int len)
 	// 					j--;
 	// 			}
 	// 			if (map[i][j] == '0' && map[i][j + 1] == '0')
-	// 				clean_exit("map not closed", 22);
+	// 				clean_exit_pars("map not closed", 22);
 	// 			else if (map[i][j + 1] == '1')
 	// 			{
 	// 				j++;
 	// 				while (i)
 	// 				{
 	// 					if (map[i][j] == '0')
-// 							clean_exit("map not closed", 33);
+// 							clean_exit_pars("map not closed", 33);
 // 						else if (map[i][j] == ' ')
 // 							break ;
 // 						i--;
@@ -134,7 +134,7 @@ void	ab_is_closed(t_data *data, char **map)
 	j = -1;
 	// ab_fstline(map);
 	if (ft_strchr(map[0], '0'))
-		clean_exit("map not closed", 11);
+		clean_exit_pars("map not closed", 11);
 	while (map[++i])
 	{
 		j = -1;
@@ -144,13 +144,13 @@ void	ab_is_closed(t_data *data, char **map)
 			{
 				if (!j || map[i][j - 1] == ' ' || map[i - 1][j] == ' ' || map[i][j + 1] == ' '
 					|| map[i][j +1] == '\0' || map[i +1][j] == ' ')
-					clean_exit("map not closed", 12);
+					clean_exit_pars("map not closed", 12);
 			}
 			else if (map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W')
 			{
 				if (!j || map[i][j - 1] == ' ' || map[i - 1][j] == ' ' || map[i][j + 1] == ' '
 					|| map[i][j +1] == '\0' || map[i +1][j] == ' ')
-					clean_exit("map not closed", 12);
+					clean_exit_pars("map not closed", 12);
 				else
 				{
 					data->plr->y = i * MNMAP_TILE_S + (MNMAP_TILE_S / 2);
@@ -164,14 +164,14 @@ void	ab_is_closed(t_data *data, char **map)
 			{
 				if (!j || !((map[i][j - 1] == '1' && map[i][j + 1] == '1') || (map[i - 1][j] == '1'
 					&& map[i + 1][j] == '1')))
-					clean_exit("invalid door position", 82);
+					clean_exit_pars("invalid door position", 82);
 			}
 		}
 		if (!map[i+2])
 			break ;
 	}
 	if (ft_strchr(map[i+1], '0'))
-		clean_exit("map not closed", 13);
+		clean_exit_pars("map not closed", 13);
 }
 
 void	ab_valid_map(t_data *data, t_maplst *maplst)

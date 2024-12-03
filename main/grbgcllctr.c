@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   grbgcllctr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: srachidi <srachidi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:28:11 by srachidi          #+#    #+#             */
-/*   Updated: 2024/08/16 06:28:13 by srachidi         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:04:30 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-//!GRBAGE COLLECTOR
 
 static void	ft_lstadd_front(t_addr **lst, t_addr *new)
 {
