@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 10:33:58 by aaghla            #+#    #+#             */
-/*   Updated: 2024/12/03 15:46:57 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/04 18:13:27 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,13 @@ void	show_big_map(t_data *data)
 	data->map->cross_img = mlx_texture_to_image(data->mlx,
 			data->map->cross_txt);
 	if (!data->shade_bg || !data->bigmap_img || !data->map->cross_img)
-		close_hook(data);
+		clean_exit(data, "Can't create image", 50);
 	if (mlx_image_to_window(data->mlx, data->shade_bg, 0, 0) == -1
 		|| mlx_image_to_window(data->mlx, data->bigmap_img,
 			WIN_W / 2 - BIGMAP_W / 2, WIN_H / 2 - BIGMAP_H / 2) == -1
 		|| mlx_image_to_window(data->mlx, data->map->cross_img,
 			WIN_W / 2 - BIGMAP_W / 2, WIN_H / 2 - BIGMAP_H / 2) == -1)
-		close_hook(data);
+		clean_exit(data, "Can't put image to window", 51);
 	data->map->bigmap_y = data->map->y;
 	data->map->bigmap_x = data->map->x;
 	data->map->bigmap_py = BIGMAP_H / 2;
@@ -90,7 +90,7 @@ void	handle_events(mlx_key_data_t keydata, void *param)
 
 	data = (t_data *)param;
 	if (keydata.key == MLX_KEY_ESCAPE)
-		close_hook(param);
+		clean_exit(param, "all good", 0);
 	if (keydata.key == MLX_KEY_L && keydata.action == MLX_PRESS
 		&& !data->bigmap)
 		switch_light(data);

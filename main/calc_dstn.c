@@ -6,14 +6,15 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:50:23 by aaghla            #+#    #+#             */
-/*   Updated: 2024/12/03 12:56:05 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/04 18:50:03 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // check if the ray casted hit a wall
-static int	is_wall(t_data *data, double x, double y, bool *found_wall, bool *door)
+static int	is_wall(t_data *data, double x, double y,
+	bool *found_wall, bool *door)
 {
 	int	i;
 	int	j;

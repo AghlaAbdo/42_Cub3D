@@ -6,49 +6,35 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 15:36:32 by Apple             #+#    #+#             */
-/*   Updated: 2024/12/03 21:20:41 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/04 18:07:46 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main/cub3d.h"
 
-void	ft_nrm_txt(char *msg)
-{
-	printf("%s", msg);
-	exit(1);
-}
-
-void	delete_wall_txtrs(t_data *data)
-{
-	if (data->north_texture)
-		mlx_delete_texture(data->north_texture);
-	if (data->south_texture)
-		mlx_delete_texture(data->south_texture);
-	if (data->east_texture)
-		mlx_delete_texture(data->east_texture);
-	if (data->west_texture)
-		mlx_delete_texture(data->west_texture);
-	if (data->door_texture)
-		mlx_delete_texture(data->door_texture);
-}
+// void	ft_nrm_txt(char *msg)
+// {
+// 	printf("%s", msg);
+// 	exit(1);
+// }
 
 void	ft_load_texture(t_data *data)
 {
 	data->north_texture = mlx_load_png("images/textures/north200.png");
 	if (!data->north_texture)
-		clean_exit_init(data, "Failed to load north texture", 42);
+		clean_exit(data, "Failed to load north texture", 42);
 	data->south_texture = mlx_load_png("images/textures/south200.png");
 	if (!data->south_texture)
-		clean_exit_init(data, "Failed to load south texture", 43);
+		clean_exit(data, "Failed to load south texture", 43);
 	data->east_texture = mlx_load_png("images/textures/east200.png");
 	if (!data->east_texture)
-		clean_exit_init(data, "Failed to load east texture", 44);
+		clean_exit(data, "Failed to load east texture", 44);
 	data->west_texture = mlx_load_png("images/textures/west200.png");
 	if (!data->west_texture)
-		clean_exit_init(data, "Failed to load west texture", 45);
+		clean_exit(data, "Failed to load west texture", 45);
 	data->door_texture = mlx_load_png("images/textures/door.png");
 	if (!data->door_texture)
-		clean_exit_init(data, "Failed to load door texture", 45);
+		clean_exit(data, "Failed to load door texture", 46);
 }
 
 void	ft_drw_fc(t_data *data)
@@ -57,6 +43,7 @@ void	ft_drw_fc(t_data *data)
 	int	x;
 	int	color_floor;
 	int	color_ceiling;
+	int	alpha;
 
 	y = -1;
 	x = -1;
@@ -72,6 +59,15 @@ void	ft_drw_fc(t_data *data)
 	while (++y < WIN_H)
 	{
 		x = -1;
+		if (!data->light)
+			alpha = ((y - WIN_H / 8) * 255 / (WIN_H - (WIN_H / 8))) -170;
+		else
+			alpha = ((y - WIN_H / 6) * 255 / (WIN_H - (WIN_H / 6)) -50);
+		if (alpha < 0)
+			alpha = 0;
+		else if (alpha > 255)
+			alpha = 255;
+		color_floor = get_rgba(169, 169, 169, alpha);
 		while (++x < WIN_W)
 			mlx_put_pixel(data->win_img, x, y, color_floor);
 	}

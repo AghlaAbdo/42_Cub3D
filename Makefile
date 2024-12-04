@@ -6,7 +6,7 @@
 #    By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/16 06:34:23 by srachidi          #+#    #+#              #
-#    Updated: 2024/12/03 14:32:28 by aaghla           ###   ########.fr        #
+#    Updated: 2024/12/04 18:24:02 by aaghla           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,12 @@ SRC    := main/grbgcllctr.c			\
 			main/mouse_events.c		\
 			main/animation.c		\
 			main/events.c			\
+			main/init_data.c		\
 			main/init_images.c		\
+			main/init_images2.c		\
 			main/calc_dstn.c		\
 			main/move_player.c		\
+			main/clean_exit.c		\
 			parsing/parse_file.c	\
 			parsing/fst_part.c		\
 			parsing/fst_part1.c		\

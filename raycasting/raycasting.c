@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 07:01:17 by aaghla            #+#    #+#             */
-/*   Updated: 2024/12/03 12:51:21 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/04 17:39:45 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,29 @@ double	adjust_angle(double angle)
 }
 
 
+void	set_alpha(t_data *data, t_rays ray, int *alpha)
+{
+	*alpha = 255;
+	// printf("rays.dstn: %f\n", ray.real_dstn);
+	if (!data->light)
+	{
+		*alpha = (255 - (ray.real_dstn * 0.2) * 255 / 800) - 100;
+		if (*alpha < 0)
+			*alpha = 0;
+		else if (*alpha > 255)
+			*alpha = 255;
+	}
+	else
+	{
+		*alpha = (255 - (ray.real_dstn * 0.2) * 255 / 1000);
+		if (*alpha < 0)
+			*alpha = 0;
+		else if (*alpha > 255)
+			*alpha = 255;
+	}
+	
+}
+
 // calculate the wall height and render the 3D world
 static void renderworld(t_data *data)
 {
@@ -102,16 +125,20 @@ static void renderworld(t_data *data)
 	int			texture_y;
 	u_int8_t	*pixel;
 	int			color;
+	int			alpha;
 
+	
 	// Clear the window image before drawing
 	ft_drw_fc(data);
 
 	i = -1;
 	while (++i < N_RAYS)  // Use N_RAYS instead of WIN_W
 	{
-		if (!data->rays[i].dstn)  // Safety check
-			continue;
+		// if (!data->rays[i].dstn)  // Safety check
+		// 	continue;
 
+		set_alpha(data, data->rays[i], &alpha);
+		
 		data->rays[i].real_dstn = data->rays[i].dstn * 
 			cos(adjust_angle(data->rays[i].angl - data->plr->rot_angl));
 		pln_dstn = (WIN_W / 2) / tan(FOV / 2);
@@ -119,8 +146,8 @@ static void renderworld(t_data *data)
 
 		// Safety check for texture selection
 		ft_drctn_bsd_txtr(data, i);
-		if (!data->applied_texture || !data->applied_texture->pixels)
-			continue;
+		// if (!data->applied_texture || !data->applied_texture->pixels)
+		// 	continue;
 
 		// Bound checking for texture coordinates
 		texture_x = get_texture_x(data, &data->rays[i], data->applied_texture->width);
@@ -136,14 +163,14 @@ static void renderworld(t_data *data)
 		start_y = start_y < 0 ? 0 : start_y;
 		end_y = end_y >= WIN_H ? WIN_H - 1 : end_y;
 
-		for (int y = start_y; y < end_y; y++)
+		for (int y = start_y; y <= end_y; y++)
 		{
 			int distance_from_top = y - WIN_H / 2 + wall_h / 2;
 			texture_y = distance_from_top * ((float)MNMAP_TILE_S / wall_h);
 
 			pixel = &data->applied_texture->pixels[
 				(texture_y * data->applied_texture->width + texture_x) * 4];
-			color = get_rgba(pixel[0], pixel[1], pixel[2], pixel[3]);
+			color = get_rgba(pixel[0], pixel[1], pixel[2], alpha);
 
 			if (i >= 0 && i < WIN_W && y >= 0 && y < WIN_H)  // Safety check
 				mlx_put_pixel(data->win_img, i, y, color);

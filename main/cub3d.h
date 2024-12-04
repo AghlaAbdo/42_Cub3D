@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/12/03 21:24:02 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/04 18:24:45 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct s_maplst
 typedef struct s_animation
 {
 	mlx_texture_t	**txtrs;
-	mlx_image_t	**frames;
+	// mlx_image_t	**frames;
 	mlx_image_t	*frame;
 	int			curr_frm;
 	double		last_frm_time;
@@ -175,6 +175,7 @@ typedef struct s_data
 	t_animation		walk_light_off_anm;
 
 	// t_mp_txtrs		map_txtrs;
+	mlx_image_t		*black_bg;
 	
 	bool			turning_on;
 	bool			turning_off;
@@ -235,8 +236,10 @@ int			check_wall(t_data *data, int p_x, int p_y);
 void		mouse_event(mouse_key_t button, action_t action, modifier_key_t mods, void* param);
 void		check_mouse_pos(t_data *data);
 // void		draw_shade_bg(t_data *data);
-void	clean_exit_init(t_data *data, char *err, int stat);
-void	delete_wall_txtrs(t_data *data);
+void	clean_exit(t_data *data, char *err, int stat);
+// void	delete_wall_txtrs(t_data *data);
+void	init_data(t_data *data);
+void	ab_set_orn(t_data *data);
 
 //	Raycasting
 void	calc_horz(t_data *data, t_rays *ray, double xstep, int up);
@@ -258,6 +261,7 @@ void	switch_light(t_data *data);
 void	close_hook(void	*param);
 
 //	Init images
+void	init_images(t_data *data);
 void	init_turning_on_imgs(t_data *data, t_animation *anm);
 void	init_idle_light_on_imgs(t_data *data, t_animation *anm);
 void	init_turning_off_imgs(t_data *data, t_animation *anm);

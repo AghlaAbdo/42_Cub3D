@@ -5,116 +5,73 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/03 10:41:09 by aaghla            #+#    #+#             */
-/*   Updated: 2024/12/03 21:25:26 by aaghla           ###   ########.fr       */
+/*   Created: 2024/12/04 17:57:23 by aaghla            #+#    #+#             */
+/*   Updated: 2024/12/04 18:48:44 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	init_turning_on_imgs(t_data *data, t_animation *anm)
+static void	init_ligher_imgs(t_data *data)
 {
 	mlx_texture_t	*txtr;
-	int				i;
 
-	anm->last_frm_time = mlx_get_time() * 1e3;
-	anm->curr_frm = 0;
-	anm->frame = NULL;
-	anm->txtrs = (mlx_texture_t **)ft_malloc(sizeof(mlx_texture_t)
-			* TRN_ON_FRMS, 0);
-	i = -1;
-	while (++i < TRN_ON_FRMS)
-	{
-		anm->txtrs[i] = mlx_load_png(ft_strjoin(ft_strjoin(
-						"./images/turn_light_on/f_", ft_itoa(i)), ".png"));
-		if (!anm->txtrs[i])
-			clean_exit_init(data, "Can't load png", 14);
-	}
-}
-
-void	init_idle_light_on_imgs(t_data *data, t_animation *anm)
-{
-	mlx_texture_t	*txtr;
-	int				i;
-
-	anm->last_frm_time = mlx_get_time() * 1e3;
-	anm->curr_frm = -1;
-	anm->txtrs = (mlx_texture_t **)ft_malloc(sizeof(mlx_texture_t)
-			* IDLE_ON_FRMS, 0);
-	anm->frame = NULL;
-	i = -1;
-	while (++i < IDLE_ON_FRMS)
-	{
-		anm->txtrs[i] = mlx_load_png(ft_strjoin(ft_strjoin(
-						"./images/idle_light_on/f_", ft_itoa(i)), ".png"));
-		if (!anm->txtrs[i])
-			clean_exit_init(data, "Can't load png", 45);
-	}
-}
-
-void	init_turning_off_imgs(t_data *data, t_animation *anm)
-{
-	mlx_texture_t	*txtr;
-	int				i;
-
-	anm->last_frm_time = mlx_get_time() * 1e3;
-	anm->curr_frm = 0;
-	anm->txtrs = (mlx_texture_t **)ft_malloc(sizeof(mlx_image_t)
-			* TRN_OFF_FRMS, 0);
-	anm->frame = NULL;
-	i = -1;
-	while (++i < TRN_OFF_FRMS)
-	{
-		anm->txtrs[i] = mlx_load_png(ft_strjoin(ft_strjoin(
-						"./images/turn_light_off/f_", ft_itoa(i)), ".png"));
-		if (!anm->txtrs[i])
-			clean_exit_init(data, "Can't load png", 51);
-	}
-}
-
-void	init_walking_on_imgs(t_data *data, t_animation *anm)
-{
-	mlx_texture_t	*txtr;
-	int				i;
-
-	anm->last_frm_time = mlx_get_time() * 1e3;
-	anm->curr_frm = 0;
-	anm->txtrs = (mlx_texture_t **)ft_malloc(sizeof(mlx_image_t)
-			* WALK_ON_FRMS, 0);
-	anm->frame = NULL;
-	i = -1;
-	while (++i < WALK_ON_FRMS)
-	{
-		anm->txtrs[i] = mlx_load_png(ft_strjoin(ft_strjoin(
-						"./images/walk_light_on/f_", ft_itoa(i)), ".png"));
-		if (!anm->txtrs[i])
-			clean_exit_init(data, "Can't load png", 77);
-	}
-}
-
-void	init_walking_off_imgs(t_data *data, t_animation *anm)
-{
-	mlx_texture_t	*txtr;
-	int				i;
-
-	anm->last_frm_time = mlx_get_time() * 1e3;
-	anm->curr_frm = 0;
-	anm->txtrs = (mlx_texture_t **)ft_malloc(sizeof(mlx_image_t)
-			* WALK_OFF_FRMS, 0);
-	anm->frame = NULL;
-	txtr = mlx_load_png(ft_strjoin(ft_strjoin("./images/walk_light_off/f_",
-					ft_itoa(anm->curr_frm)), ".png"));
+	txtr = mlx_load_png("./images/lighter_off.png");
 	if (!txtr)
-		clean_exit_init(data, "Can't load png", 88);
-	anm->frame = mlx_texture_to_image(data->mlx, txtr);
+		clean_exit(data, "Can't load png", 19);
+	data->lighter_off = mlx_texture_to_image(data->mlx, txtr);
 	mlx_delete_texture(txtr);
-	mlx_image_to_window(data->mlx, anm->frame, 475, WIN_H - 370);
-	i = -1;
-	while (++i < WALK_OFF_FRMS)
+	txtr = mlx_load_png("./images/lighter_on.png");
+	if (!txtr)
+		clean_exit(data, "Cna't load png", 20);
+	data->lighter_on = mlx_texture_to_image(data->mlx, txtr);
+	mlx_delete_texture(txtr);
+	data->lighter_on->enabled = false;
+	if (mlx_image_to_window(data->mlx, data->lighter_off, WIN_W - 120,
+			WIN_H - 150) || mlx_image_to_window(data->mlx, data->lighter_on,
+			WIN_W - 120, WIN_H - 150))
+		clean_exit(data, "Cant put image to window", 21);
+}
+
+static void	set_black_bg(t_data *data)
+{
+	int	y;
+	int	x;
+
+	data->black_bg = mlx_new_image(data->mlx, WIN_W, WIN_H);
+	y = -1;
+	while (++y < WIN_H)
 	{
-		anm->txtrs[i] = mlx_load_png(ft_strjoin(ft_strjoin(
-						"./images/walk_light_off/f_", ft_itoa(i)), ".png"));
-		if (!anm->txtrs[i])
-			clean_exit_init(data, "Can't load png", 43);
+		x = -1;
+		while (++x < WIN_W)
+			mlx_put_pixel(data->black_bg, x, y, get_rgba(0, 0, 0, 255));
 	}
+	mlx_image_to_window(data->mlx, data->black_bg, 0, 0);
+}
+
+void	init_images(t_data *data)
+{
+	ft_load_texture(data);
+	set_black_bg(data);
+	data->map->mnmap_img = mlx_new_image(data->mlx, MNMAP_W, MNMAP_H);
+	data->win_img = mlx_new_image(data->mlx, WIN_W, WIN_H);
+	if (mlx_image_to_window(data->mlx, data->win_img, 0, 0) == -1
+		|| mlx_image_to_window(data->mlx, data->map->mnmap_img,
+			MNMAP_GAP, MNMAP_GAP) == -1)
+		clean_exit(data, "Can't create image", 9);
+	data->map->border_txt = mlx_load_png("./images/mnmap_border.png");
+	data->map->cross_txt = mlx_load_png("./images/close.png");
+	if (!data->map->cross_txt || !data->map->border_txt)
+		clean_exit(data, "Can't load png", 10);
+	data->map->border_img = mlx_texture_to_image(
+			data->mlx, data->map->border_txt);
+	mlx_image_to_window(data->mlx, data->map->border_img,
+		MNMAP_GAP, MNMAP_GAP - 12);
+	data->hnd_cursr = mlx_create_std_cursor(MLX_CURSOR_HAND);
+	init_turning_on_imgs(data, &data->trn_on_anm);
+	init_turning_off_imgs(data, &data->trn_off_anm);
+	init_idle_light_on_imgs(data, &data->idle_light_on_anm);
+	init_walking_on_imgs(data, &data->walk_light_on_anm);
+	init_walking_off_imgs(data, &data->walk_light_off_anm);
+	init_ligher_imgs(data);
 }
