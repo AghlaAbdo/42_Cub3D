@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 14:46:45 by aaghla            #+#    #+#             */
-/*   Updated: 2023/11/19 21:43:34 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/05 09:30:51 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	*word(char const *str, char c)
 	i = 0;
 	while (str[i] && str[i] != c)
 		i++;
-	word = malloc((i +1) * sizeof(char));
+	word = ft_malloc((i +1) * sizeof(char), 0);
 	if (!word)
 		return (NULL);
 	i = 0;
@@ -70,7 +70,7 @@ char	**ft_split(char const *s, char c)
 
 	if (!s)
 		return (NULL);
-	arr = (char **)malloc((wordcount(s, c) + 1) * sizeof(char *));
+	arr = (char **)ft_malloc((wordcount(s, c) + 1) * sizeof(char *), 0);
 	if (!arr)
 		return (NULL);
 	i = 0;

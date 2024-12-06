@@ -6,11 +6,12 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 18:06:50 by aaghla            #+#    #+#             */
-/*   Updated: 2024/12/04 18:24:55 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/06 09:34:07 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <stdio.h>
 
 static void	delete_wall_txtrs(t_data *data)
 {
@@ -72,6 +73,14 @@ void	clean_exit(t_data *data, char *err, int stat)
 	ft_malloc(0, 1);
 	if (stat)
 		printf("Error\n%s\n", err);
+	exit(stat);
+}
+
+void	clean_exit_pars(t_data *data, char *err, int stat)
+{
+	delete_wall_txtrs(data);
+	ft_malloc(0, 1);
+	printf("Error\n%s\n", err);
 	exit(stat);
 }
 

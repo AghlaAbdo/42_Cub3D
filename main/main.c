@@ -6,13 +6,13 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:54:05 by srachidi          #+#    #+#             */
-/*   Updated: 2024/12/04 18:25:15 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/06 09:33:31 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	leaks()
+void	leaks(void)
 {
 	system("leaks cub3D");
 }
@@ -30,7 +30,7 @@ int	main(int ac, char **av)
 	ab_set_orn(&data);
 	data.mlx = mlx_init(WIN_W, WIN_H, "Cub3D", false);
 	if (!data.mlx)
-		clean_exit_pars("Unable to create window", 3);
+		clean_exit_pars(&data, "Unable to create window", 3);
 	init_images(&data);
 	mlx_loop_hook(data.mlx, &ft_looper, &data);
 	mlx_key_hook(data.mlx, &handle_events, &data);

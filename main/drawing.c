@@ -3,36 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
+/*   By: Apple <Apple@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:56:36 by aaghla            #+#    #+#             */
-/*   Updated: 2024/12/03 12:12:39 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/05 12:43:17 by Apple            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	drawLine(mlx_image_t *img, int x1, int x2, int y) {
-	for (int i = x1; i <= x2; i++) {
-		mlx_put_pixel(img , i, y, get_rgba(238, 238, 238, 255));
+static void	ft_drw_ln(mlx_image_t *img, int x1, int x2, int y)
+{
+	int	i;
+
+	i = x1;
+	while (i <= x2)
+	{
+		mlx_put_pixel(img, i, y, get_rgba(238, 238, 238, 255));
+		i++;
 	}
 }
 
 void	draw_circle(mlx_image_t *img, int h, int k, int r)
 {
-	int x = 0;
-	int y = r;
-	int d = 1 - r;
+	int	x;
+	int	y;
+	int	d;
 
-	while (x <= y) {
-		drawLine(img, h - x, h + x, k + y);
-		drawLine(img, h - x, h + x, k - y);
-		drawLine(img, h - y, h + y, k + x);
-		drawLine(img, h - y, h + y, k - x);
-
-		if (d < 0) {
+	x = 0;
+	y = r;
+	d = 1 - r;
+	while (x <= y)
+	{
+		ft_drw_ln(img, h - x, h + x, k + y);
+		ft_drw_ln(img, h - x, h + x, k - y);
+		ft_drw_ln(img, h - y, h + y, k + x);
+		ft_drw_ln(img, h - y, h + y, k - x);
+		if (d < 0)
 			d += 2 * x + 3;
-		} else {
+		else
+		{
 			d += 2 * (x - y) + 5;
 			y--;
 		}
@@ -40,36 +50,36 @@ void	draw_circle(mlx_image_t *img, int h, int k, int r)
 	}
 }
 
-static void	plot(t_data *data, int x, int y, int color) {
-   mlx_put_pixel(data->map->mnmap_img, x, y, color);
+static void	plot(t_data *data, int x, int y, int color)
+{
+	mlx_put_pixel(data->map->mnmap_img, x, y, color);
 }
 
-void	ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color)
+void	ab_ft_drw_ln(t_data *data, int x1, int y1, int x2, int y2, int color)
 {
-	if (x2 >= MNMAP_W || x2 < 0)
-	{
-		// printf("x > mnmap_w\n");
-		x2 = MNMAP_W / 2;
-		y2 = MNMAP_H / 2;
-	}
-	if (y2 >= MNMAP_H || y2 < 0)
-	{
-		// printf("y > mnmap_h\n");
-		x2 = MNMAP_W / 2;
-		y2 = MNMAP_H / 2;
-	}
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+	int	err;
+	int	e2;
 
-	
-	int dx = abs(x2 - x1);
-	int dy = abs(y2 - y1);
-	int sx = x1 < x2 ? 1 : -1;
-	int sy = y1 < y2 ? 1 : -1;
-	int err = dx - dy;
-	int e2;
-	while (1) {
+	dx = abs(x2 - x1);
+	dy = abs(y2 - y1);
+	if (x1 < x2)
+		sx = 1;
+	else
+		sx = -1;
+	if (y1 < y2)
+		sy = 1;
+	else
+		sy = -1;
+	err = dx - dy;
+	while (1)
+	{
 		plot(data, x1, y1, color);
 		if (x1 == x2 && y1 == y2)
-			break;
+			break ;
 		e2 = err;
 		if (e2 > -dx)
 		{
@@ -79,68 +89,7 @@ void	ab_drawline(t_data *data, int x1, int y1, int x2, int y2, int color)
 		if (e2 < dy)
 		{
 			err += dx;
-			y1 += sy;	
+			y1 += sy;
 		}
 	}
 }
-
-// draw a single ray on the window
-// void	draw_ray(t_data *data, int x, int y, int w, int h)
-// {
-// 	int	i;
-// 	int	j;
-// 	int	x_start;
-// 	int	color;
-// 	int	alpha;
-// 	int	floor_alpha;
-
-// 	alpha = 255;
-// 	floor_alpha = 255;
-// 	if (!data->light)
-// 	{
-// 		alpha = (255 - data->rays[x].real_dstn * 255 / 700) - 150;
-// 		if (alpha < 0)
-// 			alpha = 0;
-// 		else if (alpha > 255)
-// 			alpha = 255;
-// 	}
-// 	else
-// 	{
-// 		alpha = (255 - data->rays[x].real_dstn * 255 / 1000);
-// 		if (alpha < 0)
-// 			alpha = 0;
-// 		else if (alpha > 255)
-// 			alpha = 255;
-		
-// 	}
-// 	if (data->rays[x].door)
-// 		color = get_rgba(67, 46, 84, alpha);
-// 	else if (data->rays[x].orn == 'h')
-// 		color = get_rgba(235, 235, 235, alpha);
-// 	else
-// 		color = get_rgba(180, 180, 180,  alpha);
-// 	i = 0;
-// 	if (y < 0)
-// 	{
-// 		while (i < WIN_H)
-// 			mlx_put_pixel(data->win_img, x, i++, color);
-// 		return ;
-// 	}
-// 	while (i < WIN_H && i < y)
-// 		mlx_put_pixel(data->win_img, x, i++, get_rgba(23, 155, 174, 255));
-// 	while (i < WIN_H && i < h + y)
-// 		mlx_put_pixel(data->win_img, x, i++, color);
-// 	while (i < WIN_H)
-// 	{
-// 		if (!data->light)
-// 			floor_alpha = ((i - WIN_H / 3) * 255 / (WIN_H - (WIN_H / 3))) -150;
-// 		else
-// 			floor_alpha = ((i - WIN_H / 6) * 255 / (WIN_H - (WIN_H / 6)));
-// 		// printf("floor alpha: %d\n", floor_alpha);
-// 		if (floor_alpha < 0)
-// 			floor_alpha = 0;
-// 		// else if (floor_alpha > 255)
-// 		// 	floor_alpha = 255;
-// 		mlx_put_pixel(data->win_img, x, i++, get_rgba(34, 123, 148,  floor_alpha));
-// 	}
-// }

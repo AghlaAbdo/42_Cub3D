@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   init_images.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
+/*   By: Apple <Apple@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:57:23 by aaghla            #+#    #+#             */
-/*   Updated: 2024/12/04 18:48:44 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/05 19:26:30 by Apple            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	ab_set_orn(t_data *data)
+{
+	if (data->plr->orn == 'E')
+		data->plr->rot_angl = 0;
+	else if (data->plr->orn == 'S')
+		data->plr->rot_angl = M_PI / 2;
+	else if (data->plr->orn == 'W')
+		data->plr->rot_angl = M_PI;
+	else if (data->plr->orn == 'N')
+		data->plr->rot_angl = M_PI + (M_PI / 2);
+}
 
 static void	init_ligher_imgs(t_data *data)
 {
@@ -51,7 +63,6 @@ static void	set_black_bg(t_data *data)
 
 void	init_images(t_data *data)
 {
-	ft_load_texture(data);
 	set_black_bg(data);
 	data->map->mnmap_img = mlx_new_image(data->mlx, MNMAP_W, MNMAP_H);
 	data->win_img = mlx_new_image(data->mlx, WIN_W, WIN_H);

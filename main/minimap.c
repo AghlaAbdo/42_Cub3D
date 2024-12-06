@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
+/*   By: Apple <Apple@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 09:44:15 by aaghla            #+#    #+#             */
-/*   Updated: 2024/12/03 16:03:09 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/05 12:36:05 by Apple            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,12 @@ void	draw_mnmap_rays(t_data *data)
 		color = get_rgba(250, 188, 63, 255);
 		if (data->rays[i].dstn * 0.12 > 65)
 		{
-			ab_drawline(data, MNMAP_W / 2, MNMAP_H / 2,
+			ab_ft_drw_ln(data, MNMAP_W / 2, MNMAP_H / 2,
 				round(MNMAP_W / 2 + cos(data->rays[i].angl) * 65.0),
 				round(MNMAP_H / 2 + sin(data->rays[i].angl) * 65.0), color);
 		}
 		else
-			ab_drawline(data, MNMAP_W / 2, MNMAP_H / 2, MNMAP_W / 2
+			ab_ft_drw_ln(data, MNMAP_W / 2, MNMAP_H / 2, MNMAP_W / 2
 				+ (int)(round(data->rays[i].x * 0.12 - data->plr->x * 0.12)),
 				MNMAP_H / 2 + (int)(round(data->rays[i].y
 						* 0.12 - data->plr->y * 0.12)), color);

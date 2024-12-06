@@ -6,19 +6,20 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 12:50:23 by aaghla            #+#    #+#             */
-/*   Updated: 2024/12/04 18:50:03 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/05 02:30:48 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // check if the ray casted hit a wall
-static int	is_wall(t_data *data, double x, double y,
-	bool *found_wall, bool *door)
+static int	is_wall(double x, double y, bool *found_wall, bool *door)
 {
-	int	i;
-	int	j;
+	t_data	*data;
+	int		i;
+	int		j;
 
+	data = get_data(NULL);
 	i = (int)floor(y / MNMAP_TILE_S);
 	j = (int)floor(x / MNMAP_TILE_S);
 	if (i < 0 || i >= data->map->col || j < 0 || j >= data->map->row)
@@ -67,7 +68,7 @@ void	calc_horz(t_data *data, t_rays *ray, double xstep, int up)
 	ray->found_h = false;
 	while (1)
 	{
-		if (is_wall(data, xinter, yinter - up, &ray->found_h, &ray->door_h))
+		if (is_wall(xinter, yinter - up, &ray->found_h, &ray->door_h))
 		{
 			ray->h_x = xinter;
 			ray->h_y = yinter;
@@ -110,7 +111,7 @@ void	calc_vert(t_data *data, t_rays *ray, double xstep, int left)
 	ray->found_v = false;
 	while (1)
 	{
-		if (is_wall(data, xinter - left, yinter, &ray->found_v, &ray->door_v))
+		if (is_wall(xinter - left, yinter, &ray->found_v, &ray->door_v))
 		{
 			ray->v_x = xinter;
 			ray->v_y = yinter;

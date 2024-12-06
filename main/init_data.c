@@ -6,11 +6,21 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 17:49:38 by aaghla            #+#    #+#             */
-/*   Updated: 2024/12/04 18:01:19 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/06 09:29:56 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+t_data	*get_data(t_data *curr_data)
+{
+	static t_data	*data;
+
+	if (!curr_data)
+		return (data);
+	data = curr_data;
+	return (data);
+}
 
 static void	set_imgs_null(t_data *data)
 {
@@ -69,34 +79,17 @@ static void	allocate_memory(t_data *data)
 			sizeof(mlx_image_t) * WALK_ON_FRMS, 0);
 	data->walk_light_off_anm.txtrs = (mlx_texture_t **)ft_malloc(
 			sizeof(mlx_image_t) * WALK_OFF_FRMS, 0);
-}
-
-void	ab_set_orn(t_data *data)
-{
-	if (data->plr->orn == 'E')
-		data->plr->rot_angl = 0;
-	else if (data->plr->orn == 'S')
-		data->plr->rot_angl = M_PI / 2;
-	else if (data->plr->orn == 'W')
-		data->plr->rot_angl = M_PI;
-	else if (data->plr->orn == 'N')
-		data->plr->rot_angl = M_PI + (M_PI / 2);
+	get_data(data);
 }
 
 void	init_data(t_data *data)
 {
 	allocate_memory(data);
-	data->map->c[0] = -1;
-	data->map->f[0] = -1;
+	init_data_nrm(data);
 	data->map->ea_txt = NULL;
 	data->map->so_txt = NULL;
 	data->map->we_txt = NULL;
 	data->map->no_txt = NULL;
-	data->north_texture = NULL;
-	data->south_texture = NULL;
-	data->east_texture = NULL;
-	data->west_texture = NULL;
-	data->door_texture = NULL;
 	data->map->plr_nb = 0;
 	data->map->row = 0;
 	data->is_moving = true;

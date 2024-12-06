@@ -6,7 +6,7 @@
 /*   By: Apple <Apple@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 15:27:35 by aaghla            #+#    #+#             */
-/*   Updated: 2024/11/30 15:32:07 by Apple            ###   ########.fr       */
+/*   Updated: 2024/12/05 12:48:05 by Apple            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,7 @@ static void	swap(char *s, unsigned int num, int sign)
 static char	*minint(char *s, int n)
 {
 	unsigned int	num;
-	// int				i;
 
-	// i = 0;
 	num = (unsigned int)n;
 	s = (char *)ft_malloc(12 * sizeof(char), 0);
 	if (!s)

@@ -6,7 +6,7 @@
 /*   By: Apple <Apple@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 15:35:09 by Apple             #+#    #+#             */
-/*   Updated: 2024/12/01 15:36:18 by Apple            ###   ########.fr       */
+/*   Updated: 2024/12/05 12:11:24 by Apple            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ void	ft_clearcolorbuffer(t_data *data, uint32_t color)
 		while (y < TXTR_H)
 		{
 			if (x % 8 && y % 8)
-				mlx_put_pixel(data->colorBufferTexture, x, y,
+				mlx_put_pixel(data->clrbfrtxtr, x, y,
 					get_rgba(0, 0, 0, 255));
 			else
-				mlx_put_pixel(data->colorBufferTexture, x, y,
+				mlx_put_pixel(data->clrbfrtxtr, x, y,
 					get_rgba(0, 0, 180, 255));
 			y++;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
+/*   By: Apple <Apple@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 08:50:44 by aaghla            #+#    #+#             */
-/*   Updated: 2024/12/04 18:33:48 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/05 12:35:07 by Apple            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	render_animations(t_data *data)
 		anm_idle_light_on(data, &data->idle_light_on_anm, mlx_get_time() * 1e3);
 	else if (data->light && data->is_moving && !data->turning_on && !data->turning_off)
 		anm_walk_light_on(data, &data->walk_light_on_anm, mlx_get_time() * 1e3);
-	else if (!data->light && data->is_moving  && !data->turning_on && !data->turning_off)
+	else if (!data->light && data->is_moving && !data->turning_on && !data->turning_off)
 		anm_walk_light_off(data, &data->walk_light_off_anm, mlx_get_time() * 1e3);
 }
 

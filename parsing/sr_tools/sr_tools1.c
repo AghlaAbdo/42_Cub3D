@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sr_tools1.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: srachidi <srachidi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Apple <Apple@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 19:45:33 by srachidi          #+#    #+#             */
-/*   Updated: 2024/08/19 16:22:46 by srachidi         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:57:56 by Apple            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	sr_len(char *s)
 		i++;
 	return (i);
 }
-char *sr_dup(char *s)
+
+char	*sr_dup(char *s)
 {
 	char	*tp;
 	size_t	lenx;
@@ -41,10 +42,10 @@ char *sr_dup(char *s)
 	return (tp);
 }
 
-char	*sr_substr(char *s,int start, int len)
+char	*sr_substr(char *s, int start, int len)
 {
 	char	*substring;
-	int	i;
+	int		i;
 
 	if (!s)
 		return (NULL);
@@ -52,7 +53,7 @@ char	*sr_substr(char *s,int start, int len)
 		return (sr_dup(""));
 	if (len > sr_len(s + start))
 		len = sr_len(s + start);
-	i = 0; 
+	i = 0;
 	substring = ft_malloc((len * sizeof(char)) + 1, 0);
 	if (!substring)
 		return (NULL);
@@ -88,7 +89,7 @@ int	sr_strcmp( char *s1, char *s2)
 
 void	sr_rmv_nline(char *str)
 {
-	size_t len;
+	size_t	len;
 
 	len = sr_len(str);
 	if (len > 0 && str[len - 1] == '\n')

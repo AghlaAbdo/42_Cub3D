@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ab_map_lst.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
+/*   By: Apple <Apple@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 19:10:32 by aaghla            #+#    #+#             */
-/*   Updated: 2024/08/19 09:50:03 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/05 12:49:37 by Apple            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,23 @@ t_maplst	*ab_maplst_new(char *line)
 	new->prev = NULL;
 	return (new);
 }
+
 void	ab_maplstaddb(t_maplst **lst, t_maplst *new)
 {
-		t_maplst  *ptr;
+	t_maplst	*ptr;
 
-		if (!lst)
-				return ;
-		if (!*lst)
-		{
-				*lst = new;
-				return ;
-		}
-		ptr = *lst;
-		while (ptr->next)
-				ptr = ptr->next;
-		ptr->next = new;
-		new->prev = ptr;
+	if (!lst)
+		return ;
+	if (!*lst)
+	{
+		*lst = new;
+		return ;
+	}
+	ptr = *lst;
+	while (ptr->next)
+		ptr = ptr->next;
+	ptr->next = new;
+	new->prev = ptr;
 }
 
 int	ab_maplst_size(t_maplst *lst)

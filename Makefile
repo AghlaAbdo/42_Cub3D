@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+         #
+#    By: srachidi <srachidi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/16 06:34:23 by srachidi          #+#    #+#              #
-#    Updated: 2024/12/04 18:24:02 by aaghla           ###   ########.fr        #
+#    Updated: 2024/12/06 08:35:49 by srachidi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME   = cub3D
 CC     = cc
-CFLAGS = -DDEBUG=1 #-Wall -Wextra -Werror
+CFLAGS = #-fsanitize=address#-DDEBUG=1 #-Wall -Wextra -Werror
 RM     = rm -rf
 O_DR   = objs/
 LIBFT	= Libft/libft.a
@@ -39,7 +39,6 @@ SRC    := main/grbgcllctr.c			\
 			parsing/ab_map_lst.c	\
 			raycasting/raycasting.c	\
 			parsing/sr_tools/sr_tools1.c\
-			parsing/sr_tools/sr_tools2.c\
 			raycasting/textures.c \
 			raycasting/textures1.c \
 
@@ -54,6 +53,7 @@ OBJ    = $(addprefix $(O_DR),$(SRC:.c=.o))
 $(NAME): $(OBJ) $(LIBFT)
 	@echo "$(CYAN)Compilation ${CLR_RMV}of ${PURPLE}$(NAME) ${CLR_RMV}..."
 	@$(CC) $(CFLAGS) $^ -o $@ ./MLX/build/libmlx42.a -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" $(LIBFT)
+	#@$(CC) $(CFLAGS) $^ -o $@ ./MLX/build/libmlx42.a -lglfw -L"/opt/homebrew/opt/glfw/lib/"
 	@echo "$(GREEN)$(NAME) created Successfully${CLR_RMV} ✔️"
 
 $(LIBFT):

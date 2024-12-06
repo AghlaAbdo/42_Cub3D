@@ -6,7 +6,7 @@
 /*   By: Apple <Apple@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 18:39:25 by srachidi          #+#    #+#             */
-/*   Updated: 2024/12/01 15:43:34 by Apple            ###   ########.fr       */
+/*   Updated: 2024/12/05 17:41:05 by Apple            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,13 @@ void	sr_nrm2(t_data *data, char *line, int i, char *id)
 		else
 			sr_fc_check(data, line, i, 'F');
 	}
+	else
+	{
+		if (data->map->c[0] != -1)
+			exit (write (2, "C color config duplicate detected !\n", 37));
+		else
+			sr_fc_check(data, line, i, 'C');
+	}
 }
 
 int	first_part(t_data *data, char *line)
@@ -100,12 +107,9 @@ int	first_part(t_data *data, char *line)
 	else if (sr_strcmp(sr_substr(line, i, 1), "F"))
 		sr_nrm2(data, line, i, "F");
 	else if (sr_strcmp(sr_substr(line, i, 1), "C"))
-	{
-		if (data->map->c[0] != -1)
-			exit (write (2, "C color config duplicate detected !\n", 37));
-		else
-			sr_fc_check(data, line, i, 'C');
-	}
+		sr_nrm2(data, line, i, "C");
+	else if (sr_strcmp(line, "\n"))
+		return (0);
 	else
 		return (1);
 	return (0);
