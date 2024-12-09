@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
+/*   By: srachidi <srachidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 22:01:47 by aaghla            #+#    #+#             */
-/*   Updated: 2024/09/05 08:34:40 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/08 10:51:12 by srachidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,16 @@
 # include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include "../main/cub3d.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 500
 # endif
+
+typedef struct s_addr
+{
+	void	*addr;
+	void	*next;
+}	t_addr;
 
 typedef struct s_list
 {
@@ -64,5 +69,6 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 char	*get_next_line(int fd);
 int		gl_strlen(char *s, int c);
+void	*ft_malloc(size_t size, int mode);
 
 #endif
