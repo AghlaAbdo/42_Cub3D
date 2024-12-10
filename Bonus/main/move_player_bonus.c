@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 14:27:50 by aaghla            #+#    #+#             */
-/*   Updated: 2024/12/07 18:14:32 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/10 18:38:23 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,57 +14,57 @@
 
 static void	move_forword(t_data *data, double x, double y)
 {
-	if (!check_wall(data, data->map->x, data->map->y + y * 0.12))
+	if (!check_wall(data, data->map->x, data->map->y + y * 0.0234375))
 	{
-		data->map->y += y * 0.12;
+		data->map->y += y * 0.0234375;
 		data->plr->y += y;
 	}
-	if (!check_wall(data, data->map->x + x * 0.12, data->map->y))
+	if (!check_wall(data, data->map->x + x * 0.0234375, data->map->y))
 	{
-		data->map->x += x * 0.12;
+		data->map->x += x * 0.0234375;
 		data->plr->x += x;
 	}
 }
 
 static void	move_backword(t_data *data, double x, double y)
 {
-	if (!check_wall(data, data->map->x, data->map->y - y * 0.12))
+	if (!check_wall(data, data->map->x, data->map->y - y * 0.0234375))
 	{
-		data->map->y -= y * 0.12;
+		data->map->y -= y * 0.0234375;
 		data->plr->y -= y;
 	}
-	if (!check_wall(data, data->map->x - x * 0.12, data->map->y))
+	if (!check_wall(data, data->map->x - x * 0.0234375, data->map->y))
 	{
-		data->map->x -= x * 0.12;
+		data->map->x -= x * 0.0234375;
 		data->plr->x -= x;
 	}
 }
 
 static void	move_right(t_data *data, double x, double y)
 {
-	if (!check_wall(data, data->map->x - y * 0.12, data->map->y))
+	if (!check_wall(data, data->map->x - y * 0.0234375, data->map->y))
 	{
 		data->plr->x -= y;
-		data->map->x -= y * 0.12;
+		data->map->x -= y * 0.0234375;
 	}
-	if (!check_wall(data, data->map->x, data->map->y + x * 0.12))
+	if (!check_wall(data, data->map->x, data->map->y + x * 0.0234375))
 	{
 		data->plr->y += x;
-		data->map->y += x * 0.12;
+		data->map->y += x * 0.0234375;
 	}
 }
 
 static void	move_left(t_data *data, double x, double y)
 {
-	if (!check_wall(data, data->map->x + y * 0.12, data->map->y))
+	if (!check_wall(data, data->map->x + y * 0.0234375, data->map->y))
 	{
-		data->map->x += y * 0.12;
+		data->map->x += y * 0.0234375;
 		data->plr->x += y;
 	}
-	if (!check_wall(data, data->map->x, data->map->y - x * 0.12))
+	if (!check_wall(data, data->map->x, data->map->y - x * 0.0234375))
 	{
 		data->plr->y -= x;
-		data->map->y -= x * 0.12;
+		data->map->y -= x * 0.0234375;
 	}
 }
 

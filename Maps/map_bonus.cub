@@ -1,9 +1,9 @@
-NO ./Bonus/images/textures/north200.png
-SO ./Bonus/images/textures/south200.png
-WE ./Bonus/images/textures/west200.png
+NO ./Bonus/images/textures/north_1024.png
+SO ./Bonus/images/textures/south_1024.png
+WE ./Bonus/images/textures/west_1024.png
 
 
-EA ./Bonus/images/textures/east200.png
+EA ./Bonus/images/textures/east_1024.png
 F      45,56,116
 C    11, 25, 44
                     111111111111111

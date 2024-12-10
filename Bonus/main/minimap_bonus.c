@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 09:44:15 by aaghla            #+#    #+#             */
-/*   Updated: 2024/12/07 18:14:43 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/10 18:42:00 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	ft_ln_init(t_data *data, int flg, int i)
 		data->ln_x1 = MNMAP_W / 2;
 		data->ln_y1 = MNMAP_H / 2;
 		data->ln_x2 = MNMAP_W / 2 + (int)(round(data->rays[i].x
-					* 0.12 - data->plr->x * 0.12));
+					* 0.0234375 - data->plr->x * 0.0234375));
 		data->ln_y2 = MNMAP_H / 2 + (int)(round(data->rays[i].y
-					* 0.12 - data->plr->y * 0.12));
+					* 0.0234375 - data->plr->y * 0.0234375));
 	}
 }
 
@@ -42,7 +42,7 @@ void	draw_mnmap_rays(t_data *data)
 	while (++i < N_RAYS)
 	{
 		color = get_rgba(250, 188, 63, 255);
-		if (data->rays[i].dstn * 0.12 > 65)
+		if (data->rays[i].dstn * 0.0234375 > 65)
 		{
 			ft_ln_init(data, 1, i);
 			ab_ft_drw_ln(data, color);

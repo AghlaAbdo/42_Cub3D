@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 09:42:44 by srachidi          #+#    #+#             */
-/*   Updated: 2024/12/08 15:40:10 by aaghla           ###   ########.fr       */
+/*   Updated: 2024/12/10 18:31:46 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,24 @@
 void	ft_load_texture(t_data *data)
 {
 	data->north_texture = mlx_load_png(data->map->no_txt);
-	if (!data->north_texture || data->north_texture->width != 200
-		| data->north_texture->height != 200)
+	if (!data->north_texture || data->north_texture->width != 1024
+		| data->north_texture->height != 1024)
 		clean_exit_pars(data, "Failed to load north texture", 42);
 	data->south_texture = mlx_load_png(data->map->so_txt);
-	if (!data->south_texture || data->south_texture->width != 200
-		|| data->south_texture->height != 200)
+	if (!data->south_texture || data->south_texture->width != 1024
+		|| data->south_texture->height != 1024)
 		clean_exit_pars(data, "Failed to load south texture", 43);
 	data->east_texture = mlx_load_png(data->map->ea_txt);
-	if (!data->east_texture || data->east_texture->width != 200
-		|| data->east_texture->height != 200)
+	if (!data->east_texture || data->east_texture->width != 1024
+		|| data->east_texture->height != 1024)
 		clean_exit_pars(data, "Failed to load east texture", 44);
 	data->west_texture = mlx_load_png(data->map->we_txt);
-	if (!data->west_texture || data->west_texture->width != 200
-		|| data->west_texture->height != 200)
+	if (!data->west_texture || data->west_texture->width != 1024
+		|| data->west_texture->height != 1024)
 		clean_exit_pars(data, "Failed to load west texture", 45);
-	data->door_texture = mlx_load_png("./Bonus/images/textures/door_200.png");
-	if (!data->door_texture || data->door_texture->width != 200
-		|| data->door_texture->height != 200)
+	data->door_texture = mlx_load_png("./Bonus/images/textures/door_1024.png");
+	if (!data->door_texture || data->door_texture->width != 1024
+		|| data->door_texture->height != 1024)
 		clean_exit_pars(data, "Failed to load door texture", 45);
 }
 

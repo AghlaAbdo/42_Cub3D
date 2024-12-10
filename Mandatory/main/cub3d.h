@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: srachidi <srachidi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/12/08 10:48:00 by srachidi         ###   ########.fr       */
+/*   Updated: 2024/12/10 18:49:39 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 // Made by Aghla
 # define WIN_W 1200
 # define WIN_H 675
-# define MNMAP_TILE_S 200
+# define MNMAP_TILE_S 1024
 # define TXTR_W 200
 # define TXTR_H 200
 # define MNMAP_W 240
@@ -36,7 +36,7 @@
 # define MNMAP_GAP 16
 # define BIGMAP_W 960
 # define BIGMAP_H 576
-# define MOVE_SPD 13
+# define MOVE_SPD 50
 # define ROT_SPD 0.03490658504
 # define FOV 0.9599310886
 # define N_RAYS WIN_W
