@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sec_part1_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
+/*   By: thedon <thedon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 10:53:48 by srachidi          #+#    #+#             */
-/*   Updated: 2024/12/08 15:01:10 by aaghla           ###   ########.fr       */
+/*   Updated: 2025/04/06 12:06:48 by thedon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,8 @@ static void	is_map_closed(t_data *data, char **map, int i, int j)
 void	ab_valid_map(t_data *data, t_maplst *maplst)
 {
 	int	i;
-	int	j;
 
 	i = -1;
-	j = -1;
 	data->map->map = ft_malloc(sizeof(char *) * (data->map->col + 1), 0);
 	while (++i < data->map->col)
 		data->map->map[i] = ft_malloc(sizeof(char) * (data->map->row + 1), 0);
