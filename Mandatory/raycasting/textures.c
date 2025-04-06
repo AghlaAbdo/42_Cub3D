@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
+/*   By: thedon <thedon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 09:42:44 by srachidi          #+#    #+#             */
-/*   Updated: 2024/12/10 18:46:53 by aaghla           ###   ########.fr       */
+/*   Updated: 2025/04/06 11:41:28 by thedon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_load_texture(t_data *data)
 {
 	data->north_texture = mlx_load_png(data->map->no_txt);
 	if (!data->north_texture || data->north_texture->width != 1024
-		| data->north_texture->height != 1024)
+		|| data->north_texture->height != 1024)
 		clean_exit_pars(data, "Failed to load north texture", 42);
 	data->south_texture = mlx_load_png(data->map->so_txt);
 	if (!data->south_texture || data->south_texture->width != 1024
