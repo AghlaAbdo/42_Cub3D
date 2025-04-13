@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 08:46:55 by srachidi          #+#    #+#             */
-/*   Updated: 2024/12/10 18:44:33 by aaghla           ###   ########.fr       */
+/*   Updated: 2025/04/13 13:17:55 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	set_alpha(t_data *data, t_rays ray, int *alpha)
 	*alpha = 255;
 	if (!data->light)
 	{
-		*alpha = (255 - (ray.real_dstn * 0.2) * 255 / 4050) - 120;
+		*alpha = (255 - (ray.real_dstn * 0.2) * 255 / 4050) - 165;
 		if (*alpha < 0)
 			*alpha = 0;
 		else if (*alpha > 255)
@@ -101,7 +101,7 @@ void	set_alpha(t_data *data, t_rays ray, int *alpha)
 	}
 	else
 	{
-		*alpha = (255 - (ray.real_dstn * 0.2) * 255 / 5400) - 50;
+		*alpha = (255 - (ray.real_dstn * 0.2) * 255 / 5400) - 80;
 		if (*alpha < 0)
 			*alpha = 0;
 		else if (*alpha > 255)

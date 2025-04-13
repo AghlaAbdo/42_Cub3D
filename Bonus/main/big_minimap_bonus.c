@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   big_minimap_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: srachidi <srachidi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 19:17:45 by aaghla            #+#    #+#             */
-/*   Updated: 2024/12/08 10:49:05 by srachidi         ###   ########.fr       */
+/*   Updated: 2025/04/13 13:27:04 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,26 @@ static void	move_map(t_data *data)
 	if (mlx_is_key_down(data->mlx, MLX_KEY_LEFT)
 		&& data->map->bigmap_x / 24 >= 0)
 	{
-		data->map->bigmap_x -= MOVE_SPD;
-		data->map->bigmap_px += MOVE_SPD;
+		data->map->bigmap_x -= 10;
+		data->map->bigmap_px += 10;
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_RIGHT)
 		&& data->map->bigmap_x / 24 < data->map->row)
 	{
-		data->map->bigmap_x += MOVE_SPD;
-		data->map->bigmap_px -= MOVE_SPD;
+		data->map->bigmap_x += 10;
+		data->map->bigmap_px -= 10;
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_UP)
 		&& data->map->bigmap_y / 24 >= 0)
 	{
-		data->map->bigmap_y -= MOVE_SPD;
-		data->map->bigmap_py += MOVE_SPD;
+		data->map->bigmap_y -= 10;
+		data->map->bigmap_py += 10;
 	}
 	if (mlx_is_key_down(data->mlx, MLX_KEY_DOWN)
 		&& data->map->bigmap_y / 24 < data->map->col)
 	{
-		data->map->bigmap_y += MOVE_SPD;
-		data->map->bigmap_py -= MOVE_SPD;
+		data->map->bigmap_y += 10;
+		data->map->bigmap_py -= 10;
 	}
 }
 

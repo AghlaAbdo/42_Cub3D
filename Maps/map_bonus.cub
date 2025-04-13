@@ -1,10 +1,10 @@
-NO ./Bonus/images/textures/north_1024.png
-SO ./Bonus/images/textures/south_1024.png
-WE ./Bonus/images/textures/west_1024.png
+NO ./Bonus/images/textures/wall_eg1.png
+SO ./Bonus/images/textures/wall_eg2.png
+WE ./Bonus/images/textures/wall_eg3.png
 
 
-EA ./Bonus/images/textures/east_1024.png
-F      45,56,116
+EA ./Bonus/images/textures/wall_eg4.png
+F      68, 54, 39
 C    11, 25, 44
                     111111111111111
                     1000000000000001

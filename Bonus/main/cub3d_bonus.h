@@ -6,7 +6,7 @@
 /*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/16 06:12:46 by srachidi          #+#    #+#             */
-/*   Updated: 2024/12/10 18:39:11 by aaghla           ###   ########.fr       */
+/*   Updated: 2025/04/13 13:25:32 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 # define WIN_W 1200
 # define WIN_H 675
 # define MNMAP_TILE_S 1024
-# define TXTR_W 200
-# define TXTR_H 200
+# define TXTR_W 1024
+# define TXTR_H 1024
 # define MNMAP_W 240
 # define MNMAP_H 240
 # define MNMAP_GAP 16

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: thedon <thedon@student.42.fr>              +#+  +:+       +#+         #
+#    By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/16 06:34:23 by srachidi          #+#    #+#              #
-#    Updated: 2025/04/06 12:14:26 by thedon           ###   ########.fr        #
+#    Updated: 2025/04/13 19:31:10 by aaghla           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,18 +87,18 @@ bonus : libft_rule mlx_rule $(NAME_BNS)
 $(NAME): $(OBJ) $(LIBFT) $(MLX)
 	@echo "$(CYAN)Compilation ${CLR_RMV}of ${PURPLE}$(NAME) ${CLR_RMV}..."
 	# For MacOs
-	#@$(CC) $(CFLAGS) $^ -o $@ $(MLX) -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" $(LIBFT)
+	@$(CC) $(CFLAGS) $^ -o $@ $(MLX) -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" $(LIBFT)
 	# For Linux
-	@$(CC) $(CFLAGS) $^ -o $@ $(MLX) -lglfw -ldl -lm -lX11 -lpthread -lXrandr -lXi $(LIBFT)
+	# @$(CC) $(CFLAGS) $^ -o $@ $(MLX) -lglfw -ldl -lm -lX11 -lpthread -lXrandr -lXi $(LIBFT)
 
 	@echo "$(GREEN)$(NAME) created Successfully${CLR_RMV} ✔️"
 
 $(NAME_BNS) : $(OBJ_BNS) $(LIBFT) $(MLX)
 	@echo "$(CYAN)Compilation ${CLR_RMV}of ${PURPLE}$(NAME) ${CLR_RMV}..."
 	# For MacOs
-	#@$(CC) $(CFLAGS) $^ -o $@ $(MLX) -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" $(LIBFT)
+	@$(CC) $(CFLAGS) $^ -o $@ $(MLX) -lglfw -L"/Users/$(USER)/.brew/opt/glfw/lib/" $(LIBFT)
 	# For Linux
-	@$(CC) $(CFLAGS) $^ -o $@ $(MLX) -lglfw -ldl -lm -lX11 -lpthread -lXrandr -lXi $(LIBFT)
+	# @$(CC) $(CFLAGS) $^ -o $@ $(MLX) -lglfw -ldl -lm -lX11 -lpthread -lXrandr -lXi $(LIBFT)
 	@echo "$(GREEN)$(NAME) created Successfully${CLR_RMV} ✔️"
 
 mlx_rule:

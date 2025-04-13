@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thedon <thedon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaghla <aaghla@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 09:42:44 by srachidi          #+#    #+#             */
-/*   Updated: 2025/04/06 12:07:25 by thedon           ###   ########.fr       */
+/*   Updated: 2025/04/13 13:08:36 by aaghla           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_load_texture(t_data *data)
 	if (!data->west_texture || data->west_texture->width != 1024
 		|| data->west_texture->height != 1024)
 		clean_exit_pars(data, "Failed to load west texture", 45);
-	data->door_texture = mlx_load_png("./Bonus/images/textures/door_1024.png");
+	data->door_texture = mlx_load_png("./Bonus/images/textures/door_eg.png");
 	if (!data->door_texture || data->door_texture->width != 1024
 		|| data->door_texture->height != 1024)
 		clean_exit_pars(data, "Failed to load door texture", 45);
