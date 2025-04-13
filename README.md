@@ -7,6 +7,11 @@ Created by **Abdellatif Aghla** and **Salaheddine Rachidi**.
 
 ---
 
+
+https://github.com/user-attachments/assets/ea9d0cc2-2cdc-4eae-8426-7ae0aefdc1e2
+
+---
+
 ## Table of Contents
 
 1. [Overview](#overview)
@@ -117,8 +122,8 @@ A valid `.cub` file includes:
 2. **Clone the Repository**: Clone the cub3D project repository to your local machine:
 
     ```bash
-    git clone https://github.com/your-username/cub3d.git
-    cd cub3d
+    git clone git@github.com:AghlaAbdo/42_Cub3D.git
+    cd 42_Cub3D
     ```
 
 3. **Build the Project**: The `Makefile` is set up to compile the project. Simply run the following command to build the project:
@@ -154,8 +159,8 @@ A valid `.cub` file includes:
 2. **Clone the Repository**: Clone the cub3D project repository to your local machine:
 
     ```bash
-    git clone https://github.com/your-username/cub3d.git
-    cd cub3d
+    git clone git@github.com:AghlaAbdo/42_Cub3D.git
+    cd 42_Cub3D
     ```
 
 3. **Build the Project**: The `Makefile` is set up to compile the project. Simply run the following command to build the project:
